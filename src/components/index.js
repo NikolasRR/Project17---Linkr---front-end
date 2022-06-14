@@ -1,6 +1,16 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Trending from "./features/sidebar/sidebar"
+
 function App(){
     return(
-        <p>LALALALALA</p>
+        <BrowserRouter>
+            {<Trending/>}
+            <Routes>
+                <Route path='/' element={<p>LALALA</p>}/>
+            </Routes>
+        </BrowserRouter>
+        
     )
 }
 
