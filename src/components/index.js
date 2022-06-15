@@ -18,7 +18,7 @@ function App() {
                 <isLoadingContext.Provider value={{isLoading, setIsLoading}}>
                     <isModalOpenContext.Provider value={{isModalOpen, setIsModalOpen}}>
                             <Routes>
-                                    <Route path="/" element={<Timeline />} />
+                                    <Route path="/timeline" element={<Timeline />} />
                             </Routes>
                     </isModalOpenContext.Provider>  
                 </isLoadingContext.Provider>                              
