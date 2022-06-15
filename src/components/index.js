@@ -8,7 +8,6 @@ import SignInScreen from "./signInScreen";
 
 function App() {
     const [userData, setUserData] = useState({});
-    const navigate = useNavigate();
 
     useEffect(() => {
         async function getUser () {
@@ -17,7 +16,6 @@ function App() {
                 setUserData(user);
             } catch (error) {
                 alert('Session expired');
-                navigate("/");
             }
             
         }
