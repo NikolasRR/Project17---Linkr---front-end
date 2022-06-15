@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Trending from "./features/sidebar/sidebar"
+import Trending from "./sidebar/sidebar"
 
 function App(){
     return(
