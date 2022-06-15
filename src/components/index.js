@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import SignInScreen from "./signInScreen";
 
 function App() {
-console.log('teste');
+    
+
     return (
         <BrowserRouter>
             <Routes>

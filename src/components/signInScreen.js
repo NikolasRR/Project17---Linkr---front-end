@@ -7,9 +7,7 @@ function SignInScreen() {
     const navigate = useNavigate();
     const [user, setUser] = useState({ email: "", password: "" });
     const [logginIn, setLogginIn] = useState(false);
-
-    console.log(logginIn);
-
+    
     const LogIn = async function (ev) {
         ev.preventDefault();
         setLogginIn(true);
@@ -20,7 +18,7 @@ function SignInScreen() {
         }
 
         try {
-            await axios.post("http://localhost:5000/sign-in", user)
+            await axios.post("http://localhost:5000/sign-in", user, { withCredentials: true })
                 .then(res => {
                     navigate("/timeline");
                 })
