@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {useState } from "react";
 
-import Timeline from "../templates/timeline";
+import Timeline from "../templates/timeline/timeline";
 
 import isLoadingContext from "../contexts/isLoadingContext"
 import isModalOpenContext from "../contexts/isModalOpenContext"

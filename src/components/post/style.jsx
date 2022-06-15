@@ -1,28 +1,6 @@
 import styled from "styled-components"
-import { CgHeart} from "react-icons/cg";
 
-function Post(){
-    return(
-        <Content>
-            <ProfileImage>
-                <div>
-                    <CgHeart></CgHeart>                    
-                </div> 
-                <p>likes</p>              
-            </ProfileImage>
-            <Publication> 
-                <Name>Juvenal Juvêncio</Name>
-                <Text> Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</Text>
-                <Url></Url>                           
-            </Publication>
-        </Content> 
-    )
-}
-
-export default Post;
-
-
-const Content = styled.div`
+export const Content = styled.div`
     margin-bottom: 29px;
     max-width: 100%;
     min-height: 276px;
@@ -40,7 +18,7 @@ const Content = styled.div`
     }
 
 `
-const ProfileImage = styled.div`
+export const ProfileImage = styled.div`
     width: 53px;
     height: 53px;
     background: yellow;
@@ -73,7 +51,7 @@ const ProfileImage = styled.div`
 
 `
 
-const Publication = styled.div`
+export const Publication = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -89,7 +67,7 @@ const Publication = styled.div`
    
 `
 
-const Name = styled.p`
+export const Name = styled.p`
     height: 23px;
     font-family: 'Lato';
     font-style: normal;
@@ -108,7 +86,7 @@ const Name = styled.p`
     }
     
 `
-const Text = styled.p`
+export const Text = styled.p`
     width: 100%;
     height: 52px;
     font-family: 'Lato';
@@ -126,7 +104,7 @@ const Text = styled.p`
     }
 `
 
-const Url = styled.div`
+export const Url = styled.div`
     width: 503px;
     height: 155px;
     border: 1px solid #4D4D4D;

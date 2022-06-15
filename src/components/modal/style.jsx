@@ -1,26 +1,6 @@
 import styled from "styled-components";
 
-function Modal(props) {
-
-    const {setIsModalOpen,errorMessage} = props
-
-    return (
-      <ModalBackground>
-        <ModalContainer>
-          <Body>
-            <p>{errorMessage}</p>
-          </Body>
-          <Footer>
-            <button onClick={() => setIsModalOpen(false)}>OK</button>
-          </Footer>
-        </ModalContainer>
-      </ModalBackground>
-    );
-  }
-  
-export default Modal;
-
-const ModalBackground = styled.div`
+export const ModalBackground = styled.div`
     width: 100vw;
     height: 100vh;
     background: rgba(255, 255, 255, 0.9);
@@ -30,7 +10,7 @@ const ModalBackground = styled.div`
     align-items: center; 
 `
 
-const ModalContainer = styled.div`
+export const ModalContainer = styled.div`
     width: 597px;
     height: 262px;
     left: 413px;
@@ -44,7 +24,7 @@ const ModalContainer = styled.div`
 
 `
 
-const Body = styled.div`
+export const Body = styled.div`
     width: 338px;
     height: 82px;
     font-family: 'Lato';
@@ -56,7 +36,7 @@ const Body = styled.div`
     color: #FFFFFF;
 `
 
-const Footer = styled.div`
+export const Footer = styled.div`
 
     button {
       width: 134px;

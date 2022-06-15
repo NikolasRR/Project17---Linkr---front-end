@@ -1,26 +1,7 @@
 import styled from "styled-components";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoSearchSharp} from "react-icons/io5"
 
-function Header(){
-    return(
-    <Main>
-        <Logo>Linkr</Logo>
-        <Middle>
-            <Input placeholder="Search for people"></Input>
-            <div><IoSearchSharp></IoSearchSharp></div>
-        </Middle>
-        <Rigth>
-            <div><IoIosArrowDown></IoIosArrowDown></div>
-            <ProfileImage></ProfileImage>
-        </Rigth>
-    </Main>
-    )
-}
 
-export default Header;
-
-const Main = styled.div`
+export const Main = styled.div`
     width: 100%;
     height: 72px;
     background: #151515;
@@ -31,7 +12,7 @@ const Main = styled.div`
     padding: 10px;
 `
 
-const Logo = styled.p`
+export const Logo = styled.p`
     width: 108px;
     height: 54px;
     font-family: 'Passion One';
@@ -43,7 +24,7 @@ const Logo = styled.p`
     color: #FFFFFF;
 `
 
-const Middle = styled.div`
+export const Middle = styled.div`
     width: 47%;
     height: 45px;
     background: #FFFFFF;
@@ -65,7 +46,7 @@ const Middle = styled.div`
 
 `
 
-const Input = styled.input`
+export const Input = styled.input`
     width: 100%;
     height: 100%;
     background: #FFFFFF;
@@ -82,14 +63,15 @@ const Input = styled.input`
 
   
 `
-const ProfileImage = styled.div`
+
+export const ProfileImage = styled.div`
     width: 53px;
     height: 53px;
     background: red;
     border-radius: 26.5px;
 `
 
-const Rigth = styled.div`
+export const Rigth = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
