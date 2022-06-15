@@ -1,7 +1,7 @@
 import { CgHeart} from "react-icons/cg";
 import {Content,ProfileImage, Publication, Name, Text, Url} from "./style"
 
-   
+
 
 function Post(){
     return(
@@ -14,7 +14,7 @@ function Post(){
             </ProfileImage>
             <Publication> 
                 <Name>Juvenal Juvêncio</Name>
-                <Text> Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</Text>
+                <Text> Muito maneiro esse tutorial de Material UI com React, deem uma olhada! #UI #reactjs</Text>
                 <Url></Url>                           
             </Publication>
         </Content> 

@@ -64,7 +64,6 @@ export const Publication = styled.div`
         display: flex;
         justify-content: flex-end;
     }
-   
 `
 
 export const Name = styled.p`
