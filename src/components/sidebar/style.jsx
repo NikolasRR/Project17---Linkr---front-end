@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const SideBar = styled.div`
-    position: relative;
+    //position: relative;
     width : 301px;
     margin-left: 30px;
     border-radius: 16px;
