@@ -28,13 +28,14 @@ function Timeline(){
             setIsLoading(false)
             return
         }
+
         const body = {
-            // userName,
             url,
             text,
         }
 
-        const promise = axios.post(`${process.env.REACT_APP_API_URL}/`, body)
+
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, {withCredentials: true})
         promise.then((data)=>{
             setUrl("");
             setText("");
@@ -44,6 +45,7 @@ function Timeline(){
             setIsLoading(false)
             setErrorMessage("Houve um erro ao publicar seu link")
             setIsModalOpen(true)
+            console.error(e)
         })
     }
 
