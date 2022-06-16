@@ -18,7 +18,11 @@ function Timeline(){
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
     const [errorMessage, setErrorMessage] = useState("");  
-    const [publications, setPublications] = useState([])
+    const [publications, setPublications] = useState([]);
+    // const [isLoadingPost, setIsLoadingPosts] = useState(false);
+   
+
+    // setIsLoadingPosts(true)
 
     useEffect(() => fetchPublications() ,[])
 
@@ -26,6 +30,7 @@ function Timeline(){
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`,{withCredentials: true})
         promise.then(({data})=>{
             setPublications(data)
+            // setIsLoadingPosts(false)
         })
         promise.catch((e)=>{
             console.error(e.data)
@@ -53,6 +58,7 @@ function Timeline(){
             setUrl("");
             setText("");
             setIsLoading(false);
+            fetchPublications();
         })
         promise.catch((e)=>{
             setIsLoading(false)
@@ -66,6 +72,7 @@ function Timeline(){
     return(
         <>  
             {isModalOpen?<Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} />:null}
+            {/* {isLoadingPost?<Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} />:null} */}
             <Header></Header>
             <Content>
                 <Posts>
