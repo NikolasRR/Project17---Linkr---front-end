@@ -1,12 +1,22 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
+
+import UserContext from "../contexts/UserContext";
 
 function SignInScreen() {
     const navigate = useNavigate();
     const [user, setUser] = useState({ email: "", password: "" });
     const [logginIn, setLogginIn] = useState(false);
+    const { UserData } = useContext(UserContext);
+
+    useEffect(() => {
+      if (!UserData) {
+          navigate("/timeline");
+      }
+    }, [])
+    
     
     const LogIn = async function (ev) {
         ev.preventDefault();
