@@ -83,3 +83,30 @@ export const Rigth = styled.div`
        color: #fff;
     }
 `
+
+export const UserOptions = styled.div`
+    position: fixed;
+    right: 0;
+    top: 72px;
+    background-color: #171717;
+    border-radius: 0px 0px 0 20px;
+    display: ${({opened}) => opened ? "initial" : "none"};
+    width: ${({opened}) => opened ? "130px" : "0px"};
+    height: ${({opened}) => opened ? "47px" : "0px"};
+    transition: height 300ms ease;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+export const LogoutOption = styled.p`
+    display: ${({opened}) => opened ? "initial" : "none"};
+    font-weight: 700;
+    font-family: 'Lato';
+    font-size: 17px;
+    line-height: 20px;
+    &:hover {
+        cursor: pointer;
+    }
+`
