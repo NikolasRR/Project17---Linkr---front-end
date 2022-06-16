@@ -6,11 +6,12 @@ import axios from "axios";
 import {SideBar} from './style';
 
 export default function Trending(){
-    const [trending, setTrending] = useState();
+    const [trending, setTrending] = useState([]);
+    const baseURL = 'http://localhost:5000';
     useEffect(() => {
         const getData = async () => {
             try {
-                const {data} = await axios.get('http://localhost:5000/trending');
+                const {data} = await axios.get(`${baseURL}/trending`, {withCredentials: true});
                 setTrending(data);
             } catch (error) {
                 console.log(error.response);
@@ -18,11 +19,12 @@ export default function Trending(){
         }
         getData();
     }, []);
+    console.log(trending);
     return(
         <SideBar>
             <h1>trending</h1>
             <ul>
-                {trending && trending.map((item, index) => {
+                {trending&& trending.map((item, index) => {
                     return(
                         <li key={index}>
                             <Link to={`/hashtag/${item.content}`}>
