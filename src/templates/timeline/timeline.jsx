@@ -55,7 +55,7 @@ function Timeline(){
             {isModalOpen?<Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} />:null}
             <Header></Header>
             <Content>
-               <Posts>
+                <Posts>
                     <Title>timeline</Title>
                     <PostInput>
                         <ProfileImage></ProfileImage>
@@ -90,8 +90,8 @@ function Timeline(){
                     <Post></Post>
                     <Post></Post>
                     <Post></Post>
-               </Posts> 
-               <Sidebar><Trending></Trending></Sidebar>
+                </Posts> 
+                <Sidebar><Trending></Trending></Sidebar>
             </Content>    
         </>        
     )

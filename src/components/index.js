@@ -4,7 +4,7 @@ import {useState } from "react";
 
 import SignUp from "./signUp/SignUp";
 import Timeline from "../templates/timeline/timeline";
-
+import Hashtag from "./../templates/hashtagPage/hashtagPage";
 import UserContext from "../contexts/UserContext";
 import isLoadingContext from "../contexts/isLoadingContext"
 import isModalOpenContext from "../contexts/isModalOpenContext"
@@ -28,6 +28,7 @@ function App() {
                                 <Routes>
                                         <Route path="/timeline" element={<Timeline />} />
                                         <Route path="/sign-up" element={<SignUp />} />
+                                        <Route path="/hashtag/:hashtag" element={<Hashtag />} />
                                 </Routes>
                         </UserContext.Provider>
                     </isModalOpenContext.Provider>  
