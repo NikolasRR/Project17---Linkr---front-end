@@ -1,13 +1,22 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
+
+import UserContext from "../contexts/UserContext";
 
 function SignInScreen() {
     const navigate = useNavigate();
+    const { userData } = useContext(UserContext);
     const [user, setUser] = useState({ email: "", password: "" });
     const [logginIn, setLogginIn] = useState(false);
-    
+
+    useEffect(() => {
+        if (userData.email) {
+            navigate("/timeline");
+        }
+    }, [userData])
+
     const LogIn = async function (ev) {
         ev.preventDefault();
         setLogginIn(true);
@@ -175,9 +184,9 @@ const Button = styled.button`
     font-weight: 700;
     font-family: 'Oswald';
     &:hover {
-        cursor: ${({isDisabled}) => isDisabled ? "default" : "pointer"};
+        cursor: ${({ isDisabled }) => isDisabled ? "default" : "pointer"};
     }
-    opacity: ${({isDisabled}) => isDisabled ? "0.7" : "1"};
+    opacity: ${({ isDisabled }) => isDisabled ? "0.7" : "1"};
     @media (max-width: 900px) {
         width: 330px;
         height: 55px;

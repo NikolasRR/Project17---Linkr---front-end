@@ -12,7 +12,7 @@ function PersistLogin () {
         async function getUser() {
             try {
                 const user = await axios.get("http://localhost:5000/session", { withCredentials: true });
-                setUserData(user);
+                setUserData(user.data);
             } catch (error) {
                 if (error.response.status === 400) {
                     alert('Session expired');
