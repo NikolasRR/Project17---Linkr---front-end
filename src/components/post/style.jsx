@@ -67,18 +67,10 @@ export const Publication = styled.div`
     justify-content: space-between;
     width: 89%;
     height: 100%;
-    margin-left:5px;
-    background-color: yellow;
-    
-    
-
-    div{
-        //width:100%;
-     
-        display: flex;
-        justify-content: flex-end;
-    }
+    margin-left:5px;   
    
+    display: flex;
+    justify-content: center;        
 `
 
 export const Name = styled.p`
@@ -92,6 +84,7 @@ export const Name = styled.p`
     margin-bottom:10px;
     width: 100%;
     overflow-x: hidden;
+    
     
     @media(max-width: 611px) {
         font-size: 17px;
@@ -120,8 +113,58 @@ export const Text = styled.p`
 
 export const Url = styled.div`
     width: 100%;
-    background-color: red;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+    align-items: space-between;
     height: 155px;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
+
+`
+export const Data = styled.div`
+    display:flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    padding: 15px;
+    
+`
+
+export const Image = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    width: 153px;   
+
+    img{
+        object-fit: auto;
+    }
+`
+   
+export const Title = styled.p`
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #CECECE;
+
+`
+
+export const Ancor = styled.a`
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #CECECE;
+`
+
+export const Description = styled.p`
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #9B9595;
 `
