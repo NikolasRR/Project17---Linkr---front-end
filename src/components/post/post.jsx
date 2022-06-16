@@ -9,7 +9,7 @@ function Post({userName,url, image,totalLikes, content}){
             <Left>
                 <ProfileImage alt={url} src={image}></ProfileImage>
                 <div>
-                    {totalLikes===0?<CgHeart></CgHeart> :null} 
+                    {totalLikes===0?<CgHeart></CgHeart>:null} 
                     <p>{totalLikes===0?`${totalLikes} likes`:null}</p>                   
                 </div> 
             </Left>                         
