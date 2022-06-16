@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const Content = styled.div`
     margin-bottom: 29px;
-    max-width: 100%;
+    min-width: 100%;
     min-height: 276px;
     background: #171717;
     border-radius: 16px;
@@ -18,19 +18,16 @@ export const Content = styled.div`
     }
 
 `
-export const ProfileImage = styled.div`
-    width: 53px;
-    height: 53px;
-    background: yellow;
-    border-radius: 26.5px;
-    display: flex;
-    flex-direction: column;
-    align-items:center;
-        div{
+
+export const Left = styled.div`
+     div{   display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             color: #FFF;
-            margin-top: 70px;  
             font-size: 90;
             font-weight: 900;
+            margin-top: 20px;
         }
 
         p{
@@ -41,7 +38,19 @@ export const ProfileImage = styled.div`
             line-height: 13px;
             text-align: center;
             color: #FFFFFF;
-        }
+            margin-top: 5px;
+        } 
+
+
+
+`
+export const ProfileImage = styled.img`
+    width: 53px;
+    height: 53px;
+    border-radius: 26.5px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;      
 
     @media(max-width: 611px) {
         width: 40px;
