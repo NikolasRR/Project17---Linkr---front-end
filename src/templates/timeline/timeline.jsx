@@ -5,7 +5,7 @@ import Modal from "../../components/modal/modal"
 import {Content,Posts,Sidebar,Title,PostInput,ProfileImage,Input,Question,UrlInput,TextInput} from "./style"
 
 import axios from "axios"
-import {useState,useContext} from "react"
+import {useState,useContext, useEffect} from "react"
 
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
@@ -18,6 +18,19 @@ function Timeline(){
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
     const [errorMessage, setErrorMessage] = useState("");  
+    const [publications, setPublications] = useState([])
+
+    useEffect(() => fetchPublications() ,[])
+
+    function fetchPublications(){
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`,{withCredentials: true})
+        promise.then(({data})=>{
+            setPublications(data)
+        })
+        promise.catch((e)=>{
+            console.error(e.data)
+        })
+    }
 
     function handleSubmit(event){
         event.preventDefault()
@@ -69,27 +82,11 @@ function Timeline(){
                         </Input>
                     </PostInput>
 
-                    {/* TOFIX : IMPLEMENTAR MAP DOS POSTS */}
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
+                    {publications.map((publication, index)=>{
+                       return( <Post key={index} {...publication} ></Post>
+                        )
+                    })}
+             
                </Posts> 
                <Sidebar><Trending></Trending></Sidebar>
             </Content>    
