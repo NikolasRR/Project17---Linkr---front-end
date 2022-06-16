@@ -12,7 +12,7 @@ export const Content = styled.div`
 export const Posts = styled.div`
     display: flex;
     flex-direction: column;
-    max-width:50%;
+    min-width:55%;
     @media(max-width: 611px) {
         max-width:611px;
     }
@@ -69,8 +69,8 @@ export const PostInput = styled.div`
 export const ProfileImage = styled.div`
     width: 53px;
     height: 53px;
-    background: yellow;
     border-radius: 26.5px;
+    background-color: yellow;
     @media(max-width: 611px) {
         display:none;
     }
