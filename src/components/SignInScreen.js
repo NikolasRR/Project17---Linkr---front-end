@@ -104,6 +104,7 @@ const H1 = styled.h1`
         font-size: 76px;
         line-height: 84px;
     }
+    font-family: 'Passion One';
 `;
 
 const H2 = styled.h2`
@@ -116,6 +117,7 @@ const H2 = styled.h2`
         line-height: 34px;
         width: 242px
     }
+    font-family: 'Oswald';
 `;
 
 const LogInBar = styled.div`
@@ -150,6 +152,8 @@ const Input = styled.input`
     margin-bottom: 13px;
     font-size: 27px;
     line-height: 40px;
+    font-family: 'Oswald';
+    font-weight: 700;
     border: none;
     @media (max-width: 900px) {
         width: 330px;
@@ -169,6 +173,7 @@ const Button = styled.button`
     line-height: 33px;
     color: #ffff;
     font-weight: 700;
+    font-family: 'Oswald';
     &:hover {
         cursor: ${({isDisabled}) => isDisabled ? "default" : "pointer"};
     }
@@ -188,5 +193,6 @@ const StyledLink = styled(Link)`
         font-size: 17px;
         line-height: 20px;
     }
+    font-family: 'Lato';
 `;
 
