@@ -1,6 +1,5 @@
 import {CgHeart} from "react-icons/cg";
-import {Content,ProfileImage, Publication, Name, Text, Url, Left} from "./style"
-import styled from "styled-components"
+import {Content,ProfileImage, Publication, Name, Text, Url, Left,Data,Title,Description,Ancor, Image} from "./style"
 
    
 
@@ -21,9 +20,9 @@ function Post({userName,url, profile,totalLikes, content, title, description, im
                     <Data>
                         <Title>{title}</Title>
                         <Description>{description}</Description>
-                        <a href={url}>{url}</a>
+                        <Ancor href={url}>{url}</Ancor>
                     </Data>
-                    <Image><img src={image}></img></Image>                
+                    <Image><img alt ={image} src={image}></img></Image>                
                 </Url>                           
             </Publication>
         </Content> 
@@ -32,25 +31,5 @@ function Post({userName,url, profile,totalLikes, content, title, description, im
 
 export default Post;
 
-const Data = styled.div`
-    display:flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
 
-`
-
-const Image = styled.div`
-    height: 100%;
-    img{
-        object-fit: contain;
-    }
-`
-const Title = styled.p`
-    
-`
-
-const Description = styled.p`
-    
-`
 
