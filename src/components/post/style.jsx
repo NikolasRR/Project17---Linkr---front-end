@@ -11,6 +11,7 @@ export const Content = styled.div`
     align-items: flex-start;
     justify-content: space-between;
     padding:22px;
+    
     @media(max-width: 611px) {
         min-height: 232px;
         border-radius:0;
@@ -67,9 +68,13 @@ export const Publication = styled.div`
     width: 89%;
     height: 100%;
     margin-left:5px;
+    background-color: yellow;
+    
+    
 
     div{
-        width:100%;
+        //width:100%;
+     
         display: flex;
         justify-content: flex-end;
     }
@@ -114,7 +119,8 @@ export const Text = styled.p`
 `
 
 export const Url = styled.div`
-    width: 503px;
+    width: 100%;
+    background-color: red;
     height: 155px;
     border: 1px solid #4D4D4D;
     border-radius: 11px;

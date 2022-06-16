@@ -12,7 +12,8 @@ export const Content = styled.div`
 export const Posts = styled.div`
     display: flex;
     flex-direction: column;
-    min-width:55%;
+    max-width:55%;
+    position:relative;
     @media(max-width: 611px) {
         max-width:611px;
     }
