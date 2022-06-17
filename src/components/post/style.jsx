@@ -21,29 +21,26 @@ export const Content = styled.div`
 `
 
 export const Left = styled.div`
-     div{   display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #FFF;
-            font-size: 90;
-            font-weight: 900;
-            margin-top: 20px;
-        }
-
-        p{
-            font-family: 'Lato';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 11px;
-            line-height: 13px;
-            text-align: center;
-            color: #FFFFFF;
-            margin-top: 5px;
-        } 
-
-
-
+    div{   
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #FFF;
+        font-size: 90;
+        font-weight: 900;
+        margin-top: 20px;
+    }
+    p{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
+        color: #FFFFFF;
+        margin-top: 5px;
+    } 
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -69,7 +66,6 @@ export const Publication = styled.div`
     width: 89%;
     height: 100%;
     margin-left:5px;   
-   
     display: flex;
     justify-content: center;        
 `
@@ -85,15 +81,23 @@ export const Name = styled.p`
     margin-bottom:10px;
     width: 100%;
     overflow-x: hidden;
-    
-    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     @media(max-width: 611px) {
         font-size: 17px;
         line-height: 20px;
         margin-bottom:7px;
     }
-    
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 18px;
+        width: 43px;
+    }
 `
+
 export const Text = styled.p`
     width: 100%;
     height: 52px;
@@ -146,7 +150,7 @@ export const ImageData = styled.img`
     border-top-right-radius: 9px;
     border-bottom-right-radius: 9px;
 `
-   
+
 export const Title = styled.p`
     font-family: 'Lato';
     font-style: normal;

@@ -3,7 +3,7 @@ import Post from "../../components/post/post"
 import Trending from "../../components/sidebar/sidebar"
 import Modal from "../../components/modal/modal"
 import Loading from "../../components/loading/loading"
-import {Content,Posts,Sidebar,Title,PostInput,ProfileImage,Input,Question,UrlInput,TextInput} from "./style"
+import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput } from "./style"
 
 import axios from "axios"
 import { useState, useContext, useEffect } from "react"
@@ -21,23 +21,23 @@ function Timeline() {
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-   
 
-    useEffect(() => fetchPublications(),[])
 
-    function fetchPublications(){
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`,{withCredentials: true})
-        promise.then(({data})=>{            
+    useEffect(() => fetchPublications(), [])
+
+    function fetchPublications() {
+        const promise = axios.get(`http://localhost:5000/timeline`, { withCredentials: true })
+        promise.then(({ data }) => {
             setPublications(data)
-            if(data.length===0){
+            if (data.length === 0) {
                 setErrorMessage("There are no posts yet")
                 setIsModalOpen(true)
             }
             setIsLoadingPosts(false)
         })
-        promise.catch((error)=>{
+        promise.catch((error) => {
             console.error(error)
-            if(error.response.status!==undefined){
+            if (error.response.status !== undefined) {
                 setErrorMessage("An error occured while trying to fetch the posts, please refresh the page")
             }
             setIsModalOpen(true)
@@ -60,26 +60,26 @@ function Timeline() {
         }
 
 
-        const promise = axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, { withCredentials: true })
+        const promise = axios.post(`http://localhost:5000/timeline`, body, { withCredentials: true })
         promise.then((data) => {
             setUrl("");
             setText("");
             setIsLoading(false);
             fetchPublications();
         })
-        promise.catch((error)=>{
+        promise.catch((error) => {
             setIsLoading(false)
-            if(error.response.status!==undefined){
-               setErrorMessage("Houve um erro ao publicar seu link") 
-            }            
+            if (error.response.status !== undefined) {
+                setErrorMessage("Houve um erro ao publicar seu link")
+            }
             setIsModalOpen(true)
         })
     }
 
 
-    return(
-        <>  
-            {isModalOpen?<Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} />:null}
+    return (
+        <>
+            {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
             <Header></Header>
             <Content>
                 <Posts>
@@ -96,9 +96,9 @@ function Timeline() {
                         </Input>
                     </PostInput>
 
-                    {isLoadingPosts?<Loading></Loading>:null}
-                    {publications.map((publication, index)=>{
-                       return( <Post key={index} {...publication} ></Post>
+                    {isLoadingPosts ? <Loading></Loading> : null}
+                    {publications.map((publication, index) => {
+                        return (<Post key={index} {...publication} ></Post>
                         )
                     })}
 
