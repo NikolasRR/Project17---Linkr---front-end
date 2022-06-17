@@ -21,7 +21,7 @@ export const Content = styled.div`
 `
 
 export const Left = styled.div`
-     div{   display: flex;
+    div{   display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
