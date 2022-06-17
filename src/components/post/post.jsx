@@ -1,19 +1,20 @@
-import {CgHeart} from "react-icons/cg";
-import {Content,ProfileImage, Publication, Name, Text, Url, Left,Data,Title,Description,Ancor, Image} from "./style"
+import { CgHeart } from "react-icons/cg";
+import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image } from "./style"
 
-   
 
-function Post({userName,url, profile,totalLikes, content, title, description, image}){
-    return(
+
+function Post({ id, userName, url, profile, totalLikes, content, title, description, image }) {
+    console.log(id);
+    return (
         <Content>
             <Left>
                 <ProfileImage alt={url} src={profile}></ProfileImage>
                 <div>
-                    <CgHeart></CgHeart> 
-                    <p>{totalLikes===0?`${totalLikes} likes`:null}</p>                   
-                </div> 
-            </Left>                         
-            <Publication> 
+                    <CgHeart></CgHeart>
+                    <p>{totalLikes === 0 ? `${totalLikes} likes` : null}</p>
+                </div>
+            </Left>
+            <Publication>
                 <Name>{userName}</Name>
                 <Text> {content}</Text>
                 <Url>
@@ -22,10 +23,10 @@ function Post({userName,url, profile,totalLikes, content, title, description, im
                         <Description>{description}</Description>
                         <Ancor href={url}>{url}</Ancor>
                     </Data>
-                    <Image><img alt ={image} src={image}></img></Image>                
-                </Url>                           
+                    <Image><img alt={image} src={image}></img></Image>
+                </Url>
             </Publication>
-        </Content> 
+        </Content>
     )
 }
 
