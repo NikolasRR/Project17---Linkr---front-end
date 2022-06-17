@@ -51,7 +51,8 @@ export const ProfileImage = styled.img`
     border-radius: 26.5px;
     display: flex;
     flex-direction: column;
-    align-items:center;      
+    align-items:center;  
+    object-fit: cover;    
 
     @media(max-width: 611px) {
         width: 40px;
@@ -111,7 +112,7 @@ export const Text = styled.p`
     }
 `
 
-export const Url = styled.div`
+export const Url = styled.a`
     width: 100%;
     display:flex;
     flex-direction:row;
@@ -128,17 +129,22 @@ export const Data = styled.div`
     justify-content: space-evenly;
     align-items: flex-start;
     padding: 15px;
-    
+    width: 70%;
+    height: 100%;    
 `
 
 export const Image = styled.div`
     display: flex;
     justify-content: flex-end;
-    width: 153px;   
+    width: 30%;  
 
-    img{
-        object-fit: auto;
-    }
+    
+`
+
+export const ImageData = styled.img`
+    object-fit: contain;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
 `
    
 export const Title = styled.p`
@@ -148,7 +154,8 @@ export const Title = styled.p`
     font-size: 16px;
     line-height: 19px;
     color: #CECECE;
-
+    height: 30%;
+    width: 100%;
 `
 
 export const Ancor = styled.a`
@@ -158,6 +165,9 @@ export const Ancor = styled.a`
     font-size: 11px;
     line-height: 13px;
     color: #CECECE;
+    height: 10%;
+    overflow: hidden;
+    width: 100%;
 `
 
 export const Description = styled.p`
@@ -167,4 +177,7 @@ export const Description = styled.p`
     font-size: 11px;
     line-height: 13px;
     color: #9B9595;
+    height: 40%;
+    overflow: hidden;
+    width: 100%;
 `
