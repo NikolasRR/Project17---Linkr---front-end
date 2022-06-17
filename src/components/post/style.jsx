@@ -21,7 +21,7 @@ export const Content = styled.div`
 `
 
 export const Left = styled.div`
-     div{   display: flex;
+    div{   display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -69,7 +69,7 @@ export const Publication = styled.div`
     width: 89%;
     height: 100%;
     margin-left:5px;   
-   
+    
     display: flex;
     justify-content: center;        
 `
@@ -135,18 +135,23 @@ export const Data = styled.div`
 
 export const Image = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     width: 30%;  
-
+    border-left : 1px solid #4D4D4D;
     
 `
 
 export const ImageData = styled.img`
-    object-fit: contain;
+    /* object-fit: contain; */
     border-top-right-radius: 9px;
     border-bottom-right-radius: 9px;
+    max-width: 100%;
+    width: auto;
+    /* object-fit: auto; */
+    object-fit: cover; 
+    overflow: hidden;
 `
-   
+
 export const Title = styled.p`
     font-family: 'Lato';
     font-style: normal;

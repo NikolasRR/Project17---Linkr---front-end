@@ -1,7 +1,7 @@
 import {CgHeart} from "react-icons/cg";
 import {Content,ProfileImage, Publication, Name, Text, Url, Left,Data,Title,Description,Ancor, Image, ImageData} from "./style"
 
-   
+
 
 function Post({userName,url, profile,totalLikes, content, title, description, image}){
     return(

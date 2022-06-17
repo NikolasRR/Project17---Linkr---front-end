@@ -41,20 +41,20 @@ export const Body = styled.div`
 export const Footer = styled.div`
 
     button {
-      width: 134px;
-      height: 37px;
-      left: 733px;
-      top: 509px;
-      background: #1877F2;
-      border-radius: 5px;
-      border: none;
-      font-family: 'Lato';
-      font-style: normal;
-      font-weight: 700;
-      font-size: 18px;
-      line-height: 22px;
-      color: #FFFFFF;
-      cursor: pointer;
+        width: 134px;
+        height: 37px;
+        left: 733px;
+        top: 509px;
+        background: #1877F2;
+        border-radius: 5px;
+        border: none;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 22px;
+        color: #FFFFFF;
+        cursor: pointer;
     }  
 
 `
