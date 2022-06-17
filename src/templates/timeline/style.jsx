@@ -7,6 +7,10 @@ export const Content = styled.div`
     align-items: flex-start;
     height: 100%;
     width:100%;  
+    span {
+        color: #fff;
+        font-weight: 700;
+    }
 `
 
 export const Posts = styled.div`

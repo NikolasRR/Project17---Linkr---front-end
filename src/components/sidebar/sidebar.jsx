@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import axios from "axios";
 
 import {SideBar} from './style';
@@ -8,6 +8,7 @@ import {SideBar} from './style';
 export default function Trending(){
     const [trending, setTrending] = useState([]);
     const baseURL = 'http://localhost:5000';
+    const navigate = useNavigate();
     useEffect(() => {
         const getData = async () => {
             try {
@@ -20,6 +21,12 @@ export default function Trending(){
         getData();
     }, []);
     console.log(trending);
+
+    function newHash(hashtag){
+        navigate(`/hashtag/${hashtag}`);
+        window.location.reload();
+    }
+
     return(
         <SideBar>
             <h1>trending</h1>
@@ -27,9 +34,9 @@ export default function Trending(){
                 {trending&& trending.map((item, index) => {
                     return(
                         <li key={index}>
-                            <Link to={`/hashtag/${item.content}`}>
-                            <p>#{item.content}</p>
-                            </Link>
+                            
+                            <p onClick={()=>newHash(item.content)}>#{item.content}</p>
+                            
                         </li>
                     )
                 }

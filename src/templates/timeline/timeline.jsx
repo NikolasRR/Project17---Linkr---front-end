@@ -21,12 +21,12 @@ function Timeline(){
     const [errorMessage, setErrorMessage] = useState("");  
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-   
+
 
     useEffect(() => fetchPublications(),[])
 
     function fetchPublications(){
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`,{withCredentials: true})
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}timeline`,{withCredentials: true})
         promise.then(({data})=>{            
             setPublications(data)
             if(data.length===0){
@@ -67,7 +67,7 @@ function Timeline(){
             fetchPublications();
         })
         promise.catch((error)=>{
-            setIsLoading(false)
+            setIsLoading(false)            
             setErrorMessage("Houve um erro ao publicar seu link")                        
             setIsModalOpen(true)
         })
@@ -79,7 +79,7 @@ function Timeline(){
             {isModalOpen?<Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} />:null}
             <Header></Header>
             <Content>
-               <Posts>
+                <Posts>
                     <Title>timeline</Title>
                     <PostInput>
                         <ProfileImage></ProfileImage>
@@ -95,12 +95,12 @@ function Timeline(){
 
                     {isLoadingPosts?<Loading></Loading>:null}
                     {publications.map((publication, index)=>{
-                       return( <Post key={index} {...publication} ></Post>
+                        return( <Post key={index} {...publication} ></Post>
                         )
                     })}
-             
-               </Posts> 
-               <Sidebar><Trending></Trending></Sidebar>
+                
+                </Posts> 
+                <Sidebar><Trending></Trending></Sidebar>
             </Content>    
         </>        
     )
