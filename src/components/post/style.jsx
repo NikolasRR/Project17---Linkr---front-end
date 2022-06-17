@@ -147,7 +147,9 @@ export const ImageData = styled.img`
     border-bottom-right-radius: 9px;
     max-width: 100%;
     width: auto;
-    object-fit: auto;
+    /* object-fit: auto; */
+    object-fit: cover; 
+    overflow: hidden;
 `
 
 export const Title = styled.p`
