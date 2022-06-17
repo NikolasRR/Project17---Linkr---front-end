@@ -2,7 +2,7 @@
 import axios from "axios"
 import {useState, useContext, useEffect} from "react"
 import { useParams} from "react-router-dom";
-import ReactHashtag from "react-hashtag";
+
 
 import Header from "../../components/header/header"
 import Post from "../../components/post/post"
@@ -42,15 +42,6 @@ function Hashtag(){
                         return( <Post key={index} {...publication} ></Post>
                         )
                     })}
-                    
-                    {/* <ul>
-                    
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste1</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste2</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste3</ReactHashtag></li>
-                    
-                    </ul> */}
-                    
                 </Posts> 
                 <Sidebar><Trending></Trending></Sidebar>
             </Content>    
