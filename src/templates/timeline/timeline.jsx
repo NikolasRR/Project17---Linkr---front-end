@@ -30,17 +30,16 @@ function Timeline(){
         promise.then(({data})=>{            
             setPublications(data)
             if(data.length===0){
-                setErrorMessage("There are no posts yet")
+                setErrorMessage("Ainda não há postagens!")
                 setIsModalOpen(true)
             }
             setIsLoadingPosts(false)
         })
         promise.catch((error)=>{
-            console.error(error)
-            if(error.response.status!==undefined){
-                setErrorMessage("An error occured while trying to fetch the posts, please refresh the page")
-            }
+            console.error(error)            
+            setErrorMessage("Houve um erro ao tentar buscar os posts. Por favor, atualize a página")
             setIsModalOpen(true)
+                        
         })
     }
 
@@ -68,10 +67,8 @@ function Timeline(){
             fetchPublications();
         })
         promise.catch((error)=>{
-            setIsLoading(false)
-            if(error.response.status!==undefined){
-                setErrorMessage("Houve um erro ao publicar seu link") 
-            }            
+            setIsLoading(false)            
+            setErrorMessage("Houve um erro ao publicar seu link")                        
             setIsModalOpen(true)
         })
     }
