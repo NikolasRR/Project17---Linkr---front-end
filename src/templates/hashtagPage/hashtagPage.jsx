@@ -20,7 +20,7 @@ function Hashtag(){
     const [post, setPost] = useState([]);
     const { hashtag } = useParams();
 
-    // useEffect(() => getData(), []);
+    useEffect(() => getData(), []);
 
     const getData = async () => {
         try {
@@ -29,6 +29,7 @@ function Hashtag(){
         } catch (error) {
             console.log(error.response);
         }
+        
     }
     console.log(post);
     return(
@@ -38,18 +39,18 @@ function Hashtag(){
             <Content>
                 <Posts>
                     <Title>#{hashtag}</Title>
-                    {/* {post.map((publication, index)=>{
+                    {post.map((publication, index)=>{
                         return( <Post key={index} {...publication} ></Post>
                         )
-                    })} */}
+                    })}
                     
-                    <ul>
+                    {/* <ul>
                     
                         <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste1</ReactHashtag></li>
                         <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste2</ReactHashtag></li>
                         <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste3</ReactHashtag></li>
                     
-                    </ul>
+                    </ul> */}
                     
                 </Posts> 
                 <Sidebar><Trending></Trending></Sidebar>

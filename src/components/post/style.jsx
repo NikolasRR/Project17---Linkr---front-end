@@ -133,10 +133,12 @@ export const Data = styled.div`
 
 export const Image = styled.div`
     display: flex;
-    justify-content: flex-end;
-    width: 153px;   
-
+    justify-content: center;
+    width: 25%;  
+    border-left : 1px solid #4D4D4D;
+    /* background: red; */
     img{
+        max-width: 100%;
         object-fit: auto;
     }
 `
