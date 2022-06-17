@@ -21,12 +21,12 @@ function Timeline(){
     const [errorMessage, setErrorMessage] = useState("");  
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-   
+
 
     useEffect(() => fetchPublications(),[])
 
     function fetchPublications(){
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`,{withCredentials: true})
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}timeline`,{withCredentials: true})
         promise.then(({data})=>{            
             setPublications(data)
             if(data.length===0){
@@ -70,7 +70,7 @@ function Timeline(){
         promise.catch((error)=>{
             setIsLoading(false)
             if(error.response.status!==undefined){
-               setErrorMessage("Houve um erro ao publicar seu link") 
+                setErrorMessage("Houve um erro ao publicar seu link") 
             }            
             setIsModalOpen(true)
         })

@@ -10,7 +10,6 @@ import Trending from "../../components/sidebar/sidebar"
 import Modal from "../../components/modal/modal"
 import {Content,Posts,Sidebar,Title} from "./../timeline/style"
 
-import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 
 function Hashtag(){
