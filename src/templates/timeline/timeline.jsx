@@ -30,7 +30,7 @@ function Timeline(){
         promise.then(({data})=>{            
             setPublications(data)
             if(data.length===0){
-                setErrorMessage("Ainda não há postagens")
+                setErrorMessage("Ainda não há postagens!")
                 setIsModalOpen(true)
             }
             setIsLoadingPosts(false)
