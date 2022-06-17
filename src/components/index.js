@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {useState } from "react";
-
+import { useState } from "react";
 
 import SignUp from "./signUp/SignUp";
 import Timeline from "../templates/timeline/timeline";
+import SignInScreen from "./SignInScreen";
+import PersistLogin from "./PersistentLogin";
 
 import UserContext from "../contexts/UserContext";
 import isLoadingContext from "../contexts/isLoadingContext"
@@ -17,21 +18,25 @@ function App() {
 
     const [userData, setUserData] = useState({})
 
+    
+
     const contextValue = { userData, setUserData }
 
     return (
         <>
             <BrowserRouter>
-                <isLoadingContext.Provider value={{isLoading, setIsLoading}}>
-                    <isModalOpenContext.Provider value={{isModalOpen, setIsModalOpen}}>
+                <isLoadingContext.Provider value={{ isLoading, setIsLoading }}>
+                    <isModalOpenContext.Provider value={{ isModalOpen, setIsModalOpen }}>
                         <UserContext.Provider value={contextValue}>
-                                <Routes>
-                                        <Route path="/timeline" element={<Timeline />} />
-                                        <Route path="/sign-up" element={<SignUp />} />
-                                </Routes>
+                            <PersistLogin />
+                            <Routes>
+                                <Route path="/" element={<SignInScreen />} />
+                                <Route path="/timeline" element={<Timeline />} />
+                                <Route path="/sign-up" element={<SignUp />} />
+                            </Routes>
                         </UserContext.Provider>
-                    </isModalOpenContext.Provider>  
-                </isLoadingContext.Provider>                         
+                    </isModalOpenContext.Provider>
+                </isLoadingContext.Provider>
             </BrowserRouter>
         </>
     )
