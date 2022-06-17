@@ -64,11 +64,12 @@ export const Input = styled.input`
   
 `
 
-export const ProfileImage = styled.div`
+export const ProfileImage = styled.img`
     width: 53px;
     height: 53px;
-    background: red;
     border-radius: 26.5px;
+    object-fit: cover; 
+    
 `
 
 export const Rigth = styled.div`
