@@ -10,11 +10,13 @@ import {useState,useContext, useEffect} from "react"
 
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
+import UserContext from "../../contexts/UserContext"
 
 function Timeline(){
 
     const {isLoading,setIsLoading} = useContext(isLoadingContext)
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
+    const {userData} = useContext(UserContext)
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
@@ -82,7 +84,7 @@ function Timeline(){
                 <Posts>
                     <Title>timeline</Title>
                     <PostInput>
-                        <ProfileImage></ProfileImage>
+                        <ProfileImage src={userData.image}></ProfileImage>
                         <Input> 
                             <Question>What are you going to share today?</Question>                            
                             <form onSubmit={handleSubmit}>
