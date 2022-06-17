@@ -8,6 +8,7 @@ export const ModalBackground = styled.div`
     display: flex;
     justify-content: center;
     align-items: center; 
+    z-index:2;
 `
 
 export const ModalContainer = styled.div`
@@ -21,6 +22,7 @@ export const ModalContainer = styled.div`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    z-index:3;
 
 `
 
@@ -30,7 +32,7 @@ export const Body = styled.div`
     font-family: 'Lato';
     font-style: normal;
     font-weight: 700;
-    font-size: 34px;
+    font-size: 25px;
     line-height: 41px;
     text-align: center;
     color: #FFFFFF;

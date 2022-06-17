@@ -16,7 +16,8 @@ export const Content = styled.div`
 export const Posts = styled.div`
     display: flex;
     flex-direction: column;
-    max-width:55%;
+    min-width: 50%;
+    max-width:50%;
     position:relative;
     @media(max-width: 611px) {
         max-width:611px;
@@ -109,6 +110,7 @@ export const Input = styled.div`
         font-size: 14px;
         line-height: 17px;
         color: #FFFFFF;
+        cursor: pointer;
     }
   
 `
