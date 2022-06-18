@@ -36,10 +36,10 @@ export const Middle = styled.div`
     justify-content: space-between;
     padding:10px;
     textarea:focus, input:focus, select:focus {
-    box-shadow: 0 0 0 0;
-    border: 0 none;
-    outline: 0;
-}
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
     
     div{
         color: #C6C6C6;
@@ -66,6 +66,7 @@ export const Input = styled.input`
     font-size: 19px;
     line-height: 23px;
     color: #C6C6C6;
+    cursor: pointer;
     textarea:focus, input:focus {
     box-shadow: 0 0 0 0;
     outline: 0;
