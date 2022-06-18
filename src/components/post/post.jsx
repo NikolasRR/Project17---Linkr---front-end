@@ -56,42 +56,42 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
     }, [total])
 
     useEffect(() => {
-        
+
         let newLikesNames = []
-        
+
         for (let i = 0; i < refresh.length; i++) {
-            
+
             if (refresh[i].userName != userData.userName) {
                 newLikesNames.push(refresh[i].userName);
             }
         }
-        
+
         let res = '';
 
         if (refresh.length == 0) {
             res = null;
             setResult(res)
-        
+
         } else if (refresh.length == 1 && selecionado) {
             res = "Você curtiu";
             setResult(res)
-        
+
         } else if (newLikesNames.length == 1 && !selecionado) {
             res = `Curtido por ${newLikesNames[0]}`
             setResult(res)
-        
+
         } else if (refresh.length == 2 && selecionado) {
             res = `Voce e ${newLikesNames[0]} curtiram`
             setResult(res)
-        
+
         } else if (newLikesNames.length == 2 && !selecionado) {
             res = `${newLikesNames[0]} e ${newLikesNames[1]} curtiram`
             setResult(res)
-        
+
         } else if (refresh.length >= 3 && selecionado) {
             res = `Você, ${newLikesNames[0]} e mais ${total - 2} curtiram`
             setResult(res)
-        
+
         } else if (newLikesNames.length >= 3 && !selecionado) {
             res = `${newLikesNames[0]}, ${newLikesNames[1]} e mais ${total - 2} curtiram`
             setResult(res)
@@ -110,7 +110,7 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
             //console.log("entrou aqui")
             setSelecionado(true)
         })
-        
+
         promise.catch((e) => {
             console.error(e)
         })
@@ -119,11 +119,11 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
     function deslike() {
         const id = publicationId
         const promise = axios.delete(`http://localhost:5000/like/${id}`, { withCredentials: true })
-        
+
         promise.then(() => {
             setSelecionado(false)
         })
-        
+
         promise.catch((e) => {
             console.error(e)
         })
@@ -146,7 +146,7 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
 
                     <ContainerCountLikes data-tip data-for="total">
                         <a data-tip={`${result}`}><p>{total ? `${total} likes` : null}</p></a>
-                        <ReactTooltip className="ReactTooltip" place="bottom" effect="solid"  />
+                        <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
                     </ContainerCountLikes>
                 </div>
 

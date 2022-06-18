@@ -7,7 +7,7 @@ import UserContext from "../contexts/UserContext";
 
 function SignInScreen() {
     const navigate = useNavigate();
-    const { userData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     const [user, setUser] = useState({ email: "", password: "" });
     const [logginIn, setLogginIn] = useState(false);
 
@@ -27,8 +27,9 @@ function SignInScreen() {
         }
 
         try {
-            await axios.post("http://localhost:5000/sign-in", user, { withCredentials: true })
+            await axios.post(`${process.env.REACT_APP_API_URL}/sign-in`, user, { withCredentials: true })
                 .then(res => {
+                    setUserData(res.data);
                     navigate("/timeline");
                 })
         } catch (error) {
@@ -204,3 +205,4 @@ const StyledLink = styled(Link)`
     }
     font-family: 'Lato';
 `;
+

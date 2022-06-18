@@ -7,12 +7,21 @@ export const Content = styled.div`
     align-items: flex-start;
     height: 100%;
     width:100%;  
+    span {
+        color: #fff;
+        font-weight: 700;
+    }
 `
 
 export const Posts = styled.div`
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     max-width:55%;
+=======
+    min-width: 50%;
+    max-width:50%;
+>>>>>>> develop
     position:relative;
     @media(max-width: 611px) {
         max-width:611px;
@@ -64,11 +73,15 @@ export const PostInput = styled.div`
         margin-bottom: 19px;
     }
 `
-export const ProfileImage = styled.div`
+export const ProfileImage = styled.img`
     width: 53px;
     height: 53px;
     border-radius: 26.5px;
+<<<<<<< HEAD
     background-color: yellow;
+=======
+    object-fit: cover; 
+>>>>>>> develop
     @media(max-width: 611px) {
         display:none;
     }
@@ -101,6 +114,7 @@ export const Input = styled.div`
         font-size: 14px;
         line-height: 17px;
         color: #FFFFFF;
+        cursor: pointer;
     }
   
 `
@@ -122,8 +136,19 @@ export const UrlInput = styled.input`
     border-radius: 5px;
     border:none;
     margin-bottom:5px;
+    padding: 10px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 18px;
+    cursor: pointer;
+    textarea:focus, input:focus, select:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
     ::placeholder{
-        padding:10px;
         font-family: 'Lato';
         font-style: normal;
         font-weight: 300;
@@ -139,12 +164,25 @@ export const TextInput = styled.input`
     border-radius: 5px;
     border:none;
     margin-bottom:5px;
+    padding: 10px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 18px;
+    cursor: pointer;
+   
     ::placeholder{
-        padding:10px;
         font-family: 'Lato';
         font-style: normal;
         font-weight: 300;
         font-size: 15px;
         line-height: 18px;
+    }
+
+    textarea:focus, input:focus, select:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
     }
 `
