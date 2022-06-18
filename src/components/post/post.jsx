@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { CgHeart, CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
@@ -8,11 +9,18 @@ import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title,
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 
-function Post({ id, publicationId, userName, url, profile, totalLikes, content, title, description, image, setIsModalOpen }) {
+function Post({ userId, id, publicationId, userName, url, profile, totalLikes, content, title, description, image, setIsModalOpen }) {
     const { userData } = useContext(UserContext);
     const { setDeletionData } = useContext(deletionDataContext)
 
     const [isUser, setIsUser] = useState(false);
+
+    const navigate = useNavigate();
+
+    function goToUserPage(){
+        navigate(`/user/${userId}`, {state:{userName, profile}})
+
+    }
 
     useEffect(() => {
         setIsUser(userName === userData?.userName);
@@ -21,14 +29,14 @@ function Post({ id, publicationId, userName, url, profile, totalLikes, content, 
     return (
         <Content>
             <Left>
-                <ProfileImage alt={url} src={profile}></ProfileImage>
+                <ProfileImage onClick={()=>goToUserPage()} alt={url} src={profile}></ProfileImage>
                 <div>
                     <CgHeart></CgHeart>
                     <p>{totalLikes === 0 ? `${totalLikes} likes` : null}</p>
                 </div>
             </Left>
             <Publication>
-                <Name>
+                <Name onClick={()=>goToUserPage()}>
                     <p>{userName}</p>
                     <div>
                         {isUser ? 

@@ -11,8 +11,12 @@ import { Main, Logo, Middle, Input, Rigth, ProfileImage, UserOptions, LogoutOpti
 function Header() {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
-    const { setUserData } = useContext(UserContext);
-console.log(menuOpen);
+    const {userData,setUserData } = useContext(UserContext);
+
+    function goToTimeLine(){
+        navigate(`/`)
+    }
+    
     async function logout () {
         try {
             await axios.get("http://localhost:5000/logout", { withCredentials: true });
@@ -23,16 +27,18 @@ console.log(menuOpen);
         }
     }
 
+   
+
     return (
         <Main>
-            <Logo>Linkr</Logo>
+            <Logo onClick={()=> goToTimeLine()} >Linkr</Logo>
             <Middle>
                 <Input placeholder="Search for people"></Input>
                 <div><IoSearchSharp></IoSearchSharp></div>
             </Middle>
             <Rigth onClick={() => setMenuOpen(!menuOpen)}>
                 <div>{menuOpen ? <IoIosArrowUp></IoIosArrowUp> : <IoIosArrowDown></IoIosArrowDown>}</div>
-                <ProfileImage></ProfileImage>
+                <ProfileImage src={userData.image}></ProfileImage>
                 <UserOptions opened={menuOpen}><LogoutOption opened={menuOpen} onClick={() => logout()}>Logout</LogoutOption></UserOptions>
             </Rigth>
         </Main>

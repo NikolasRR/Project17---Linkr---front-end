@@ -11,11 +11,13 @@ import { useState, useContext, useEffect } from "react"
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
+import UserContext from "../../contexts/UserContext"
 
 function Timeline() {
 
-    const { isLoading, setIsLoading } = useContext(isLoadingContext)
-    const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext)
+    const {isLoading,setIsLoading} = useContext(isLoadingContext)
+    const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
+    const {userData} = useContext(UserContext)
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
@@ -32,17 +34,16 @@ function Timeline() {
         promise.then(({ data }) => {
             setPublications(data)
             if (data.length === 0) {
-                setErrorMessage("There are no posts yet")
-                setIsModalOpen(true)
+                setErrorMessage("There are no posts yet");
+                setIsModalOpen(true);
             }
-            setIsLoadingPosts(false)
+            setIsLoadingPosts(false);
         })
         promise.catch((error) => {
-            console.error(error)
-            if (error.response.status !== undefined) {
-                setErrorMessage("An error occured while trying to fetch the posts, please refresh the page")
-            }
-            setIsModalOpen(true)
+            console.error(error);
+            setErrorMessage("An error occured while trying to fetch the posts, please refresh the page");
+            setIsModalOpen(true);
+                        
         })
     }
 
@@ -69,11 +70,9 @@ function Timeline() {
             setIsLoading(false);
             fetchPublications();
         })
-        promise.catch((error) => {
-            setIsLoading(false)
-            if (error.response.status !== undefined) {
-                setErrorMessage("Houve um erro ao publicar seu link")
-            }
+        promise.catch((error)=>{
+            setIsLoading(false)            
+            setErrorMessage("Houve um erro ao publicar seu link")                        
             setIsModalOpen(true)
         })
     }
