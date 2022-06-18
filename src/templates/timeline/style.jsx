@@ -7,6 +7,10 @@ export const Content = styled.div`
     align-items: flex-start;
     height: 100%;
     width:100%;  
+    span {
+        color: #fff;
+        font-weight: 700;
+    }
 `
 
 export const Posts = styled.div`
@@ -68,11 +72,11 @@ export const PostInput = styled.div`
     }
 
 `
-export const ProfileImage = styled.div`
+export const ProfileImage = styled.img`
     width: 53px;
     height: 53px;
     border-radius: 26.5px;
-    background-color: yellow;
+    object-fit: cover; 
     @media(max-width: 611px) {
         display:none;
     }
@@ -128,8 +132,19 @@ export const UrlInput = styled.input`
     border-radius: 5px;
     border:none;
     margin-bottom:5px;
+    padding: 10px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 18px;
+    cursor: pointer;
+    textarea:focus, input:focus, select:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
     ::placeholder{
-        padding:10px;
         font-family: 'Lato';
         font-style: normal;
         font-weight: 300;
@@ -145,12 +160,25 @@ export const TextInput = styled.input`
     border-radius: 5px;
     border:none;
     margin-bottom:5px;
+    padding: 10px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 18px;
+    cursor: pointer;
+   
     ::placeholder{
-        padding:10px;
         font-family: 'Lato';
         font-style: normal;
         font-weight: 300;
         font-size: 15px;
         line-height: 18px;
+    }
+
+    textarea:focus, input:focus, select:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
     }
 `

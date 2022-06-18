@@ -1,21 +1,28 @@
 import {CgHeart} from "react-icons/cg";
 import {Content,ProfileImage, Publication, Name, Text, Url, Left,Data,Title,Description,Ancor, Image, ImageData} from "./style"
+import { useNavigate } from "react-router-dom";
 
 
+function Post({userId,userName,url, profile,totalLikes, content, title, description, image}){
 
-function Post({ id, userName, url, profile, totalLikes, content, title, description, image }) {
-    console.log(id);
-    return (
+    const navigate = useNavigate();
+
+    function goToUserPage(){
+        navigate(`/user/${userId}`, {state:{userName, profile}})
+
+    }
+
+    return(
         <Content>
             <Left>
-                <ProfileImage alt={url} src={profile}></ProfileImage>
+                <ProfileImage onClick={()=>goToUserPage()} alt={url} src={profile}></ProfileImage>
                 <div>
-                    <CgHeart></CgHeart>
-                    <p>{totalLikes === 0 ? `${totalLikes} likes` : null}</p>
-                </div>
-            </Left>
-            <Publication>
-                <Name>{userName}</Name>
+                    <CgHeart></CgHeart> 
+                    <p>{totalLikes===0?`${totalLikes} likes`:null}</p>                   
+                </div> 
+            </Left>                         
+            <Publication> 
+                <Name onClick={()=>goToUserPage()} >{userName}</Name>
                 <Text> {content}</Text>
                 <Url target={"_blank"} href={url}>
                     <Data>

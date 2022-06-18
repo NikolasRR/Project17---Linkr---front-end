@@ -10,37 +10,38 @@ import { useState, useContext, useEffect } from "react"
 
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
+import UserContext from "../../contexts/UserContext"
 
 function Timeline() {
 
-    const { isLoading, setIsLoading } = useContext(isLoadingContext)
-    const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext)
+    const {isLoading,setIsLoading} = useContext(isLoadingContext)
+    const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
+    const {userData} = useContext(UserContext)
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-   
+
 
     useEffect(() => fetchPublications(),[])
 
     function fetchPublications(){
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`,{withCredentials: true})
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}timeline`,{withCredentials: true})
         promise.then(({data})=>{            
             setPublications(data)
             if(data.length===0){
-                setErrorMessage("There are no posts yet")
+                setErrorMessage("Ainda não há postagens!")
                 setIsModalOpen(true)
             }
             setIsLoadingPosts(false)
         })
         promise.catch((error)=>{
-            console.error(error)
-            if(error.response.status!==undefined){
-                setErrorMessage("An error occured while trying to fetch the posts, please refresh the page")
-            }
+            console.error(error)            
+            setErrorMessage("Houve um erro ao tentar buscar os posts. Por favor, atualize a página")
             setIsModalOpen(true)
+                        
         })
     }
 
@@ -60,18 +61,16 @@ function Timeline() {
         }
 
 
-        const promise = axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, { withCredentials: true })
-        promise.then((data) => {
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}timeline`, body, {withCredentials: true})
+        promise.then((data)=>{
             setUrl("");
             setText("");
             setIsLoading(false);
             fetchPublications();
         })
         promise.catch((error)=>{
-            setIsLoading(false)
-            if(error.response.status!==undefined){
-               setErrorMessage("Houve um erro ao publicar seu link") 
-            }            
+            setIsLoading(false)            
+            setErrorMessage("Houve um erro ao publicar seu link")                        
             setIsModalOpen(true)
         })
     }
@@ -85,9 +84,9 @@ function Timeline() {
                 <Posts>
                     <Title>timeline</Title>
                     <PostInput>
-                        <ProfileImage></ProfileImage>
-                        <Input>
-                            <Question>What are you going to share today?</Question>
+                        <ProfileImage src={userData.image}></ProfileImage>
+                        <Input> 
+                            <Question>What are you going to share today?</Question>                            
                             <form onSubmit={handleSubmit}>
                                 <UrlInput disabled={isLoading} type="url" value={url} id="url" placeholder="http://" onChange={(e) => setUrl(e.target.value)}></UrlInput>
                                 <TextInput disabled={isLoading} type="text" value={text} id="text" onChange={(e) => setText(e.target.value)} placeholder="Awesome article about #javascript"></TextInput>
@@ -98,14 +97,14 @@ function Timeline() {
 
                     {isLoadingPosts?<Loading></Loading>:null}
                     {publications.map((publication, index)=>{
-                       return( <Post key={index} {...publication} ></Post>
+                        return( <Post key={index} {...publication} ></Post>
                         )
                     })}
-
-                </Posts>
+                
+                </Posts> 
                 <Sidebar><Trending></Trending></Sidebar>
-            </Content>
-        </>
+            </Content>    
+        </>        
     )
 }
 

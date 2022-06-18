@@ -3,8 +3,10 @@ import { useState } from "react";
 
 import SignUp from "./signUp/SignUp";
 import Timeline from "../templates/timeline/timeline";
+import Hashtag from "./../templates/hashtagPage/hashtagPage";
 import SignInScreen from "./SignInScreen";
 import PersistLogin from "./PersistentLogin";
+import UserPage from "../templates/userPage/userPage";
 
 import UserContext from "../contexts/UserContext";
 import isLoadingContext from "../contexts/isLoadingContext"
@@ -33,6 +35,8 @@ function App() {
                                 <Route path="/" element={<SignInScreen />} />
                                 <Route path="/timeline" element={<Timeline />} />
                                 <Route path="/sign-up" element={<SignUp />} />
+                                <Route path="/hashtag/:hashtag" element={<Hashtag />} />
+                                <Route path="/user/:id" element={<UserPage/>} />
                             </Routes>
                         </UserContext.Provider>
                     </isModalOpenContext.Provider>
