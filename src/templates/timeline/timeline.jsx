@@ -11,13 +11,11 @@ import { useState, useContext, useEffect } from "react"
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
-import UserContext from "../../contexts/UserContext"
 
 function Timeline() {
 
     const {isLoading,setIsLoading} = useContext(isLoadingContext)
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
-    const {userData} = useContext(UserContext)
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
@@ -30,7 +28,7 @@ function Timeline() {
     useEffect(() => fetchPublications(), [reloadPage]);
 
     function fetchPublications() {
-        const promise = axios.get(`http://localhost:5000/timeline`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
         promise.then(({ data }) => {
             setPublications(data)
             if (data.length === 0) {
@@ -63,7 +61,7 @@ function Timeline() {
         }
 
 
-        const promise = axios.post(`http://localhost:5000/timeline`, body, { withCredentials: true })
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, { withCredentials: true })
         promise.then((data) => {
             setUrl("");
             setText("");
@@ -71,9 +69,9 @@ function Timeline() {
             fetchPublications();
         })
         promise.catch((error)=>{
-            setIsLoading(false)            
-            setErrorMessage("Houve um erro ao publicar seu link")                        
-            setIsModalOpen(true)
+            setIsLoading(false);
+            setErrorMessage("Houve um erro ao publicar seu link");
+            setIsModalOpen(true);
         })
     }
 

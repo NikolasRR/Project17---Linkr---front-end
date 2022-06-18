@@ -18,7 +18,7 @@ function Modal(props) {
 	async function deletePost() {
 		setIsDeleting(true);
 		try {
-			await axios.delete(`http://localhost:5000/post?postId=${publicationId}&linkId=${id}`, { withCredentials: true });
+			await axios.delete(`${process.env.REACT_APP_API_URL}/post?postId=${publicationId}&linkId=${id}`, { withCredentials: true });
 			setDeletionData({});
 			setIsModalOpen(false);
 			setReloadPage(!reloadPage);

@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 
 function PersistLogin () {
-    const { userData, setUserData } = useContext(UserContext);
+    const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         async function getUser() {
             try {
-                const user = await axios.get("http://localhost:5000/session", { withCredentials: true });
+                const user = await axios.get(`${process.env.REACT_APP_API_URL}/session`, { withCredentials: true });
                 setUserData(user.data);
             } catch (error) {
                 if (error.response.status === 400) {

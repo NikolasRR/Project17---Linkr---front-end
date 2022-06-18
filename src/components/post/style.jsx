@@ -21,7 +21,6 @@ export const Content = styled.div`
 `
 
 export const Left = styled.div`
-<<<<<<< HEAD
     div{   
         display: flex;
         flex-direction: column;
@@ -42,31 +41,6 @@ export const Left = styled.div`
         color: #FFFFFF;
         margin-top: 5px;
     } 
-=======
-    div{   display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #FFF;
-            font-size: 90;
-            font-weight: 900;
-            margin-top: 20px;
-        }
-
-        p{
-            font-family: 'Lato';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 11px;
-            line-height: 13px;
-            text-align: center;
-            color: #FFFFFF;
-            margin-top: 5px;
-        } 
-
-
-
->>>>>>> develop
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -93,10 +67,6 @@ export const Publication = styled.div`
     width: 89%;
     height: 100%;
     margin-left:5px;   
-<<<<<<< HEAD
-=======
-    
->>>>>>> develop
     display: flex;
     justify-content: center;        
 `
@@ -107,14 +77,9 @@ export const Name = styled.div`
     margin-bottom:10px;
     width: 100%;
     overflow-x: hidden;
-<<<<<<< HEAD
     display: flex;
     align-items: center;
-    justify-content: space-between;
-=======
-    cursor: pointer;    
-    
->>>>>>> develop
+    justify-content: space-between;    
     @media(max-width: 611px) {
         margin-bottom:7px;
         }
@@ -124,6 +89,7 @@ export const Name = styled.div`
         font-weight: 400;
         font-size: 19px;
         line-height: 23px;
+        cursor: pointer;
         @media(max-width: 611px) {
         font-size: 17px;
         line-height: 20px;

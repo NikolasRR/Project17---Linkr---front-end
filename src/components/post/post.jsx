@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,35 +16,37 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
     const navigate = useNavigate();
 
-    function goToUserPage(){
-        navigate(`/user/${userId}`, {state:{userName, profile}})
-
-    }
-
     useEffect(() => {
         setIsUser(userName === userData?.userName);
     }, [userData])
+    console.log(isUser, userName, userData.userName);
+
+    function goToUserPage() {
+        navigate(`/user/${userId}`, { state: { userName, profile } })
+    }
 
     return (
         <Content>
             <Left>
-                <ProfileImage onClick={()=>goToUserPage()} alt={url} src={profile}></ProfileImage>
+                <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
                 <div>
                     <CgHeart></CgHeart>
                     <p>{totalLikes === 0 ? `${totalLikes} likes` : null}</p>
                 </div>
             </Left>
             <Publication>
-                <Name onClick={()=>goToUserPage()}>
-                    <p>{userName}</p>
+                <Name>
+                    <p onClick={() => goToUserPage()}>{userName}</p>
                     <div>
-                        {isUser ? 
-                            <><TiPencil></TiPencil><CgTrash onClick={() => {setDeletionData({id, publicationId}); setIsModalOpen(true)}}></CgTrash></> 
-                            : null
+                        {
+                            isUser &&
+                            <>
+                                <TiPencil style={{ cursor: "pointer" }}></TiPencil>
+                                <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId }); setIsModalOpen(true) }}></CgTrash>
+                            </>
                         }
-                        
-                    </div>
 
+                    </div>
                 </Name>
                 <Text> {content}</Text>
 
