@@ -32,8 +32,8 @@ function SignUp() {
 
     console.log(objRegister)
 
-    const URL = "http://localhost:5000/sign-up"
-
+    const URL = `${process.env.REACT_APP_API_URL}/sign-up`;
+    
     const handleRegister = async function (e) {
         e.preventDefault()
         setIsLoading(true)
