@@ -19,7 +19,6 @@ function UserPage(){
     const location = useLocation();
     let {userName} = location.state;
     let {profile} = location.state;
-    console.log(location.state)
 
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
 
