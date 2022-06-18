@@ -52,7 +52,8 @@ export const ProfileImage = styled.img`
     display: flex;
     flex-direction: column;
     align-items:center;  
-    object-fit: cover;    
+    object-fit: cover;
+    cursor: pointer;    
 
     @media(max-width: 611px) {
         width: 40px;
@@ -85,7 +86,7 @@ export const Name = styled.p`
     margin-bottom:10px;
     width: 100%;
     overflow-x: hidden;
-    
+    cursor: pointer;    
     
     @media(max-width: 611px) {
         font-size: 17px;

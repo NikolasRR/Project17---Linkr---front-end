@@ -22,6 +22,7 @@ export const Logo = styled.p`
     line-height: 54px;
     letter-spacing: 0.05em;
     color: #FFFFFF;
+    cursor:pointer;
 `
 
 export const Middle = styled.div`
@@ -34,10 +35,16 @@ export const Middle = styled.div`
     align-items: center;
     justify-content: space-between;
     padding:10px;
+    textarea:focus, input:focus, select:focus {
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+}
     
     div{
         color: #C6C6C6;
         font-size: 25px;
+        cursor:pointer;
     }  
     
     @media(max-width: 611px) {
@@ -52,6 +59,18 @@ export const Input = styled.input`
     background: #FFFFFF;
     border-radius: 8px;
     border: none;
+    padding: 5px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 23px;
+    color: #C6C6C6;
+    textarea:focus, input:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
+}
+
     ::placeholder{
         font-family: 'Lato';
         font-style: normal;
@@ -79,6 +98,8 @@ export const Rigth = styled.div`
     width: 90px;
     height: 100%;
     justify-content: space-between;
+    cursor:pointer;
+    
     div{
        font-size: 30px;
        color: #fff;
