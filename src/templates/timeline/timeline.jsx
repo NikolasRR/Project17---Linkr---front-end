@@ -23,8 +23,9 @@ function Timeline() {
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [deletionData, setDeletionData] = useState({});
+    const [reloadPage, setReloadPage] = useState(false);
 
-    useEffect(() => fetchPublications(), [])
+    useEffect(() => fetchPublications(), [reloadPage]);
 
     function fetchPublications() {
         const promise = axios.get(`http://localhost:5000/timeline`, { withCredentials: true })
@@ -80,7 +81,7 @@ function Timeline() {
 
     return (
         <>
-            <deletionDataContext.Provider value={{ deletionData, setDeletionData }}>
+            <deletionDataContext.Provider value={{ deletionData, setDeletionData, reloadPage, setReloadPage }}>
                 {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage}/> : null}
                 <Header></Header>
                 <Content>
