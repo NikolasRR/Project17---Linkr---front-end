@@ -3,7 +3,7 @@ import Post from "../../components/post/post"
 import Trending from "../../components/sidebar/sidebar"
 import Modal from "../../components/modal/modal"
 import Loading from "../../components/loading/loading"
-import {Content,Posts,Sidebar,Title} from "./style"
+import {Content,Posts,Sidebar,Title,ProfileImage,LittleHeader} from "./style"
 
 import axios from "axios"
 import {useState,useContext, useEffect} from "react"
@@ -18,6 +18,8 @@ function UserPage(){
     const{id} = useParams();
     const location = useLocation();
     let {userName} = location.state;
+    let {profile} = location.state;
+    console.log(location.state)
 
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
 
@@ -54,8 +56,10 @@ function UserPage(){
             <Header></Header>
             <Content>
                 <Posts>
-                    <Title>{`${userName}'s posts`}</Title>                  
-
+                    <LittleHeader>
+                        <ProfileImage src={profile}></ProfileImage>
+                        <Title>{`${userName}'s posts`}</Title>               
+                    </LittleHeader>
                     {isLoadingPosts?<Loading></Loading>:null}
                     {publications.map((publication, index)=>{
                         return( <Post key={index} {...publication} ></Post>

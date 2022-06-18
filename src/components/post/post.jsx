@@ -8,7 +8,7 @@ function Post({userId,userName,url, profile,totalLikes, content, title, descript
     const navigate = useNavigate();
 
     function goToUserPage(){
-        navigate(`/user/${userId}`, {state:{userName}})
+        navigate(`/user/${userId}`, {state:{userName, profile}})
 
     }
 

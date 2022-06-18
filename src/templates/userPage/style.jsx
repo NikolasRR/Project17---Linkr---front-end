@@ -13,12 +13,33 @@ export const Content = styled.div`
     }
 `
 
+export const ProfileImage = styled.img`
+    width: 53px;
+    height: 53px;
+    border-radius: 26.5px;    
+    object-fit: cover; 
+    margin-right: 18px;
+    @media(max-width: 611px) {
+        display:none;
+    }
+`
+
+export const LittleHeader = styled.div`
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 53px;
+    margin-bottom:44px;
+    
+`
+
 export const Posts = styled.div`
     display: flex;
     flex-direction: column;
     min-width: 50%;
     max-width:50%;
     position:relative;
+    
     @media(max-width: 611px) {
         max-width:611px;
     }
@@ -31,8 +52,7 @@ export const Sidebar = styled.div`
     }
 `
 export const Title = styled.p`
-    margin-top: 53px;
-    margin-bottom: 43px;
+    
     font-family: 'Oswald';
     font-style: normal;
     font-weight: 700;
