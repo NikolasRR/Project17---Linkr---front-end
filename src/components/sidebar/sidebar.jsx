@@ -20,7 +20,6 @@ export default function Trending(){
         }
         getData();
     }, []);
-    console.log(trending);
 
     function newHash(hashtag){
         navigate(`/hashtag/${hashtag}`);

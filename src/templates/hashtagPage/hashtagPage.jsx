@@ -18,7 +18,7 @@ function Hashtag(){
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
     const [post, setPost] = useState([]);
     const { hashtag } = useParams();
-
+    console.log(hashtag);
     useEffect(() => getData(), []);
 
     const getData = async () => {

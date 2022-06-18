@@ -8,7 +8,7 @@ import {Content,ProfileImage, Publication, Name, Text, Url, Left,Data,Title,Desc
 function Post({userName,url, profile,totalLikes, content, title, description, image}){
     const navigate = useNavigate();
     function clickHash(hashtag){
-        navigate(`/hashtag/${hashtag}`);
+        navigate(`/hashtag/${hashtag.replace("#","")}`);
         window.location.reload();
     }
     return(
