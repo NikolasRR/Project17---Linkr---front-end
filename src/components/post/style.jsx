@@ -17,7 +17,6 @@ export const Content = styled.div`
         border-radius:0;
         margin-bottom: 19px;
     }
-
 `
 
 export const Left = styled.div`
@@ -26,11 +25,11 @@ export const Left = styled.div`
             justify-content: center;
             align-items: center;
             color: #FFF;
-            font-size: 90;
+            font-size: 25px;
             font-weight: 900;
             margin-top: 20px;
+            border: white;
         }
-
         p{
             font-family: 'Lato';
             font-style: normal;
@@ -39,11 +38,11 @@ export const Left = styled.div`
             line-height: 13px;
             text-align: center;
             color: #FFFFFF;
-            margin-top: 5px;
+            margin-top: -17px;
         } 
-
-
-
+        .Heart{
+                border: white;
+            }
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -60,7 +59,6 @@ export const ProfileImage = styled.img`
         height: 40px;
         
     }
-
 `
 
 export const Publication = styled.div`
@@ -70,31 +68,43 @@ export const Publication = styled.div`
     width: 89%;
     height: 100%;
     margin-left:5px;   
-    
     display: flex;
     justify-content: center;        
 `
 
-export const Name = styled.p`
+export const Name = styled.div`
     height: 23px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 23px;
     color: #FFFFFF;
     margin-bottom:10px;
     width: 100%;
     overflow-x: hidden;
-    cursor: pointer;    
-    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
     @media(max-width: 611px) {
+        margin-bottom:7px;
+        }
+    p {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        cursor: pointer;
+        @media(max-width: 611px) {
         font-size: 17px;
         line-height: 20px;
-        margin-bottom:7px;
+        }
     }
-    
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 18px;
+        width: 43px;
+    }
 `
+
 export const Text = styled.p`
     width: 100%;
     height: 52px;
@@ -139,9 +149,7 @@ export const Image = styled.div`
     justify-content: center;
     width: 30%;  
     border-left : 1px solid #4D4D4D;
-    
 `
-
 export const ImageData = styled.img`
     /* object-fit: contain; */
     border-top-right-radius: 9px;
@@ -175,7 +183,6 @@ export const Ancor = styled.a`
     overflow: hidden;
     width: 100%;
 `
-
 export const Description = styled.p`
     font-family: 'Lato';
     font-style: normal;

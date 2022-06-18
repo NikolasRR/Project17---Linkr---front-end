@@ -19,6 +19,7 @@ function App() {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const [userData, setUserData] = useState({})
+    //const [total, setTotal] = useState([]);
 
     
 

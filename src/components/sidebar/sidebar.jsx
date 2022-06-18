@@ -7,12 +7,11 @@ import {SideBar} from './style';
 
 export default function Trending(){
     const [trending, setTrending] = useState([]);
-    const baseURL = 'http://localhost:5000';
     const navigate = useNavigate();
     useEffect(() => {
         const getData = async () => {
             try {
-                const {data} = await axios.get(`${baseURL}/trending`, {withCredentials: true});
+                const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/trending`, {withCredentials: true});
                 setTrending(data);
             } catch (error) {
                 console.log(error.response);
