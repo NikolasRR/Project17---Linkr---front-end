@@ -12,7 +12,8 @@ export const Content = styled.div`
 export const Posts = styled.div`
     display: flex;
     flex-direction: column;
-    max-width:50%;
+    max-width:55%;
+    position:relative;
     @media(max-width: 611px) {
         max-width:611px;
     }
@@ -40,8 +41,6 @@ export const Title = styled.p`
         font-size: 33px;
         line-height: 49px;
     }
-
-
 `
 
 export const PostInput = styled.div`
@@ -64,13 +63,12 @@ export const PostInput = styled.div`
         min-height: 164px;
         margin-bottom: 19px;
     }
-
 `
 export const ProfileImage = styled.div`
     width: 53px;
     height: 53px;
-    background: yellow;
     border-radius: 26.5px;
+    background-color: yellow;
     @media(max-width: 611px) {
         display:none;
     }
@@ -86,7 +84,6 @@ export const Input = styled.div`
     @media(max-width: 611px) {
         margin-left: 0px;
     }
-
     div{
         width:100%;
         display: flex;
