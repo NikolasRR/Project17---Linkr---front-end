@@ -10,6 +10,7 @@ import { useState, useContext, useEffect } from "react"
 
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
+import deletionDataContext from "../../contexts/deletionDataContext";
 
 function Timeline() {
 
@@ -21,7 +22,7 @@ function Timeline() {
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-
+    const [deletionData, setDeletionData] = useState({});
 
     useEffect(() => fetchPublications(), [])
 
@@ -79,32 +80,34 @@ function Timeline() {
 
     return (
         <>
-            {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
-            <Header></Header>
-            <Content>
-                <Posts>
-                    <Title>timeline</Title>
-                    <PostInput>
-                        <ProfileImage></ProfileImage>
-                        <Input>
-                            <Question>What are you going to share today?</Question>
-                            <form onSubmit={handleSubmit}>
-                                <UrlInput disabled={isLoading} type="url" value={url} id="url" placeholder="http://" onChange={(e) => setUrl(e.target.value)}></UrlInput>
-                                <TextInput disabled={isLoading} type="text" value={text} id="text" onChange={(e) => setText(e.target.value)} placeholder="Awesome article about #javascript"></TextInput>
-                                <div><button disabled={isLoading} >{isLoading ? "Publishing..." : "Publish"}</button> </div>
-                            </form>
-                        </Input>
-                    </PostInput>
+            <deletionDataContext.Provider value={{ deletionData, setDeletionData }}>
+                {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage}/> : null}
+                <Header></Header>
+                <Content>
+                    <Posts>
+                        <Title>timeline</Title>
+                        <PostInput>
+                            <ProfileImage></ProfileImage>
+                            <Input>
+                                <Question>What are you going to share today?</Question>
+                                <form onSubmit={handleSubmit}>
+                                    <UrlInput disabled={isLoading} type="url" value={url} id="url" placeholder="http://" onChange={(e) => setUrl(e.target.value)}></UrlInput>
+                                    <TextInput disabled={isLoading} type="text" value={text} id="text" onChange={(e) => setText(e.target.value)} placeholder="Awesome article about #javascript"></TextInput>
+                                    <div><button disabled={isLoading} >{isLoading ? "Publishing..." : "Publish"}</button> </div>
+                                </form>
+                            </Input>
+                        </PostInput>
 
-                    {isLoadingPosts ? <Loading></Loading> : null}
-                    {publications.map((publication, index) => {
-                        return (<Post key={index} {...publication} ></Post>
-                        )
-                    })}
+                        {isLoadingPosts ? <Loading></Loading> : null}
+                        {publications.map((publication, index) => {
+                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen}></Post>
+                            )
+                        })}
 
-                </Posts>
-                <Sidebar><Trending></Trending></Sidebar>
-            </Content>
+                    </Posts>
+                    <Sidebar><Trending></Trending></Sidebar>
+                </Content>
+            </deletionDataContext.Provider>
         </>
     )
 }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 
 function PersistLogin () {
-    const { setUserData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {

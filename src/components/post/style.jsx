@@ -70,13 +70,8 @@ export const Publication = styled.div`
     justify-content: center;        
 `
 
-export const Name = styled.p`
+export const Name = styled.div`
     height: 23px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 23px;
     color: #FFFFFF;
     margin-bottom:10px;
     width: 100%;
@@ -85,9 +80,18 @@ export const Name = styled.p`
     align-items: center;
     justify-content: space-between;
     @media(max-width: 611px) {
+        margin-bottom:7px;
+        }
+    p {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        @media(max-width: 611px) {
         font-size: 17px;
         line-height: 20px;
-        margin-bottom:7px;
+        }
     }
     div {
         display: flex;
