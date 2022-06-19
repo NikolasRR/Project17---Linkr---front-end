@@ -25,6 +25,11 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         navigate(`/user/${userId}`, { state: { userName, profile } })
     }
 
+    function clickHash(hashtag){
+        navigate(`/hashtag/${hashtag.replace("#","")}`);
+        window.location.reload();
+    }
+
     return (
         <Content>
             <Left>
@@ -48,7 +53,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
                     </div>
                 </Name>
-                <Text> <ReactHashtag onHashtagClick={val => alert(val)}>{content}</ReactHashtag></Text>
+                <Text> <ReactHashtag onHashtagClick={val => clickHash(val)}>{content}</ReactHashtag></Text>
 
                 <Url target={"_blank"} href={url}>
                     <Data>
