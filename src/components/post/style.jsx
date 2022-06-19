@@ -21,17 +21,17 @@ export const Content = styled.div`
 `
 
 export const Left = styled.div`
-    div{   display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #FFF;
-            font-size: 90;
-            font-weight: 900;
-            margin-top: 20px;
-        }
-
-        p{
+    div{   
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #FFF;
+        font-size: 90;
+        font-weight: 900;
+        margin-top: 20px;
+    }
+    p{
             font-family: 'Lato';
             font-style: normal;
             font-weight: 400;
@@ -39,11 +39,8 @@ export const Left = styled.div`
             line-height: 13px;
             text-align: center;
             color: #FFFFFF;
-            margin-top: 5px;
+            margin-top: -17px;
         } 
-
-
-
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -70,31 +67,43 @@ export const Publication = styled.div`
     width: 89%;
     height: 100%;
     margin-left:5px;   
-    
     display: flex;
     justify-content: center;        
 `
 
-export const Name = styled.p`
+export const Name = styled.div`
     height: 23px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 23px;
     color: #FFFFFF;
     margin-bottom:10px;
     width: 100%;
     overflow-x: hidden;
-    cursor: pointer;    
-    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
     @media(max-width: 611px) {
+        margin-bottom:7px;
+        }
+    p {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        cursor: pointer;
+        @media(max-width: 611px) {
         font-size: 17px;
         line-height: 20px;
-        margin-bottom:7px;
+        }
     }
-    
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 18px;
+        width: 43px;
+    }
 `
+
 export const Text = styled.p`
     width: 100%;
     height: 52px;
@@ -187,3 +196,18 @@ export const Description = styled.p`
     overflow: hidden;
     width: 100%;
 `
+
+export const ContainerCountLikes = styled.div`
+
+    .ReactTooltip{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
+        color: #505050;
+        background-color: white;
+        cursor: pointer;
+    }
+`;

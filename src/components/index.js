@@ -11,13 +11,15 @@ import UserPage from "../templates/userPage/userPage";
 import UserContext from "../contexts/UserContext";
 import isLoadingContext from "../contexts/isLoadingContext"
 import isModalOpenContext from "../contexts/isModalOpenContext"
+import deletionDataContext from "../contexts/deletionDataContext";
 
 
 function App() {
 
     const [isLoading, setIsLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-
+    const [deletionData, setDeletionData] = useState({});
+    const [reloadPage, setReloadPage] = useState(false);
     const [userData, setUserData] = useState({})
 
     
@@ -27,20 +29,22 @@ function App() {
     return (
         <>
             <BrowserRouter>
-                <isLoadingContext.Provider value={{ isLoading, setIsLoading }}>
-                    <isModalOpenContext.Provider value={{ isModalOpen, setIsModalOpen }}>
-                        <UserContext.Provider value={contextValue}>
-                            <PersistLogin />
-                            <Routes>
-                                <Route path="/" element={<SignInScreen />} />
-                                <Route path="/timeline" element={<Timeline />} />
-                                <Route path="/sign-up" element={<SignUp />} />
-                                <Route path="/hashtag/:hashtag" element={<Hashtag />} />
-                                <Route path="/user/:id" element={<UserPage/>} />
-                            </Routes>
-                        </UserContext.Provider>
-                    </isModalOpenContext.Provider>
-                </isLoadingContext.Provider>
+                <deletionDataContext.Provider value={{ deletionData, setDeletionData, reloadPage, setReloadPage }}>
+                    <isLoadingContext.Provider value={{ isLoading, setIsLoading }}>
+                        <isModalOpenContext.Provider value={{ isModalOpen, setIsModalOpen }}>
+                            <UserContext.Provider value={contextValue}>
+                                <PersistLogin />
+                                <Routes>
+                                    <Route path="/" element={<SignInScreen />} />
+                                    <Route path="/timeline" element={<Timeline />} />
+                                    <Route path="/sign-up" element={<SignUp />} />
+                                    <Route path="/hashtag/:hashtag" element={<Hashtag />} />
+                                    <Route path="/user/:id" element={<UserPage/>} />
+                                </Routes>
+                            </UserContext.Provider>
+                        </isModalOpenContext.Provider>
+                    </isLoadingContext.Provider>
+                </deletionDataContext.Provider>
             </BrowserRouter>
         </>
     )
