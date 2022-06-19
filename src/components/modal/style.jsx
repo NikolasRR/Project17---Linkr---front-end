@@ -39,22 +39,56 @@ export const Body = styled.div`
 `
 
 export const Footer = styled.div`
+`
 
-    button {
-        width: 134px;
-        height: 37px;
-        left: 733px;
-        top: 509px;
-        background: #1877F2;
-        border-radius: 5px;
-        border: none;
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 22px;
-        color: #FFFFFF;
-        cursor: pointer;
-    }  
+export const OkButton = styled.div`
+    width: 134px;
+    height: 37px;
+    left: 733px;
+    top: 509px;
+    background: #1877F2;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    cursor: pointer;
+`
 
+export const Cancel = styled.button`
+    width: 134px;
+    height: 37px;
+    left: 572px;
+    top: 508px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #1877F2;
+    cursor: pointer;
+    margin-right: 27px;
+    border: none;
+`
+
+export const DeleteIt = styled.button`
+    width: 134px;
+    height: 37px;
+    left: 733px;
+    top: 509px;
+    background-color: #1877F2;
+    border-radius: 5px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    cursor: pointer;
+    border: none;
 `
