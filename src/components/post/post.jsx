@@ -53,7 +53,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                 <Url target={"_blank"} href={url}>
                     <Data>
                         <Title>{title}</Title>
-                        <Description>{description}</Description>
+                        <Description><ReactHashtag>{description}</ReactHashtag></Description>
                         <Ancor target={"_blank"} href={url}>{url}</Ancor>
                     </Data>
                     <Image><ImageData alt={image} src={image}></ImageData></Image>
