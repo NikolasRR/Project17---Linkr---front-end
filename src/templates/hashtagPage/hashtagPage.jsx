@@ -18,7 +18,7 @@ function Hashtag(){
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
     const [post, setPost] = useState([]);
     const { hashtag } = useParams();
-
+    console.log(hashtag);
     useEffect(() => getData(), []);
 
     const getData = async () => {
@@ -42,15 +42,6 @@ function Hashtag(){
                         return( <Post key={index} {...publication} ></Post>
                         )
                     })}
-                    
-                    {/* <ul>
-                    
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste1</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste2</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste3</ReactHashtag></li>
-                    
-                    </ul> */}
-                    
                 </Posts> 
                 <Sidebar><Trending></Trending></Sidebar>
             </Content>    

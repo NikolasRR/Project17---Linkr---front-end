@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import ReactHashtag from "react-hashtag";
 import { CgHeart, CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
 import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData } from "./style"
