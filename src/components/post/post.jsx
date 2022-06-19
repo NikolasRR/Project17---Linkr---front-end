@@ -12,7 +12,7 @@ function Post({userName,url, profile,totalLikes, content, title, description, im
         window.location.reload();
     }
     return(
-        <Content>
+        <Content> 
             <Left>
                 <ProfileImage alt={url} src={profile}></ProfileImage>
                 <div>
