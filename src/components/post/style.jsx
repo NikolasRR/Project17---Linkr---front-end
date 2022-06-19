@@ -32,15 +32,15 @@ export const Left = styled.div`
         margin-top: 20px;
     }
     p{
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 11px;
-        line-height: 13px;
-        text-align: center;
-        color: #FFFFFF;
-        margin-top: 5px;
-    } 
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 13px;
+            text-align: center;
+            color: #FFFFFF;
+            margin-top: -17px;
+        } 
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -49,7 +49,8 @@ export const ProfileImage = styled.img`
     display: flex;
     flex-direction: column;
     align-items:center;  
-    object-fit: cover;    
+    object-fit: cover;
+    cursor: pointer;    
 
     @media(max-width: 611px) {
         width: 40px;
@@ -70,24 +71,29 @@ export const Publication = styled.div`
     justify-content: center;        
 `
 
-export const Name = styled.p`
+export const Name = styled.div`
     height: 23px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 23px;
     color: #FFFFFF;
     margin-bottom:10px;
     width: 100%;
     overflow-x: hidden;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between;    
     @media(max-width: 611px) {
+        margin-bottom:7px;
+        }
+    p {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        cursor: pointer;
+        @media(max-width: 611px) {
         font-size: 17px;
         line-height: 20px;
-        margin-bottom:7px;
+        }
     }
     div {
         display: flex;
@@ -99,6 +105,24 @@ export const Name = styled.p`
 `
 
 export const Text = styled.p`
+    width: 100%;
+    height: 52px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    color: #B7B7B7;
+    margin-bottom:10px;
+    @media(max-width: 611px) {
+        font-size: 15px;
+        line-height: 18px;
+        color: #B7B7B7;
+        margin-bottom: 13px;
+    }
+`
+
+export const EditInput = styled.input`
     width: 100%;
     height: 52px;
     font-family: 'Lato';
@@ -139,16 +163,21 @@ export const Data = styled.div`
 
 export const Image = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     width: 30%;  
-
+    border-left : 1px solid #4D4D4D;
     
 `
 
 export const ImageData = styled.img`
-    object-fit: contain;
+    /* object-fit: contain; */
     border-top-right-radius: 9px;
     border-bottom-right-radius: 9px;
+    max-width: 100%;
+    width: auto;
+    /* object-fit: auto; */
+    object-fit: cover; 
+    overflow: hidden;
 `
 
 export const Title = styled.p`
@@ -185,3 +214,18 @@ export const Description = styled.p`
     overflow: hidden;
     width: 100%;
 `
+
+export const ContainerCountLikes = styled.div`
+
+    .ReactTooltip{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
+        color: #505050;
+        background-color: white;
+        cursor: pointer;
+    }
+`;

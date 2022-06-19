@@ -21,5 +21,6 @@ export const SideBar = styled.div`
         font-weight: 700;
         font-size: 19px;
         padding: 3px 16px;
+        cursor:pointer;
     }
 `;
