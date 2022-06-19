@@ -14,21 +14,23 @@ import deletionDataContext from "../../contexts/deletionDataContext";
 import UserContext from "../../contexts/UserContext"
 
 function Timeline() {
-
-    const {isLoading,setIsLoading} = useContext(isLoadingContext)
-    const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
-    const {reloadPage} = useContext(deletionDataContext)
-    const {userData} = useContext(UserContext)
+    const { isLoading, setIsLoading } = useContext(isLoadingContext);
+    const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
+    const { reloadPage } = useContext(deletionDataContext);
+    const { userData } = useContext(UserContext);
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-    const [likesInfo, setLikesInfo] = useState([])
+    const [likesInfo, setLikesInfo] = useState([]);
 
 
-    useEffect(() => fetchPublications(), [reloadPage]);
+    useEffect(() => {
+        fetchPublications();
+        fetchLikes();
+    }, [reloadPage]);
 
     function fetchPublications() {
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
@@ -44,7 +46,7 @@ function Timeline() {
             console.error(error);
             setErrorMessage("An error occured while trying to fetch the posts, please refresh the page");
             setIsModalOpen(true);
-                        
+
         })
     }
 
@@ -60,7 +62,6 @@ function Timeline() {
             console.error(e.data)
         })
     }
-    useEffect(() => fetchLikes(), [])
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -85,7 +86,7 @@ function Timeline() {
             setIsLoading(false);
             fetchPublications();
         })
-        promise.catch((error)=>{
+        promise.catch((error) => {
             setIsLoading(false);
             setErrorMessage("Houve um erro ao publicar seu link");
             setIsModalOpen(true);
@@ -95,35 +96,35 @@ function Timeline() {
 
     return (
         <>
-           
-                {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage}/> : null}
-                <Header></Header>
-                <Content>
-                    <Posts>
-                        <Title>timeline</Title>
-                        <PostInput>
-                            <ProfileImage src={userData.image}></ProfileImage>
-                            <Input>
-                                <Question>What are you going to share today?</Question>
-                                <form onSubmit={handleSubmit}>
-                                    <UrlInput disabled={isLoading} type="url" value={url} id="url" placeholder="http://" onChange={(e) => setUrl(e.target.value)}></UrlInput>
-                                    <TextInput disabled={isLoading} type="text" value={text} id="text" onChange={(e) => setText(e.target.value)} placeholder="Awesome article about #javascript"></TextInput>
-                                    <div><button disabled={isLoading} >{isLoading ? "Publishing..." : "Publish"}</button> </div>
-                                </form>
-                            </Input>
-                        </PostInput>
 
-                        {isLoadingPosts ? <Loading></Loading> : null}
-                        {publications.map((publication, index) => {
-                            let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
-                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
-                            )
-                        })}
+            {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
+            <Header></Header>
+            <Content>
+                <Posts>
+                    <Title>timeline</Title>
+                    <PostInput>
+                        <ProfileImage src={userData.image}></ProfileImage>
+                        <Input>
+                            <Question>What are you going to share today?</Question>
+                            <form onSubmit={handleSubmit}>
+                                <UrlInput disabled={isLoading} type="url" value={url} id="url" placeholder="http://" onChange={(e) => setUrl(e.target.value)}></UrlInput>
+                                <TextInput disabled={isLoading} type="text" value={text} id="text" onChange={(e) => setText(e.target.value)} placeholder="Awesome article about #javascript"></TextInput>
+                                <div><button disabled={isLoading} >{isLoading ? "Publishing..." : "Publish"}</button> </div>
+                            </form>
+                        </Input>
+                    </PostInput>
 
-                    </Posts>
-                    <Sidebar><Trending></Trending></Sidebar>
-                </Content>
-           
+                    {isLoadingPosts ? <Loading></Loading> : null}
+                    {publications.map((publication, index) => {
+                        let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
+                        return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
+                        )
+                    })}
+
+                </Posts>
+                <Sidebar><Trending></Trending></Sidebar>
+            </Content>
+
         </>
     )
 }

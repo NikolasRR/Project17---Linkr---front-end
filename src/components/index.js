@@ -4,7 +4,7 @@ import { useState } from "react";
 import SignUp from "./signUp/SignUp";
 import Timeline from "../templates/timeline/timeline";
 import Hashtag from "./../templates/hashtagPage/hashtagPage";
-import SignInScreen from "./SignInScreen";
+import SignInScreen from "./signIn/SignInScreen";
 import PersistLogin from "./PersistentLogin";
 import UserPage from "../templates/userPage/userPage";
 
@@ -15,16 +15,12 @@ import deletionDataContext from "../contexts/deletionDataContext";
 
 
 function App() {
-
+    const [likesInfo, setLikesInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [deletionData, setDeletionData] = useState({});
     const [reloadPage, setReloadPage] = useState(false);
     const [userData, setUserData] = useState({})
-
-    
-
-    const contextValue = { userData, setUserData }
 
     return (
         <>
@@ -32,14 +28,14 @@ function App() {
                 <deletionDataContext.Provider value={{ deletionData, setDeletionData, reloadPage, setReloadPage }}>
                     <isLoadingContext.Provider value={{ isLoading, setIsLoading }}>
                         <isModalOpenContext.Provider value={{ isModalOpen, setIsModalOpen }}>
-                            <UserContext.Provider value={contextValue}>
+                            <UserContext.Provider value={{ userData, setUserData }}>
                                 <PersistLogin />
                                 <Routes>
                                     <Route path="/" element={<SignInScreen />} />
                                     <Route path="/timeline" element={<Timeline />} />
                                     <Route path="/sign-up" element={<SignUp />} />
                                     <Route path="/hashtag/:hashtag" element={<Hashtag />} />
-                                    <Route path="/user/:id" element={<UserPage/>} />
+                                    <Route path="/user/:id" element={<UserPage />} />
                                 </Routes>
                             </UserContext.Provider>
                         </isModalOpenContext.Provider>

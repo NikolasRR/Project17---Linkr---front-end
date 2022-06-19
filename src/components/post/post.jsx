@@ -3,6 +3,7 @@ import axios from "axios"
 import ReactTooltip from "react-tooltip";
 import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
 import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput } from "./style"
@@ -151,7 +152,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         navigate(`/user/${userId}`, { state: { userName, profile } })
     }
 
-    async function sendEditedPost() {
+    async function sendEditedPost () {
         setDisabledEdit(true);
 
         try {
