@@ -48,15 +48,15 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
                     </div>
                 </Name>
-                <Text> {content}</Text>
+                <Text> <ReactHashtag onHashtagClick={val => alert(val)}>{content}</ReactHashtag></Text>
 
                 <Url target={"_blank"} href={url}>
                     <Data>
                         <Title>{title}</Title>
                         <Description>
-                            <ReactHashtag onHashtagClick={val => alert(val)}>
+                            
                                 {description}
-                            </ReactHashtag>
+                            
                         </Description>
                         <Ancor target={"_blank"} href={url}>{url}</Ancor>
                     </Data>
