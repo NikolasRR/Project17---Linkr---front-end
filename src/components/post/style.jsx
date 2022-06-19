@@ -128,13 +128,16 @@ export const EditInput = styled.input`
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
-    font-size: 17px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 17px;
     color: #B7B7B7;
     margin-bottom:10px;
+    border-radius: 7px;
+    border: none;
+    color: #4C4C4C;
     @media(max-width: 611px) {
-        font-size: 15px;
-        line-height: 18px;
+        font-size: 12px;
+        line-height: 15px;
         color: #B7B7B7;
         margin-bottom: 13px;
     }

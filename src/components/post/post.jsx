@@ -1,11 +1,11 @@
 import { TiHeartFullOutline } from "react-icons/ti";
 import axios from "axios"
 import ReactTooltip from "react-tooltip";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
-import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData,ContainerCountLikes, EditInput } from "./style"
+import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput } from "./style"
 
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
@@ -16,16 +16,25 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
     const { setDeletionData } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
 
-
-    const [isUser, setIsUser] = useState(false);
+    const inputRef = useRef(null);
 
     const [selecionado, setSelecionado] = useState(false)
     const [total, setTotal] = useState([]);
     const [result, setResult] = useState("");
     const [refresh, setRefresh] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
+    const [currentContent, setCurrentContent] = useState(content);
+    const [newContent, setNewContent] = useState(content);
+    const [disabledEdit, setDisabledEdit] = useState(false);
 
     const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current.focus();
+    }
+  }, [isEditing, disabledEdit]);
 
     useEffect(() => {
 
@@ -35,7 +44,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
             setSelecionado(false)
         }
 
-    }, [selected])
+    }, [selected]);
 
     useEffect(() => {
         const id = publicationId
@@ -48,11 +57,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         promise.catch((e) => {
             console.error(e.data)
         })
-    }, [selecionado])
-
-    useEffect(() => {
-        setIsUser();
-    }, [userData])
+    }, [selecionado]);
 
     useEffect(() => {
         const id = publicationId
@@ -60,14 +65,13 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         const promise = axios.get(`http://localhost:5000/like/get/${id}`, { withCredentials: true });
 
         promise.then((response) => {
-            console.log("NOVO", response)
             setRefresh(response.data)
         })
         promise.catch((e) => {
             console.error(e)
         })
 
-    }, [total])
+    }, [total]);
 
     useEffect(() => {
 
@@ -91,7 +95,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
             setResult(res)
 
         } else if (newLikesNames.length == 1 && !selecionado) {
-            res =` Curtido por ${newLikesNames[0]}`
+            res = ` Curtido por ${newLikesNames[0]}`
             setResult(res)
 
         } else if (refresh.length == 2 && selecionado) {
@@ -131,8 +135,8 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
     }
 
     function deslike() {
-        const id = publicationId
-        const promise = axios.delete(`http://localhost:5000/like/${id}`, { withCredentials: true })
+        const id = publicationId;
+        const promise = axios.delete(`http://localhost:5000/like/${id}`, { withCredentials: true });
 
         promise.then(() => {
             setSelecionado(false)
@@ -141,13 +145,25 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         promise.catch((e) => {
             console.error(e)
         })
-    }    
+    }
 
     function goToUserPage() {
         navigate(`/user/${userId}`, { state: { userName, profile } })
     }
 
-    function editPost () {
+    async function sendEditedPost() {
+        setDisabledEdit(true);
+
+        try {
+            await axios.put(`${process.env.REACT_APP_API_URL}/post/${publicationId}`, { text: currentContent }, { withCredentials: true });
+            setNewContent(currentContent);
+            setDisabledEdit(false);
+            setIsEditing(false);
+        } catch (error) {
+            console.log(error);
+            alert('Couldn`t save changes');
+            setDisabledEdit(false);
+        }
 
     }
 
@@ -166,7 +182,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                     <TiHeartFullOutline style={{ color: selecionado ? "#AC0000" : "#ffffff", cursor: "pointer" }}></TiHeartFullOutline>
 
                     <ContainerCountLikes data-tip data-for="total">
-                        <a data-tip={`${result}`}><p>{total ? `${total} likes `: null}</p></a>
+                        <a data-tip={`${result}`}><p>{total ? `${total} likes ` : null}</p></a>
                         <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
                     </ContainerCountLikes>
                 </div>
@@ -178,7 +194,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                         {
                             userName === userData?.userName &&
                             <>
-                                <TiPencil style={{ cursor: "pointer" }}></TiPencil>
+                                <TiPencil style={{ cursor: "pointer" }} onClick={() => { setIsEditing(!isEditing); inputRef.current.focus(); }}></TiPencil>
                                 <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId }); setIsModalOpen(true) }}></CgTrash>
                             </>
                         }
@@ -187,11 +203,17 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                 </Name>
                 {
                     isEditing &&
-                    <EditInput value={content}></EditInput>
+                    <EditInput disabled={disabledEdit} ref={inputRef} value={currentContent} onKeyDown={ev => {
+                        if (ev.code === 'Escape') {
+                            setIsEditing(!isEditing);
+                        } else if (ev.code === 'Enter') {
+                            sendEditedPost();
+                        }
+                    }} onChange={ev => setCurrentContent(ev.target.value)}></EditInput>
                 }
                 {
-                    !isEditing && 
-                    <Text>{content}</Text>
+                    !isEditing &&
+                    <Text>{newContent}</Text>
                 }
                 <Url target={"_blank"} href={url}>
                     <Data>
