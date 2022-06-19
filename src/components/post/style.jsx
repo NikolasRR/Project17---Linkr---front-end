@@ -122,6 +122,24 @@ export const Text = styled.p`
     }
 `
 
+export const EditInput = styled.input`
+    width: 100%;
+    height: 52px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    color: #B7B7B7;
+    margin-bottom:10px;
+    @media(max-width: 611px) {
+        font-size: 15px;
+        line-height: 18px;
+        color: #B7B7B7;
+        margin-bottom: 13px;
+    }
+`
+
 export const Url = styled.a`
     width: 100%;
     display:flex;

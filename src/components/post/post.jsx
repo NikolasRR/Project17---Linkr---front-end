@@ -5,7 +5,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
-import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData,ContainerCountLikes } from "./style"
+import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData,ContainerCountLikes, EditInput } from "./style"
 
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
@@ -21,8 +21,9 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
     const [selecionado, setSelecionado] = useState(false)
     const [total, setTotal] = useState([]);
-    const [result, setResult] = useState("")
-    const [refresh, setRefresh] = useState([])
+    const [result, setResult] = useState("");
+    const [refresh, setRefresh] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     const navigate = useNavigate();
 
@@ -140,12 +141,14 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         promise.catch((e) => {
             console.error(e)
         })
-    }
-
-    
+    }    
 
     function goToUserPage() {
         navigate(`/user/${userId}`, { state: { userName, profile } })
+    }
+
+    function editPost () {
+
     }
 
     return (
@@ -182,8 +185,14 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
                     </div>
                 </Name>
-                <Text> {content}</Text>
-
+                {
+                    isEditing &&
+                    <EditInput value={content}></EditInput>
+                }
+                {
+                    !isEditing && 
+                    <Text>{content}</Text>
+                }
                 <Url target={"_blank"} href={url}>
                     <Data>
                         <Title>{title}</Title>
