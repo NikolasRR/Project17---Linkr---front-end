@@ -13,6 +13,8 @@ import { useLocation } from "react-router-dom"
 
 
 import isModalOpenContext from "../../contexts/isModalOpenContext";
+import deletionDataContext from "../../contexts/deletionDataContext";
+
 
 function UserPage(){
 
@@ -22,17 +24,19 @@ function UserPage(){
     let {profile} = location.state;
 
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
+    const {reloadPage} = useContext(deletionDataContext)
 
     const [errorMessage, setErrorMessage] = useState("");  
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
 
-    useEffect(() => fetchPublications(),[])
+    useEffect(() => fetchPublications(),[reloadPage])
 
     function fetchPublications(){
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}user/${id}`,{withCredentials: true})
-        promise.then(({data})=>{            
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`, {withCredentials: true})
+        promise.then(({data})=>{   
+            console.log(data)         
             setPublications(data)
             if(data.length===0){
                 setErrorMessage("Ainda não há postagens!")

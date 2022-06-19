@@ -11,19 +11,23 @@ import { useState, useContext, useEffect } from "react"
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
+import UserContext from "../../contexts/UserContext"
 
 function Timeline() {
 
     const {isLoading,setIsLoading} = useContext(isLoadingContext)
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
+    const {reloadPage} = useContext(deletionDataContext)
+    const {userData} = useContext(UserContext)
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-    const [deletionData, setDeletionData] = useState({});
-    const [reloadPage, setReloadPage] = useState(false);
+    const [likesInfo, setLikesInfo] = useState([])
+
+    useEffect(() => fetchPublications(), [reloadPage]);
 
     useEffect(() => fetchPublications(), [reloadPage]);
 
@@ -44,6 +48,20 @@ function Timeline() {
                         
         })
     }
+
+    function fetchLikes() {
+
+        const promise = axios.get("http://localhost:5000/like/get", { withCredentials: true })
+
+        promise.then(({ data }) => {
+            setLikesInfo(data)
+        })
+
+        promise.catch((e) => {
+            console.error(e.data)
+        })
+    }
+    useEffect(() => fetchLikes(), [])
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -78,14 +96,13 @@ function Timeline() {
 
     return (
         <>
-            <deletionDataContext.Provider value={{ deletionData, setDeletionData, reloadPage, setReloadPage }}>
                 {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage}/> : null}
                 <Header></Header>
                 <Content>
                     <Posts>
                         <Title>timeline</Title>
                         <PostInput>
-                            <ProfileImage></ProfileImage>
+                            <ProfileImage src={userData.image}></ProfileImage>
                             <Input>
                                 <Question>What are you going to share today?</Question>
                                 <form onSubmit={handleSubmit}>
@@ -98,14 +115,14 @@ function Timeline() {
 
                         {isLoadingPosts ? <Loading></Loading> : null}
                         {publications.map((publication, index) => {
-                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen}></Post>
+                            let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
+                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
                             )
                         })}
 
                     </Posts>
                     <Sidebar><Trending></Trending></Sidebar>
                 </Content>
-            </deletionDataContext.Provider>
         </>
     )
 }

@@ -32,6 +32,7 @@ export const Left = styled.div`
         margin-top: 20px;
     }
     p{
+<<<<<<< HEAD
         font-family: 'Lato';
         font-style: normal;
         font-weight: 400;
@@ -41,6 +42,17 @@ export const Left = styled.div`
         color: #FFFFFF;
         margin-top: 5px;
     } 
+=======
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 13px;
+            text-align: center;
+            color: #FFFFFF;
+            margin-top: -17px;
+        } 
+>>>>>>> origin/dev
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -196,3 +208,18 @@ export const Description = styled.p`
     overflow: hidden;
     width: 100%;
 `
+
+export const ContainerCountLikes = styled.div`
+
+    .ReactTooltip{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
+        color: #505050;
+        background-color: white;
+        cursor: pointer;
+    }
+`;
