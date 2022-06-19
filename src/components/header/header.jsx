@@ -17,6 +17,11 @@ function Header() {
         navigate(`/`)
     }
     
+    function search(e){
+        e.preventDefault()
+        
+    }
+
     async function logout () {
         try {
             await axios.get("http://localhost:5000/logout", { withCredentials: true });
@@ -27,13 +32,15 @@ function Header() {
         }
     }
 
-   
+
 
     return (
         <Main>
             <Logo onClick={()=> goToTimeLine()} >Linkr</Logo>
             <Middle>
+            <form onSubmit={search}>
                 <Input placeholder="Search for people"></Input>
+            </form>
                 <div><IoSearchSharp></IoSearchSharp></div>
             </Middle>
             <Rigth onClick={() => setMenuOpen(!menuOpen)}>

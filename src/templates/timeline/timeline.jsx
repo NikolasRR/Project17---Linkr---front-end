@@ -60,7 +60,7 @@ function Timeline(){
             text,
         }
 
-
+ 
         const promise = axios.post(`${process.env.REACT_APP_API_URL}timeline`, body, {withCredentials: true})
         promise.then((data)=>{
             setUrl("");
