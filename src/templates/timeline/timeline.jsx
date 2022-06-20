@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Header from "../../components/header/header"
 import Post from "../../components/post/post"
 import Trending from "../../components/sidebar/sidebar"
@@ -26,7 +27,6 @@ function Timeline() {
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [likesInfo, setLikesInfo] = useState([])
-
 
     useEffect(() => fetchPublications(), [reloadPage]);
 
@@ -95,7 +95,6 @@ function Timeline() {
 
     return (
         <>
-           
                 {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage}/> : null}
                 <Header></Header>
                 <Content>
@@ -123,7 +122,6 @@ function Timeline() {
                     </Posts>
                     <Sidebar><Trending></Trending></Sidebar>
                 </Content>
-           
         </>
     )
 }

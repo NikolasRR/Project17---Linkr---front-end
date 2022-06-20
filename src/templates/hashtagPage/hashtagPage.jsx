@@ -10,15 +10,20 @@ import Trending from "../../components/sidebar/sidebar"
 import Modal from "../../components/modal/modal"
 import {Content,Posts,Sidebar,Title} from "./../timeline/style"
 
+// import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
+import deletionDataContext from "../../contexts/deletionDataContext";
 
 function Hashtag(){
 
     // const {isLoading,setIsLoading} = useContext(isLoadingContext)
     const {isModalOpen, setIsModalOpen} = useContext(isModalOpenContext)
+
+    const [deletionData, setDeletionData] = useState({});
+    const [reloadPage, setReloadPage] = useState(false);
     const [post, setPost] = useState([]);
     const { hashtag } = useParams();
-
+    console.log(hashtag);
     useEffect(() => getData(), []);
 
     const getData = async () => {
@@ -33,27 +38,20 @@ function Hashtag(){
     console.log(post);
     return(
         <>  
-            {isModalOpen?<Modal setIsModalOpen={setIsModalOpen} />:null}
-            <Header></Header>
-            <Content>
-                <Posts>
-                    <Title>#{hashtag}</Title>
-                    {post.map((publication, index)=>{
-                        return( <Post key={index} {...publication} ></Post>
-                        )
-                    })}
-                    
-                    {/* <ul>
-                    
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste1</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste2</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste3</ReactHashtag></li>
-                    
-                    </ul> */}
-                    
-                </Posts> 
-                <Sidebar><Trending></Trending></Sidebar>
-            </Content>    
+            <deletionDataContext.Provider value={{ deletionData, setDeletionData, reloadPage, setReloadPage }}>
+                {isModalOpen?<Modal setIsModalOpen={setIsModalOpen} />:null}
+                <Header></Header>
+                <Content>
+                    <Posts>
+                        <Title>#{hashtag}</Title>
+                        {post.map((publication, index)=>{
+                            return( <Post key={index} {...publication} ></Post>
+                            )
+                        })}
+                    </Posts> 
+                    <Sidebar><Trending></Trending></Sidebar>
+                </Content> 
+            </deletionDataContext.Provider>   
         </>        
     )
 }
