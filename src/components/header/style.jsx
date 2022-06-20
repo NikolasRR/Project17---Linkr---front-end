@@ -10,6 +10,7 @@ export const Main = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    position: relative;
 `
 
 export const Logo = styled.p`
@@ -26,7 +27,8 @@ export const Logo = styled.p`
 `
 
 export const Middle = styled.div`
-    width: 47%;
+    position: relative;
+    width: 100%;
     height: 45px;
     background: #FFFFFF;
     border-radius: 8px;
@@ -35,6 +37,34 @@ export const Middle = styled.div`
     align-items: center;
     justify-content: space-between;
     padding:10px;
+    z-index: 1;
+    input{
+        width: 100%;
+        height: 100%;
+        background: #FFFFFF;
+        border-radius: 8px;
+        border: none;
+        padding: 5px;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        color: #515151;
+        cursor: pointer;
+        textarea:focus, input:focus {
+        box-shadow: 0 0 0 0;
+        outline: 0;
+        }
+        ::placeholder{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        color: #C6C6C6;    
+    } 
+    }
     textarea:focus, input:focus, select:focus {
         box-shadow: 0 0 0 0;
         border: 0 none;
@@ -65,7 +95,7 @@ export const Input = styled.input`
     font-weight: 400;
     font-size: 19px;
     line-height: 23px;
-    color: #C6C6C6;
+    color: #515151;
     cursor: pointer;
     textarea:focus, input:focus {
     box-shadow: 0 0 0 0;
@@ -133,3 +163,23 @@ export const LogoutOption = styled.p`
         cursor: pointer;
     }
 `
+export const Content = styled.div`
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    /* margin-top: 35px; */
+    
+    width: 47%;
+`;
+
+export const ResultStyle = styled.div`
+    margin-top: -10px;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: #E7E7E7;
+    border-radius: 8px;
+    
+`;
