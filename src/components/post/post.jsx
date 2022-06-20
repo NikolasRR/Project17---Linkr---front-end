@@ -1,6 +1,5 @@
 import { TiHeartFullOutline } from "react-icons/ti";
 import axios from "axios"
-import ReactHashtag from "react-hashtag";
 import ReactTooltip from "react-tooltip";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +17,6 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
     const { setIsModalOpen } = useContext(isModalOpenContext)
 
 
-    const [isUser, setIsUser] = useState(false);
 
     const [selecionado, setSelecionado] = useState(false)
     const [total, setTotal] = useState([]);
@@ -50,9 +48,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         })
     }, [selecionado])
 
-    useEffect(() => {
-        setIsUser();
-    }, [userData])
+
 
     useEffect(() => {
         const id = publicationId
@@ -149,16 +145,10 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         navigate(`/user/${userId}`, { state: { userName, profile } })
     }
 
-    function clickHash(hashtag){
-        navigate(`/hashtag/${hashtag.replace("#","")}`);
-        console.log(hashtag)
-        window.location.reload();
-    }
-
     return (
         <Content>
             <Left>
-                <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
+                <ProfileImage onClick={() => console.log("testando")} alt={url} src={profile}></ProfileImage>
                 <div onClick={() => {
                     if (selecionado === false) {
                         like()
@@ -189,16 +179,12 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
                     </div>
                 </Name>
-                <Text> <ReactHashtag onHashtagClick={val => clickHash(val)}>{content}</ReactHashtag></Text>
+                <Text> {content}</Text>
 
                 <Url target={"_blank"} href={url}>
                     <Data>
                         <Title>{title}</Title>
-                        <Description>
-                            
-                                {description}
-                            
-                        </Description>
+                        <Description>{description}</Description>
                         <Ancor target={"_blank"} href={url}>{url}</Ancor>
                     </Data>
                     <Image><ImageData alt={image} src={image}></ImageData></Image>
