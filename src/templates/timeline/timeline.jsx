@@ -52,7 +52,7 @@ function Timeline() {
 
     function fetchLikes() {
 
-        const promise = axios.get("http://localhost:5000/like/get", { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/like/get`, { withCredentials: true })
 
         promise.then(({ data }) => {
             setLikesInfo(data)

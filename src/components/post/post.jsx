@@ -49,7 +49,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
     useEffect(() => {
         const id = publicationId
-        const promise = axios.get(`http://localhost:5000/like/count/${id}`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/like/count/${id}`, { withCredentials: true })
 
         promise.then(({ data }) => {
             setTotal(data)
@@ -63,7 +63,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
     useEffect(() => {
         const id = publicationId
 
-        const promise = axios.get(`http://localhost:5000/like/get/${id}`, { withCredentials: true });
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/like/get/${id}`, { withCredentials: true });
 
         promise.then((response) => {
             setRefresh(response.data)
@@ -124,7 +124,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
             publicationId: publicationId
         }
 
-        const promise = axios.post("http://localhost:5000/like", body, { withCredentials: true })
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/like`, body, { withCredentials: true })
         promise.then(() => {
             //console.log("entrou aqui")
             setSelecionado(true)
@@ -137,7 +137,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
     function deslike() {
         const id = publicationId;
-        const promise = axios.delete(`http://localhost:5000/like/${id}`, { withCredentials: true });
+        const promise = axios.delete(`${process.env.REACT_APP_API_URL}/like/${id}`, { withCredentials: true });
 
         promise.then(() => {
             setSelecionado(false)
