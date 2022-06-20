@@ -151,6 +151,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
     function clickHash(hashtag){
         navigate(`/hashtag/${hashtag.replace("#","")}`);
+        console.log(hashtag)
         window.location.reload();
     }
 

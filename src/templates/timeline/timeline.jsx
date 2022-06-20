@@ -29,8 +29,6 @@ function Timeline() {
 
     useEffect(() => fetchPublications(), [reloadPage]);
 
-    useEffect(() => fetchPublications(), [reloadPage]);
-
     function fetchPublications() {
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
         promise.then(({ data }) => {

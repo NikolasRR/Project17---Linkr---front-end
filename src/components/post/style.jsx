@@ -11,7 +11,7 @@ export const Content = styled.div`
     align-items: flex-start;
     justify-content: space-between;
     padding:22px;
-    
+    z-index: -1;
     @media(max-width: 611px) {
         min-height: 232px;
         border-radius:0;
@@ -32,7 +32,6 @@ export const Left = styled.div`
         margin-top: 20px;
     }
     p{
-<<<<<<< HEAD
         font-family: 'Lato';
         font-style: normal;
         font-weight: 400;
@@ -42,17 +41,6 @@ export const Left = styled.div`
         color: #FFFFFF;
         margin-top: 5px;
     } 
-=======
-            font-family: 'Lato';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 11px;
-            line-height: 13px;
-            text-align: center;
-            color: #FFFFFF;
-            margin-top: -17px;
-        } 
->>>>>>> origin/dev
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -185,7 +173,7 @@ export const Title = styled.p`
     width: 100%;
 `
 
-export const Ancor = styled.a`
+export const Ancor = styled.p`
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
