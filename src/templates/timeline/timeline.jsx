@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Header from "../../components/header/header"
 import Post from "../../components/post/post"
 import Trending from "../../components/sidebar/sidebar"

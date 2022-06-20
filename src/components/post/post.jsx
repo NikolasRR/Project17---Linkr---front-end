@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { TiHeartFullOutline } from "react-icons/ti";
 import axios from "axios"
 import ReactTooltip from "react-tooltip";
@@ -71,30 +72,30 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
         for (let i = 0; i < refresh.length; i++) {
 
-            if (refresh[i].userName != userData.userName) {
+            if (refresh[i].userName !== userData.userName) {
                 newLikesNames.push(refresh[i].userName);
             }
         }
 
         let res = '';
 
-        if (refresh.length == 0) {
+        if (refresh.length === 0) {
             res = null;
             setResult(res)
 
-        } else if (refresh.length == 1 && selecionado) {
+        } else if (refresh.length === 1 && selecionado) {
             res = "Você curtiu";
             setResult(res)
 
-        } else if (newLikesNames.length == 1 && !selecionado) {
+        } else if (newLikesNames.length === 1 && !selecionado) {
             res =` Curtido por ${newLikesNames[0]}`
             setResult(res)
 
-        } else if (refresh.length == 2 && selecionado) {
+        } else if (refresh.length === 2 && selecionado) {
             res = `Voce e ${newLikesNames[0]} curtiram`
             setResult(res)
 
-        } else if (newLikesNames.length == 2 && !selecionado) {
+        } else if (newLikesNames.length === 2 && !selecionado) {
             res = `${newLikesNames[0]} e ${newLikesNames[1]} curtiram`
             setResult(res)
 
