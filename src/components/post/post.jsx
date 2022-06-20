@@ -2,6 +2,7 @@
 import { TiHeartFullOutline } from "react-icons/ti";
 import axios from "axios"
 import ReactTooltip from "react-tooltip";
+import ReactHashtag from "react-hashtag";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CgTrash } from "react-icons/cg";
@@ -140,7 +141,10 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         })
     }
 
-    
+    function hashtagClick(hashtag) {
+        const aux = hashtag.replace("#","")
+        navigate(`/hashtag/${aux}`)
+    }
 
     function goToUserPage() {
         navigate(`/user/${userId}`, { state: { userName, profile } })
@@ -180,7 +184,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
                     </div>
                 </Name>
-                <Text> {content}</Text>
+                <Text> <ReactHashtag onHashtagClick={val => hashtagClick(val)}>{content}</ReactHashtag></Text>
 
                 <Url target={"_blank"} href={url}>
                     <Data>
