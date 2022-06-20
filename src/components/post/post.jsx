@@ -16,7 +16,7 @@ import isModalOpenContext from "../../contexts/isModalOpenContext";
 
 function Post({ userId, id, publicationId, userName, url, profile, totalLikes, content, title, description, image, selected }) {
     const { userData } = useContext(UserContext);
-    const { setDeletionData } = useContext(deletionDataContext)
+    const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
 
     const inputRef = useRef(null);
@@ -163,10 +163,11 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         setDisabledEdit(true);
 
         try {
-            await axios.put(`${process.env.REACT_APP_API_URL}/post/${publicationId}`, { text: currentContent }, { withCredentials: true });
+            await axios.put(`${process.env.REACT_APP_API_URL}/post?postId=${publicationId}`, { text: currentContent }, { withCredentials: true });
             setNewContent(currentContent);
             setDisabledEdit(false);
             setIsEditing(false);
+            setReloadPage(!reloadPage);
         } catch (error) {
             console.log(error);
             alert('Couldn`t save changes');
@@ -178,7 +179,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
     return (
         <Content>
             <Left>
-                <ProfileImage onClick={() => console.log("testando")} alt={url} src={profile}></ProfileImage>
+                <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
                 <div onClick={() => {
                     if (selecionado === false) {
                         like()

@@ -19,7 +19,7 @@ function Hashtag() {
     // const {isLoading,setIsLoading} = useContext(isLoadingContext)
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext)
     const { userData } = useContext(UserContext);
-    const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
+    const { reloadPage } = useContext(deletionDataContext);
 
     const [likesInfo, setLikesInfo] = useState([]);
     const [post, setPost] = useState([]);
