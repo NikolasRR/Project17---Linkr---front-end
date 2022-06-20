@@ -10,6 +10,7 @@ import Trending from "../../components/sidebar/sidebar"
 import Modal from "../../components/modal/modal"
 import { Content, Posts, Sidebar, Title } from "./../timeline/style"
 
+// import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
@@ -18,7 +19,7 @@ function Hashtag() {
     // const {isLoading,setIsLoading} = useContext(isLoadingContext)
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext)
     const { userData } = useContext(UserContext);
-    const { reloadPage } = useContext(deletionDataContext);
+    const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
 
     const [likesInfo, setLikesInfo] = useState([]);
     const [post, setPost] = useState([]);
@@ -53,7 +54,6 @@ function Hashtag() {
         })
     }
 
-    console.log(post);
     return (
         <>
             {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} /> : null}
@@ -68,15 +68,6 @@ function Hashtag() {
                         } return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
                         )
                     })}
-
-                    {/* <ul>
-                    
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste1</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste2</ReactHashtag></li>
-                        <li><ReactHashtag onHashtagClick={val => alert(val)}>teste #teste3</ReactHashtag></li>
-                    
-                    </ul> */}
-
                 </Posts>
                 <Sidebar><Trending></Trending></Sidebar>
             </Content>

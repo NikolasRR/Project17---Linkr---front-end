@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { TiHeartFullOutline } from "react-icons/ti";
 import axios from "axios"
 import ReactTooltip from "react-tooltip";
+import ReactHashtag from "react-hashtag";
 import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -80,30 +82,30 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
         for (let i = 0; i < refresh.length; i++) {
 
-            if (refresh[i].userName != userData.userName) {
+            if (refresh[i].userName !== userData.userName) {
                 newLikesNames.push(refresh[i].userName);
             }
         }
 
         let res = '';
 
-        if (refresh.length == 0) {
+        if (refresh.length === 0) {
             res = null;
             setResult(res)
 
-        } else if (refresh.length == 1 && selecionado) {
+        } else if (refresh.length === 1 && selecionado) {
             res = "Você curtiu";
             setResult(res)
 
-        } else if (newLikesNames.length == 1 && !selecionado) {
-            res = ` Curtido por ${newLikesNames[0]}`
+        } else if (newLikesNames.length === 1 && !selecionado) {
+            res =` Curtido por ${newLikesNames[0]}`
             setResult(res)
 
-        } else if (refresh.length == 2 && selecionado) {
+        } else if (refresh.length === 2 && selecionado) {
             res = `Voce e ${newLikesNames[0]} curtiram`
             setResult(res)
 
-        } else if (newLikesNames.length == 2 && !selecionado) {
+        } else if (newLikesNames.length === 2 && !selecionado) {
             res = `${newLikesNames[0]} e ${newLikesNames[1]} curtiram`
             setResult(res)
 
@@ -148,6 +150,11 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         })
     }
 
+    function hashtagClick(hashtag) {
+        const aux = hashtag.replace("#","")
+        navigate(`/hashtag/${aux}`)
+    }
+
     function goToUserPage() {
         navigate(`/user/${userId}`, { state: { userName, profile } })
     }
@@ -171,7 +178,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
     return (
         <Content>
             <Left>
-                <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
+                <ProfileImage onClick={() => console.log("testando")} alt={url} src={profile}></ProfileImage>
                 <div onClick={() => {
                     if (selecionado === false) {
                         like()
@@ -213,8 +220,8 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                     }} onChange={ev => setCurrentContent(ev.target.value)}></EditInput>
                 }
                 {
-                    !isEditing &&
-                    <Text>{newContent}</Text>
+                    !isEditing && 
+                    <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent}</ReactHashtag></Text>
                 }
                 <Url target={"_blank"} href={url}>
                     <Data>

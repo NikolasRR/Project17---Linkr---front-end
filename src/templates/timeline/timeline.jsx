@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Header from "../../components/header/header"
 import Post from "../../components/post/post"
 import Trending from "../../components/sidebar/sidebar"
@@ -96,7 +97,6 @@ function Timeline() {
 
     return (
         <>
-
             {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
             <Header></Header>
             <Content>
@@ -124,7 +124,6 @@ function Timeline() {
                 </Posts>
                 <Sidebar><Trending></Trending></Sidebar>
             </Content>
-
         </>
     )
 }
