@@ -105,8 +105,9 @@ export const Name = styled.div`
 `
 
 export const Text = styled.p`
-    width: 100%;
-    height: 52px;
+    max-width: 100%;
+    word-wrap: break-word;
+    min-height: 52px;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -115,6 +116,7 @@ export const Text = styled.p`
     color: #B7B7B7;
     margin-bottom:10px;
     @media(max-width: 611px) {
+
         font-size: 15px;
         line-height: 18px;
         color: #B7B7B7;

@@ -17,7 +17,7 @@ import UserContext from "../../contexts/UserContext"
 function Timeline() {
     const { isLoading, setIsLoading } = useContext(isLoadingContext);
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
-    const { reloadPage } = useContext(deletionDataContext);
+    const { reloadPage, setReloadPage } = useContext(deletionDataContext);
     const { userData } = useContext(UserContext);
 
     const [url, setUrl] = useState("");
@@ -36,7 +36,7 @@ function Timeline() {
     function fetchPublications() {
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
         promise.then(({ data }) => {
-            setPublications(data)
+            setPublications(data);
             if (data.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
@@ -81,11 +81,11 @@ function Timeline() {
 
 
         const promise = axios.post(`${process.env.REACT_APP_API_URL}/timeline`, body, { withCredentials: true })
-        promise.then((data) => {
+        promise.then(() => {
             setUrl("");
             setText("");
             setIsLoading(false);
-            fetchPublications();
+            window.location.reload();
         })
         promise.catch((error) => {
             setIsLoading(false);
