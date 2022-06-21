@@ -14,7 +14,7 @@ import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 
-function Post({ userId, id, publicationId, userName, url, profile, totalLikes, content, title, description, image, selected }) {
+function Post({ createdAt, userId, id, publicationId, userName, url, profile, content, title, description, image, selected }) {
     const { userData } = useContext(UserContext);
     const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
@@ -32,12 +32,11 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
     const navigate = useNavigate();
 
-
-  useEffect(() => {
-    if (isEditing) {
-      inputRef.current.focus();
-    }
-  }, [isEditing, disabledEdit]);
+    useEffect(() => {
+        if (isEditing) {
+            inputRef.current.focus();
+        }
+    }, [isEditing, disabledEdit]);
 
     useEffect(() => {
 
@@ -98,7 +97,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
             setResult(res)
 
         } else if (newLikesNames.length === 1 && !selecionado) {
-            res =` Curtido por ${newLikesNames[0]}`
+            res = ` Curtido por ${newLikesNames[0]}`
             setResult(res)
 
         } else if (refresh.length === 2 && selecionado) {
@@ -151,7 +150,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
     }
 
     function hashtagClick(hashtag) {
-        const aux = hashtag.replace("#","")
+        const aux = hashtag.replace("#", "")
         navigate(`/hashtag/${aux}`)
     }
 
@@ -159,7 +158,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
         navigate(`/user/${userId}`, { state: { userName, profile } })
     }
 
-    async function sendEditedPost () {
+    async function sendEditedPost() {
         setDisabledEdit(true);
 
         try {
@@ -203,7 +202,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                         {
                             userName === userData?.userName &&
                             <>
-                                <TiPencil style={{ cursor: "pointer" }} onClick={() => { setIsEditing(!isEditing); inputRef.current.focus(); }}></TiPencil>
+                                <TiPencil style={{ cursor: "pointer" }} onClick={() => setIsEditing(!isEditing)}></TiPencil>
                                 <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId }); setIsModalOpen(true) }}></CgTrash>
                             </>
                         }
@@ -221,7 +220,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                     }} onChange={ev => setCurrentContent(ev.target.value)}></EditInput>
                 }
                 {
-                    !isEditing && 
+                    !isEditing &&
                     <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent}</ReactHashtag></Text>
                 }
                 <Url target={"_blank"} href={url}>

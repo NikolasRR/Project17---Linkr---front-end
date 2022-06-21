@@ -1,13 +1,14 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import Header from "../../components/header/header"
-import Post from "../../components/post/post"
-import Trending from "../../components/sidebar/sidebar"
-import Modal from "../../components/modal/modal"
-import Loading from "../../components/loading/loading"
-import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput } from "./style"
+import Header from "../../components/header/header";
+import Post from "../../components/post/post";
+import Trending from "../../components/sidebar/sidebar";
+import Modal from "../../components/modal/modal";
+import Loading from "../../components/loading/loading";
+import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NewPostsWarning } from "./style";
+import { AiOutlineReload } from "react-icons/ai";
 
 import axios from "axios"
 import { useState, useContext, useEffect } from "react"
+import useInterval from "use-interval";
 
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
@@ -26,6 +27,9 @@ function Timeline() {
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [likesInfo, setLikesInfo] = useState([]);
+    const [newPostsAmount, setNewPostsAmount] = useState(null);
+    const [newestPostTS, setNewestPostTS] = useState();
+    const [delay, setDelay] = useState(null);
 
 
     useEffect(() => {
@@ -33,10 +37,28 @@ function Timeline() {
         fetchLikes();
     }, [reloadPage]);
 
+    useInterval(async () => {
+        console.log('aaa');
+        console.log(newestPostTS);
+        try {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/newposts`, { createdAt: newestPostTS }, { withCredentials: true });
+            if (res.status === 200) {
+                setNewPostsAmount(res.data.amount);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }, delay);
+
     function fetchPublications() {
+        setDelay(null);
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
         promise.then(({ data }) => {
             setPublications(data);
+            setNewPostsAmount(null);
+            setNewestPostTS(data[0].timestamp);
+            setDelay(15000);
             if (data.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
@@ -113,7 +135,10 @@ function Timeline() {
                             </form>
                         </Input>
                     </PostInput>
-
+                    {
+                        newPostsAmount &&
+                        <NewPostsWarning onClick={() => setReloadPage(!reloadPage)}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
+                    }
                     {isLoadingPosts ? <Loading></Loading> : null}
                     {publications.map((publication, index) => {
                         let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
