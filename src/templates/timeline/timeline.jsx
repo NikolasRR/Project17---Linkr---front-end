@@ -28,7 +28,7 @@ function Timeline() {
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [likesInfo, setLikesInfo] = useState([]);
     const [newPostsAmount, setNewPostsAmount] = useState(null);
-    const [newestPostTS, setNewestPostTS] = useState();
+    const [newestPostId, setNewestPostId] = useState();
     const [delay, setDelay] = useState(null);
 
 
@@ -38,10 +38,8 @@ function Timeline() {
     }, [reloadPage]);
 
     useInterval(async () => {
-        console.log('aaa');
-        console.log(newestPostTS);
         try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/newposts`, { createdAt: newestPostTS }, { withCredentials: true });
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/newposts?lastPostId=${newestPostId}`, { withCredentials: true });
             if (res.status === 200) {
                 setNewPostsAmount(res.data.amount);
             }
@@ -55,10 +53,12 @@ function Timeline() {
         setDelay(null);
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
         promise.then(({ data }) => {
+            console.log(data);
             setPublications(data);
             setNewPostsAmount(null);
-            setNewestPostTS(data[0].timestamp);
+            setNewestPostId(data[0].publicationId);
             setDelay(15000);
+
             if (data.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
