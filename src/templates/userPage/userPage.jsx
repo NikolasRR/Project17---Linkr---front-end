@@ -1,13 +1,16 @@
-import Header from "../../components/header/header"
-import Post from "../../components/post/post"
-import Trending from "../../components/sidebar/sidebar"
-import Modal from "../../components/modal/modal"
-import Loading from "../../components/loading/loading"
-import { Content, Posts, Sidebar, Title, ProfileImage, LittleHeader } from "./style"
+import Header from "../../components/header/header";
+import Post from "../../components/post/post";
+import Trending from "../../components/sidebar/sidebar";
+import Modal from "../../components/modal/modal";
+import Loading from "../../components/loading/loading";
+import { Content, Posts, Sidebar, Title, ProfileImage, LittleHeader, NoMorePosts } from "./style";
+import InfiniteScroll from "react-infinite-scroller";
 
-import axios from "axios"
-import { useState, useContext, useEffect } from "react"
-import { useParams, useLocation } from "react-router-dom"
+
+import axios from "axios";
+import { useState, useContext, useEffect } from "react";
+import { useParams, useLocation } from "react-router-dom";
+
 
 
 
@@ -28,8 +31,9 @@ function UserPage() {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
-    const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [likesInfo, setLikesInfo] = useState([]);
+    const [lastId, setLastId] = useState(0);
+    const [noMorePosts, setNoMorePosts] = useState(false);
 
     useEffect(() => {
         fetchPublications();
@@ -37,15 +41,21 @@ function UserPage() {
     }, [reloadPage]);
 
     function fetchPublications() {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}?lastId=${lastId}`, { withCredentials: true })
         promise.then(({ data }) => {
-            console.log(data)
-            setPublications(data)
-            if (data.length === 0) {
-                setErrorMessage("Ainda não há postagens!")
-                setIsModalOpen(true)
+            setPublications([...publications, ...data]);
+
+            if (data.length > 0) {
+                const i = data.length - 1;
+                setLastId(data[i].publicationId);
+                return;
             }
-            setIsLoadingPosts(false)
+            if (data.length === 0 && publications.length === 0) {
+                setErrorMessage("There are no posts from this user yet");
+                setIsModalOpen(true);
+            }
+            setNoMorePosts(true);
+
         })
         promise.catch((error) => {
             console.error(error)
@@ -81,15 +91,29 @@ function UserPage() {
                         <ProfileImage src={profile}></ProfileImage>
                         <Title>{`${userName}'s posts`}</Title>
                     </LittleHeader>
-                    {isLoadingPosts ? <Loading></Loading> : null}
-                    {publications.map((publication, index) => {
+                    {/* {publications.map((publication, index) => {
                         let info;
                         if (likesInfo) {
                             info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
                         } return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
                         )
-                    })}
-
+                    })} */}
+                    <InfiniteScroll
+                        loadMore={fetchPublications}
+                        hasMore={!noMorePosts}
+                        loader={<Loading key={0}></Loading>}
+                        useWindow={true}
+                    >
+                        {publications.map((publication, index) => {
+                            let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
+                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
+                            )
+                        })}
+                    </InfiniteScroll>
+                    {
+                        noMorePosts &&
+                        <NoMorePosts><p>There are no more posts!</p></NoMorePosts>
+                    }
                 </Posts>
                 <Sidebar><Trending></Trending></Sidebar>
             </Content>
