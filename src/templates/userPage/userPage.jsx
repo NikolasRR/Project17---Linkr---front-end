@@ -3,7 +3,7 @@ import Post from "../../components/post/post"
 import Trending from "../../components/sidebar/sidebar"
 import Modal from "../../components/modal/modal"
 import Loading from "../../components/loading/loading"
-import { Content, Posts, Sidebar, Title, ProfileImage, LittleHeader } from "./style"
+import { Content, Posts, Sidebar, Title, ProfileImage, LittleHeader, Follow } from "./style"
 
 import axios from "axios"
 import { useState, useContext, useEffect } from "react"
@@ -25,13 +25,17 @@ function UserPage() {
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
     const { reloadPage } = useContext(deletionDataContext);
     const { userData } = useContext(UserContext);
+    
 
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [likesInfo, setLikesInfo] = useState([]);
+    const [isFollowing, setIsFollowing] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        fetchFollowing();
         fetchPublications();
         fetchLikes();
     }, [reloadPage]);
@@ -39,7 +43,6 @@ function UserPage() {
     function fetchPublications() {
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`, { withCredentials: true })
         promise.then(({ data }) => {
-            console.log(data)
             setPublications(data)
             if (data.length === 0) {
                 setErrorMessage("Ainda não há postagens!")
@@ -54,7 +57,54 @@ function UserPage() {
 
         })
     }
+    
+    function fetchFollowing(){
 
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/get-follow/${id}`,{ withCredentials: true })
+        promise.then(({data})=>{
+            if(data.length===0){
+                setIsFollowing(false)
+            }  
+            setIsLoading(false)
+        })
+        promise.catch((error)=>{
+            console.error(error)
+            setErrorMessage("Houve um erro pra saber se é seguidor ou não")
+            setIsModalOpen(true)
+            setIsLoading(false)
+                        
+        })
+    }
+
+    function toggleFollower(){
+            setIsLoading(true)
+            if(!isFollowing){  
+                
+                const promise = axios.post(`${process.env.REACT_APP_API_URL}/user/follow/${id}`, {},{ withCredentials: true })
+                promise.then(()=>{
+                    setIsFollowing(true)   
+                    setIsLoading(false) 
+                })
+                promise.catch((error)=>{
+                    console.error(error)
+                    setErrorMessage("Houve um erro ao seguir esse usuário")
+                    setIsModalOpen(true)
+                    setIsLoading(false) 
+                })
+            }else{      
+                const promise = axios.delete(`${process.env.REACT_APP_API_URL}/user/unfollow/${id}`, { withCredentials: true })
+                promise.then(()=>{
+                    setIsFollowing(false)  
+                    setIsLoading(false)   
+                })
+                promise.catch((error)=>{
+                    console.error(error)
+                    setErrorMessage("Houve um erro ao deixar de seguir esse usuário")
+                    setIsModalOpen(true)
+                    setIsLoading(false) 
+                })
+            }             
+    }
 
     function fetchLikes() {
 
@@ -80,6 +130,7 @@ function UserPage() {
                     <LittleHeader>
                         <ProfileImage src={profile}></ProfileImage>
                         <Title>{`${userName}'s posts`}</Title>
+                        
                     </LittleHeader>
                     {isLoadingPosts ? <Loading></Loading> : null}
                     {publications.map((publication, index) => {
@@ -90,8 +141,11 @@ function UserPage() {
                         )
                     })}
 
-                </Posts>
-                <Sidebar><Trending></Trending></Sidebar>
+                </Posts>                
+                <Sidebar margin={userData.id===parseInt(id)}>
+                    {userData.id===parseInt(id)?null:<Follow disabled={isLoading} onClick={()=> toggleFollower()}>{isFollowing?`Unfollow`:`Follow`}</Follow>}
+                    <Trending></Trending>
+                </Sidebar>
             </Content>
         </>
     )
