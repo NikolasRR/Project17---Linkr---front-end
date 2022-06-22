@@ -1,10 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import Header from "../../components/header/header"
-import Post from "../../components/post/post"
-import Trending from "../../components/sidebar/sidebar"
-import Modal from "../../components/modal/modal"
-import Loading from "../../components/loading/loading"
-import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput } from "./style"
+import Header from "../../components/header/header";
+import Post from "../../components/post/post";
+import Trending from "../../components/sidebar/sidebar";
+import Modal from "../../components/modal/modal";
+import Loading from "../../components/loading/loading";
+import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NoMorePosts } from "./style";
+import InfiniteScroll from "react-infinite-scroller";
 
 import axios from "axios"
 import { useState, useContext, useEffect } from "react"
@@ -24,8 +24,9 @@ function Timeline() {
     const [text, setText] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
-    const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [likesInfo, setLikesInfo] = useState([]);
+    const [lastId, setLastId] = useState(0);
+    const [noMorePosts, setNoMorePosts] = useState(false);
 
 
     useEffect(() => {
@@ -34,14 +35,21 @@ function Timeline() {
     }, [reloadPage]);
 
     function fetchPublications() {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline?lastId=${lastId}`, { withCredentials: true })
         promise.then(({ data }) => {
-            setPublications(data);
-            if (data.length === 0) {
+            setPublications([...publications, ...data]);
+
+            if (data.length > 0) {
+                const i = data.length - 1;
+                setLastId(data[i].publicationId);
+                return;
+            }
+            if (data.length === 0 && publications.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
             }
-            setIsLoadingPosts(false);
+            setNoMorePosts(true);
+
         })
         promise.catch((error) => {
             console.error(error);
@@ -113,14 +121,27 @@ function Timeline() {
                             </form>
                         </Input>
                     </PostInput>
-
-                    {isLoadingPosts ? <Loading></Loading> : null}
-                    {publications.map((publication, index) => {
+                    {/* {publications.map((publication, index) => {
                         let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
                         return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
                         )
-                    })}
-
+                    })} */}
+                    <InfiniteScroll
+                        loadMore={fetchPublications}
+                        hasMore={!noMorePosts}
+                        loader={<Loading key={0}></Loading>}
+                        useWindow={true}
+                    >
+                        {publications.map((publication, index) => {
+                            let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
+                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
+                            )
+                        })}
+                    </InfiniteScroll>
+                    {
+                        noMorePosts &&
+                        <NoMorePosts><p>There are no more posts!</p></NoMorePosts>
+                    }
                 </Posts>
                 <Sidebar><Trending></Trending></Sidebar>
             </Content>

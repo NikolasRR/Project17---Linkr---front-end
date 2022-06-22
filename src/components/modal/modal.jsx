@@ -13,9 +13,6 @@ function Modal(props) {
 	const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
 	const { publicationId, id } = deletionData;
 	
-
-	console.log(deletionData);
-
 	async function deletePost() {
 		setIsDeleting(true);
 		try {
