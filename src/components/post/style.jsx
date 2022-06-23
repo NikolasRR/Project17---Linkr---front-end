@@ -11,7 +11,7 @@ export const Content = styled.div`
     align-items: flex-start;
     justify-content: space-between;
     padding:22px;
-    
+    position: relative;
     @media(max-width: 611px) {
         min-height: 232px;
         border-radius:0;
@@ -41,6 +41,9 @@ export const Left = styled.div`
             color: #FFFFFF;
             margin-top: -17px;
         } 
+    svg{
+        /* margin-bottom: 20px; */
+    }
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -234,3 +237,51 @@ export const ContainerCountLikes = styled.div`
         cursor: pointer;
     }
 `;
+
+export const Repost = styled.div`
+    
+    position: relative;
+    background-color: #1E1E1E;
+    padding-top: 33px;
+    margin-bottom: -10px;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    text-align: center;
+    z-index: 0;
+    ${(props) =>( props.model === `true` ? `display: none`:`display: flex`)};
+    p2{
+        position: relative;
+        color: #fff;
+        top: -15px;
+        left:19px;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+    }
+    span{
+        font-weight: 700;
+        font-style: bold;
+        font-size: 12px;
+    }
+    svg{
+        position: relative;
+        top: -15px;
+        color:#fff;
+        width: 20px;
+        left: 13px;
+    }
+`;
+export const ContainerRepost = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    svg{
+        position: relative;
+        color:#fff;
+        width: 20px;
+        margin-bottom: 20px;
+    }
+`
