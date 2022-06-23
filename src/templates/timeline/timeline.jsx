@@ -35,19 +35,19 @@ function Timeline() {
 
     function fetchPublications() {
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
-        promise.then(({ data }) => {
-            setPublications(data);
-            if (data.length === 0) {
-                setErrorMessage("There are no posts yet");
+        promise.then((response) => {
+            if (response.data.data.length === 0 ) {
+                setErrorMessage(response.data.message);
                 setIsModalOpen(true);
+                setPublications(response.data.data);
             }
+            setPublications(response.data.data);
             setIsLoadingPosts(false);
         })
         promise.catch((error) => {
             console.error(error);
             setErrorMessage("An error occured while trying to fetch the posts, please refresh the page");
             setIsModalOpen(true);
-
         })
     }
 
@@ -68,7 +68,7 @@ function Timeline() {
         event.preventDefault()
         setIsLoading(true)
         if (!url) {
-            setErrorMessage("Por favor, preencha o campo de url.")
+            setErrorMessage("Please fill in the url input correctly")
             setIsModalOpen(true)
             setIsLoading(false)
             return
@@ -89,7 +89,7 @@ function Timeline() {
         })
         promise.catch((error) => {
             setIsLoading(false);
-            setErrorMessage("Houve um erro ao publicar seu link");
+            setErrorMessage("An error ocurred while trying to post this link");
             setIsModalOpen(true);
         })
     }
