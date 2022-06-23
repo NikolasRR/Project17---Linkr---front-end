@@ -14,7 +14,6 @@ function Modal(props) {
 	const { publicationId, id } = deletionData;
 	
 
-	console.log(deletionData);
 
 	async function deletePost() {
 		setIsDeleting(true);

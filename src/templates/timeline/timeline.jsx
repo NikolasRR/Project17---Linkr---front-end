@@ -64,14 +64,15 @@ function Timeline() {
             if (data.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
+                setPublications(data);
             }
+            setPublications(data);
             setIsLoadingPosts(false);
         })
         promise.catch((error) => {
             console.error(error);
             setErrorMessage("An error occured while trying to fetch the posts, please refresh the page");
             setIsModalOpen(true);
-
         })
     }
 
@@ -92,7 +93,7 @@ function Timeline() {
         event.preventDefault()
         setIsLoading(true)
         if (!url) {
-            setErrorMessage("Por favor, preencha o campo de url.")
+            setErrorMessage("Please fill in the url input correctly")
             setIsModalOpen(true)
             setIsLoading(false)
             return
@@ -113,7 +114,7 @@ function Timeline() {
         })
         promise.catch((error) => {
             setIsLoading(false);
-            setErrorMessage("Houve um erro ao publicar seu link");
+            setErrorMessage("An error ocurred while trying to post this link");
             setIsModalOpen(true);
         })
     }
