@@ -55,18 +55,18 @@ function Timeline() {
     function fetchPublications() {
         setDelay(null);
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
-        promise.then(({ data }) => {
-            setPublications(data);
+        promise.then(({data}) => {
+            setPublications(data.data);
             setNewPostsAmount(null);
-            setNewestPostId(data[0].publicationId);
+            setNewestPostId(data.data[0].publicationId);
             setDelay(15000);
 
-            if (data.length === 0) {
+            if (data.data.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
-                setPublications(data);
+                setPublications(data.data);
             }
-            setPublications(data);
+            // setPublications(response.data.data);
             setIsLoadingPosts(false);
         })
         promise.catch((error) => {
