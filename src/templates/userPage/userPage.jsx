@@ -43,16 +43,16 @@ function UserPage() {
     function fetchPublications() {
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`, { withCredentials: true })
         promise.then(({ data }) => {
-            setPublications(data)
-            if (data.length === 0) {
-                setErrorMessage("Ainda não há postagens!")
+            setPublications(data.data)
+            if (data.data.length === 0) {
+                setErrorMessage("There are no posts yet!")
                 setIsModalOpen(true)
             }
             setIsLoadingPosts(false)
         })
         promise.catch((error) => {
             console.error(error)
-            setErrorMessage("Houve um erro ao tentar buscar os posts. Por favor, atualize a página")
+            setErrorMessage("An error occured while trying to fetch the posts, please refresh the page")
             setIsModalOpen(true)
 
         })
@@ -69,7 +69,7 @@ function UserPage() {
         })
         promise.catch((error)=>{
             console.error(error)
-            setErrorMessage("Houve um erro pra saber se é seguidor ou não")
+            setErrorMessage("An error occured while trying to verify if this user follows you")
             setIsModalOpen(true)
             setIsLoading(false)
                         
