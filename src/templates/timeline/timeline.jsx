@@ -53,7 +53,6 @@ function Timeline() {
         setDelay(null);
         const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
         promise.then(({ data }) => {
-            console.log(data);
             setPublications(data);
             setNewPostsAmount(null);
             setNewestPostId(data[0].publicationId);

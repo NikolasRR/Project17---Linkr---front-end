@@ -14,12 +14,13 @@ import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 
-function Post({ createdAt, userId, id, publicationId, userName, url, profile, content, title, description, image, selected }) {
+function Post({ userId, id, publicationId, userName, url, profile, content, title, description, image, selected }) {
     const { userData } = useContext(UserContext);
     const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
 
     const inputRef = useRef(null);
+    console.log(content);
 
     const [selecionado, setSelecionado] = useState(false)
     const [total, setTotal] = useState([]);
@@ -27,7 +28,6 @@ function Post({ createdAt, userId, id, publicationId, userName, url, profile, co
     const [refresh, setRefresh] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentContent, setCurrentContent] = useState(content);
-    const [newContent, setNewContent] = useState(content);
     const [disabledEdit, setDisabledEdit] = useState(false);
 
     const navigate = useNavigate();
@@ -163,7 +163,6 @@ function Post({ createdAt, userId, id, publicationId, userName, url, profile, co
 
         try {
             await axios.put(`${process.env.REACT_APP_API_URL}/post?postId=${publicationId}`, { text: currentContent }, { withCredentials: true });
-            setNewContent(currentContent);
             setDisabledEdit(false);
             setIsEditing(false);
             setReloadPage(!reloadPage);
@@ -221,7 +220,7 @@ function Post({ createdAt, userId, id, publicationId, userName, url, profile, co
                 }
                 {
                     !isEditing &&
-                    <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent}</ReactHashtag></Text>
+                    <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{content}</ReactHashtag></Text>
                 }
                 <Url target={"_blank"} href={url}>
                     <Data>
