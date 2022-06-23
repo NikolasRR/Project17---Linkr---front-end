@@ -3,6 +3,7 @@ import Post from "../../components/post/post";
 import Trending from "../../components/sidebar/sidebar";
 import Modal from "../../components/modal/modal";
 import Loading from "../../components/loading/loading";
+import AlertRepost from "../../components/repost/repost";
 import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NewPostsWarning } from "./style";
 import { AiOutlineReload } from "react-icons/ai";
 
@@ -14,12 +15,14 @@ import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import UserContext from "../../contexts/UserContext"
+import  RepostContext from "../../contexts/repostContext";
 
 function Timeline() {
     const { isLoading, setIsLoading } = useContext(isLoadingContext);
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
     const { reloadPage, setReloadPage } = useContext(deletionDataContext);
     const { userData } = useContext(UserContext);
+    const { repost } = useContext(RepostContext)
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
@@ -119,6 +122,7 @@ function Timeline() {
     return (
         <>
             {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
+            {repost.length>0? <AlertRepost/>:null}
             <Header></Header>
             <Content>
                 <Posts>

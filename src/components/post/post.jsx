@@ -13,12 +13,14 @@ import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title,
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
+import  RepostContext from "../../contexts/repostContext";
+// import Alert from "./../alert/alert"
 
 function Post({ userId, id, publicationId, userName, url, profile, content, title, description, image, selected, repostedBy, repostId, resposts}) {
     const { userData } = useContext(UserContext);
     const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
-
+    const { setRepost } = useContext(RepostContext)
     const inputRef = useRef(null);
     console.log(content);
 
@@ -174,16 +176,15 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
 
     }
 
-    function repost(){
-        alert("repost em construção")
-    }
+
 
     return (
         <>
+        {/* <Alert alert = "Deseja relamente compartilhar esse post?" bottomCancel="Não, cancelar" bottomConfirm="Sim, compartilhe!"/> */}
         <Repost model = {repostedBy!== undefined? "false":"true"}>
             <MdRepeat className="icon"/>
             <p2>Repostado por <span>{repostId===userData.id? 'você' :repostedBy}</span></p2>
-            {console.log(parseInt(repostId))}
+            {console.log(userData.id)}
         </Repost>
         <Content>
             <Left>
@@ -203,7 +204,7 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
                         <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
                     </ContainerCountLikes>
                 </div>
-                <ContainerRepost onClick={() => repost()}>
+                <ContainerRepost onClick={() => setRepost([userData.id, publicationId])}>
                     <MdRepeat style={{ cursor: "pointer" }}/>
                     <p>{resposts} Repost</p>
                     </ContainerRepost>
