@@ -37,7 +37,7 @@ function UserPage() {
     }, [reloadPage]);
 
     function fetchPublications() {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/reposts/${id}`, { withCredentials: true })
         promise.then(({ data }) => {
             console.log(data)
             setPublications(data)

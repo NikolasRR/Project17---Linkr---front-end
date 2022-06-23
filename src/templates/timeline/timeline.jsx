@@ -34,9 +34,10 @@ function Timeline() {
     }, [reloadPage]);
 
     function fetchPublications() {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/reposts/4`, { withCredentials: true })
         promise.then(({ data }) => {
             setPublications(data);
+            console.log(data)
             if (data.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);

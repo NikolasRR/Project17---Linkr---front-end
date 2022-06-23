@@ -5,16 +5,16 @@ import ReactTooltip from "react-tooltip";
 import ReactHashtag from "react-hashtag";
 import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { MdRepeat } from "react-icons/md"
 import { CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
-import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput } from "./style"
+import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput, Repost, ContainerRepost } from "./style"
 
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 
-function Post({ userId, id, publicationId, userName, url, profile, totalLikes, content, title, description, image, selected }) {
+function Post({ userId, id, publicationId, userName, url, profile, totalLikes, content, title, description, image, selected, repostedBy, repostId, resposts}) {
     const { userData } = useContext(UserContext);
     const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
@@ -176,7 +176,17 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
 
     }
 
+    function repost(){
+        alert("repost em construção")
+    }
+
     return (
+        <>
+        <Repost model = {repostedBy!== undefined? "false":"true"}>
+            <MdRepeat className="icon"/>
+            <p2>Repostado por <span>{repostId===userData.id? 'você' :repostedBy}</span></p2>
+            {console.log(parseInt(repostId))}
+        </Repost>
         <Content>
             <Left>
                 <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
@@ -189,12 +199,16 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                 }}>
 
                     <TiHeartFullOutline style={{ color: selecionado ? "#AC0000" : "#ffffff", cursor: "pointer" }}></TiHeartFullOutline>
-
+                    
                     <ContainerCountLikes data-tip data-for="total">
                         <a data-tip={`${result}`}><p>{total ? `${total} likes ` : null}</p></a>
                         <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
                     </ContainerCountLikes>
                 </div>
+                <ContainerRepost onClick={() => repost()}>
+                    <MdRepeat style={{ cursor: "pointer" }}/>
+                    <p>{resposts} Repost</p>
+                    </ContainerRepost>
             </Left>
             <Publication>
                 <Name>
@@ -234,6 +248,7 @@ function Post({ userId, id, publicationId, userName, url, profile, totalLikes, c
                 </Url>
             </Publication>
         </Content>
+        </>
     )
 }
 
