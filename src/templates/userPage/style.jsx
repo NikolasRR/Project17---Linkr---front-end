@@ -30,7 +30,7 @@ export const LittleHeader = styled.div`
     align-items: center;
     margin-top: 53px;
     margin-bottom:44px;
-    
+    width: 100%;    
 `
 
 export const Posts = styled.div`
@@ -46,7 +46,10 @@ export const Posts = styled.div`
 `
 
 export const Sidebar = styled.div`
-    margin-top: 160px;
+    margin-top: ${props => props.margin?`160px`:`75px`};
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     @media(max-width: 611px) {
         display:none;
     }
@@ -81,4 +84,20 @@ export const NoMorePosts = styled.div`
         line-height: 26px;
         letter-spacing: 0.05em;
     }
+`
+
+export const Follow = styled.button`
+    width: 112px;
+    height: 31px;
+    background: #1877F2;
+    border-radius: 5px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+    border: none;
+    margin-bottom: 55px;
+    cursor:pointer;
 `

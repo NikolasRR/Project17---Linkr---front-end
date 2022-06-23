@@ -27,7 +27,7 @@ function SignInScreen() {
             setLogginIn(false);
             return;
         }
-
+        console.log(process.env.REACT_APP_API_URL);
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/sign-in`, user, { withCredentials: true })
                 .then(res => {

@@ -5,6 +5,7 @@ import Modal from "../../components/modal/modal";
 import Loading from "../../components/loading/loading";
 import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NoMorePosts, NewPostsWarning } from "./style";
 import InfiniteScroll from "react-infinite-scroller";
+import AlertRepost from "../../components/repost/repost";
 import { AiOutlineReload } from "react-icons/ai";
 
 import axios from "axios"
@@ -15,12 +16,14 @@ import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import UserContext from "../../contexts/UserContext"
+import  RepostContext from "../../contexts/repostContext";
 
 function Timeline() {
     const { isLoading, setIsLoading } = useContext(isLoadingContext);
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
     const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
     const { userData } = useContext(UserContext);
+    const { repost } = useContext(RepostContext)
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
@@ -35,19 +38,6 @@ function Timeline() {
 
     console.log(publications);
     useEffect(() => {
-        // console.log(deletionData?.index);
-        // if (publications.length > 0 && deletionData?.index >= 0) {
-        //     console.log(deletionData.index);
-        //     let arrayTemp = [...publications];
-        //     console.log(arrayTemp);
-        //     const i = arrayTemp.findIndex(publication => publication.publicationId === deletionData?.index);
-        //     arrayTemp.splice(i, 1);
-        //     console.log(arrayTemp);
-        //     setPublications([...arrayTemp]);
-        //     setDeletionData({});
-        //     return;
-        // }
-        
         fetchPublications();
         fetchLikes();
     }, [reloadPage]);
@@ -111,7 +101,6 @@ function Timeline() {
             console.error(error);
             setErrorMessage("An error occured while trying to fetch the posts, please refresh the page");
             setIsModalOpen(true);
-
         })
     }
 
@@ -132,7 +121,7 @@ function Timeline() {
         event.preventDefault()
         setIsLoading(true)
         if (!url) {
-            setErrorMessage("Por favor, preencha o campo de url.")
+            setErrorMessage("Please fill in the url input correctly")
             setIsModalOpen(true)
             setIsLoading(false)
             return
@@ -153,7 +142,7 @@ function Timeline() {
         })
         promise.catch((error) => {
             setIsLoading(false);
-            setErrorMessage("Houve um erro ao publicar seu link");
+            setErrorMessage("An error ocurred while trying to post this link");
             setIsModalOpen(true);
         })
     }
@@ -162,6 +151,7 @@ function Timeline() {
     return (
         <>
             {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
+            {repost.length>0? <AlertRepost/>:null}
             <Header></Header>
             <Content>
                 <Posts>
@@ -181,12 +171,6 @@ function Timeline() {
                         newPostsAmount &&
                         <NewPostsWarning onClick={() => { setRefreshed(true); setReloadPage(!reloadPage);}}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
                     }
-                    {/* {isLoadingPosts ? <Loading></Loading> : null}
-                    {publications.map((publication, index) => {
-                        let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
-                        return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
-                        )
-                    })} */}
                     <InfiniteScroll
                         loadMore={fetchPublications}
                         hasMore={!noMorePosts}
