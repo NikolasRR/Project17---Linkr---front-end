@@ -3,11 +3,13 @@ import Post from "../../components/post/post";
 import Trending from "../../components/sidebar/sidebar";
 import Modal from "../../components/modal/modal";
 import Loading from "../../components/loading/loading";
-import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NoMorePosts } from "./style";
+import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NoMorePosts, NewPostsWarning } from "./style";
 import InfiniteScroll from "react-infinite-scroller";
+import { AiOutlineReload } from "react-icons/ai";
 
 import axios from "axios"
 import { useState, useContext, useEffect } from "react"
+import useInterval from "use-interval";
 
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
@@ -17,7 +19,7 @@ import UserContext from "../../contexts/UserContext"
 function Timeline() {
     const { isLoading, setIsLoading } = useContext(isLoadingContext);
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
-    const { reloadPage, setReloadPage } = useContext(deletionDataContext);
+    const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
     const { userData } = useContext(UserContext);
 
     const [url, setUrl] = useState("");
@@ -27,29 +29,83 @@ function Timeline() {
     const [likesInfo, setLikesInfo] = useState([]);
     const [lastId, setLastId] = useState(0);
     const [noMorePosts, setNoMorePosts] = useState(false);
+    const [newPostsAmount, setNewPostsAmount] = useState(null);
+    const [newestPostId, setNewestPostId] = useState(0);
+    const [refreshed, setRefreshed] = useState(false);
 
-
+    console.log(publications);
     useEffect(() => {
+        // console.log(deletionData?.index);
+        // if (publications.length > 0 && deletionData?.index >= 0) {
+        //     console.log(deletionData.index);
+        //     let arrayTemp = [...publications];
+        //     console.log(arrayTemp);
+        //     const i = arrayTemp.findIndex(publication => publication.publicationId === deletionData?.index);
+        //     arrayTemp.splice(i, 1);
+        //     console.log(arrayTemp);
+        //     setPublications([...arrayTemp]);
+        //     setDeletionData({});
+        //     return;
+        // }
+        
         fetchPublications();
         fetchLikes();
     }, [reloadPage]);
 
-    function fetchPublications() {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline?lastId=${lastId}`, { withCredentials: true })
-        promise.then(({ data }) => {
-            setPublications([...publications, ...data]);
+    useInterval(async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/newposts?lastPostId=${newestPostId}`, { withCredentials: true });
+            if (res.status === 200) {
+                setNewPostsAmount(res.data.amount);
+                setLastId(0);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }, 15000);
 
+    function fetchPublications() {
+        const value = deletionData.publicationId || refreshed ? 0 : lastId;
+        console.log('lastId: ', lastId);
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline?lastId=${value}`, { withCredentials: true });
+        
+        promise.then(({ data }) => {
+            console.log(data);
             if (data.length > 0) {
                 const i = data.length - 1;
                 setLastId(data[i].publicationId);
-                return;
+                if (data[0].publicationId > newestPostId) {
+                    setNewestPostId(data[0].publicationId);
+                }
             }
+
             if (data.length === 0 && publications.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
+                return;
             }
-            setNoMorePosts(true);
 
+            if (deletionData?.publicationId || refreshed) {
+                console.log('deletou ou refreshou');
+                console.log(data);
+                setPublications(data);
+                setDeletionData({});
+                setRefreshed(false);
+                setNewPostsAmount(null);
+                setNoMorePosts(false);
+                return;
+            }
+            
+            console.log('puxou mais posts ou iniciou');
+            setPublications([...publications, ...data]);
+            
+            console.log(data);
+
+            
+            if (data.length === 0) {
+                setNoMorePosts(true);
+            }
         })
         promise.catch((error) => {
             console.error(error);
@@ -121,7 +177,12 @@ function Timeline() {
                             </form>
                         </Input>
                     </PostInput>
-                    {/* {publications.map((publication, index) => {
+                    {
+                        newPostsAmount &&
+                        <NewPostsWarning onClick={() => { setRefreshed(true); setReloadPage(!reloadPage);}}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
+                    }
+                    {/* {isLoadingPosts ? <Loading></Loading> : null}
+                    {publications.map((publication, index) => {
                         let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
                         return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
                         )
@@ -129,12 +190,12 @@ function Timeline() {
                     <InfiniteScroll
                         loadMore={fetchPublications}
                         hasMore={!noMorePosts}
+                        initialLoad={false}
                         loader={<Loading key={0}></Loading>}
-                        useWindow={true}
                     >
-                        {publications.map((publication, index) => {
+                        {publications?.map((publication, index) => {
                             let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
-                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
+                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} index={index} selected={info ? true : false} ></Post>
                             )
                         })}
                     </InfiniteScroll>

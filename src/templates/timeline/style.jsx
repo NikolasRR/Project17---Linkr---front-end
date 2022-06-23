@@ -196,3 +196,28 @@ export const NoMorePosts = styled.div`
         letter-spacing: 0.05em;
     }
 `
+
+export const NewPostsWarning = styled.div`
+    cursor: pointer;
+    width: 100%;
+    height: 61px;
+    background: #1877F2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 17px;
+    color: #FFFFFF;
+    p {
+        font-family: 'Lato';
+        font-size: 16px;
+        line-height: 19px;
+        color: #FFFFFF;
+        margin-right: 5px;
+    }
+    
+    @media(max-width: 611px) {
+        border-radius: 0;
+    }
+`
