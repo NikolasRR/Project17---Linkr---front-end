@@ -10,9 +10,9 @@ export default function Result(props){
     return(
         <Main onClick={() => navigate(`/user/${value.id}`,{ state: { userName, profile } })}>
             
-            <img src={value.image} alt ={value.userName} />
-            <p>{value.userName}</p>
-            
+            <img src={profile} alt ={value.userName} />
+            <p>{userName}</p>
+            {value.follower&& <p2>• seguindo</p2>}
         </Main>
     )
 }

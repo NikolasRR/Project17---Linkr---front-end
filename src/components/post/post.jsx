@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { TiHeartFullOutline } from "react-icons/ti";
 import { AiOutlineComment } from "react-icons/ai";
 import { FiSend } from "react-icons/fi";
@@ -7,23 +6,23 @@ import ReactTooltip from "react-tooltip";
 import ReactHashtag from "react-hashtag";
 import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components"
-
+import { MdRepeat } from "react-icons/md"
 import { CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
-import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput, Main, PostBox, CommentImage } from "./style"
+import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput, Repost, ContainerRepost, Main, PostBox, CommentImage } from "./style"
 
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
+import RepostContext from "../../contexts/repostContext";
 
 import Comment from "../comment/comment";
 
-function Post({ userId, id, publicationId, userName, url, profile, content, title, description, image, selected }) {
+function Post({ index, userId, id, publicationId, userName, url, profile, content, title, description, image, selected, repostedBy, repostId, resposts }) {
     const { userData } = useContext(UserContext);
-    const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
+    const { setDeletionData } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
-
+    const { setRepost } = useContext(RepostContext)
     const inputRef = useRef(null);
 
     const [selecionado, setSelecionado] = useState(false)
@@ -32,8 +31,8 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
     const [refresh, setRefresh] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentContent, setCurrentContent] = useState(content);
-    const [newContent, setNewContent] = useState(content);
     const [disabledEdit, setDisabledEdit] = useState(false);
+    const [newContent, setNewContent] = useState();
 
     const [openCommentBox, setOpenCommentBox] = useState(false);
     const [comments, setComments] = useState([]);
@@ -176,10 +175,9 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
 
         try {
             await axios.put(`${process.env.REACT_APP_API_URL}/post?postId=${publicationId}`, { text: currentContent }, { withCredentials: true });
-            setNewContent(currentContent);
             setDisabledEdit(false);
             setIsEditing(false);
-            setReloadPage(!reloadPage);
+            setNewContent(currentContent);
         } catch (error) {
             console.log(error);
             alert('Couldn`t save changes');
@@ -260,9 +258,15 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
 
     return (
         <Main>
+            {/* <Alert alert = "Deseja relamente compartilhar esse post?" bottomCancel="Não, cancelar" bottomConfirm="Sim, compartilhe!"/> */}
+            <Repost model={repostedBy !== undefined ? "false" : "true"}>
+                <MdRepeat className="icon" />
+                <p2>Repostado por <span>{repostId === userData.id ? 'você' : repostedBy}</span></p2>
+            </Repost>
             <Content>
                 <Left>
                     <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
+                    
                     <div onClick={() => {
                         if (selecionado === false) {
                             like()
@@ -274,11 +278,11 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
                         <TiHeartFullOutline style={{ color: selecionado ? "#AC0000" : "#ffffff", cursor: "pointer" }}></TiHeartFullOutline>
 
                         <ContainerCountLikes data-tip data-for="total">
-                            <a data-tip={`${result}`}><p>{total ? `${total} likes ` : null}</p></a>
+                            <a data-tip={`${result}`}><p>{total ? `${total} Likes ` : null}</p></a>
                             <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
                         </ContainerCountLikes>
-
                     </div>
+                    
                     <div onClick={() => {
                         fetchComments()
                         getFollowers()
@@ -288,10 +292,15 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
                         <AiOutlineComment style={{ cursor: "pointer" }} > </AiOutlineComment>
 
                         <ContainerCountLikes>
-                            <p>{totalComments ? `${totalComments} comments ` : null}</p>
+                            <p>{totalComments ? `${totalComments} Comments ` : null}</p>
                         </ContainerCountLikes>
 
                     </div>
+                    
+                    <ContainerRepost onClick={() => setRepost([userData.id, publicationId])}>
+                        <MdRepeat style={{ cursor: "pointer" }} />
+                        <p>{resposts}</p>
+                    </ContainerRepost>
                 </Left>
                 <Publication>
                     <Name>
@@ -300,8 +309,8 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
                             {
                                 userName === userData?.userName &&
                                 <>
-                                    <TiPencil style={{ cursor: "pointer" }} onClick={() => { setIsEditing(!isEditing); inputRef.current.focus(); }}></TiPencil>
-                                    <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId }); setIsModalOpen(true) }}></CgTrash>
+                                    <TiPencil style={{ cursor: "pointer" }} onClick={() => setIsEditing(!isEditing)}></TiPencil>
+                                    <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId, index }); setIsModalOpen(true) }}></CgTrash>
                                 </>
                             }
 
@@ -319,7 +328,7 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
                     }
                     {
                         !isEditing &&
-                        <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent}</ReactHashtag></Text>
+                        <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent ? newContent : content}</ReactHashtag></Text>
                     }
                     <Url target={"_blank"} href={url}>
                         <Data>
@@ -346,12 +355,12 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
 
                             <CommentImage alt={userImage} src={userImage}></CommentImage>
 
-                            
+
                             <input type="text" placeholder="write a comment..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
                             <FiSend onClick={e => {
                                 handleComment(e)
                             }}></FiSend>
-                            
+
 
                         </PostBox>
                         :

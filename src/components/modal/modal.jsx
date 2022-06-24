@@ -13,14 +13,10 @@ function Modal(props) {
 	const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
 	const { publicationId, id } = deletionData;
 	
-
-	console.log(deletionData);
-
 	async function deletePost() {
 		setIsDeleting(true);
 		try {
 			await axios.delete(`${process.env.REACT_APP_API_URL}/post?postId=${publicationId}&linkId=${id}`, { withCredentials: true });
-			setDeletionData({});
 			setIsModalOpen(false);
 			setReloadPage(!reloadPage);
 
