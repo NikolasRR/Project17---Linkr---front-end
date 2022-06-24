@@ -197,7 +197,7 @@ export const NewPostsWarning = styled.div`
     cursor: pointer;
     width: 100%;
     height: 61px;
-    background: #1877F2;
+    background-color: #1877F2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     display: flex;
@@ -216,4 +216,19 @@ export const NewPostsWarning = styled.div`
     @media(max-width: 611px) {
         border-radius: 0;
     }
+`
+
+export const MiniNotice = styled.button`
+    position: fixed;
+    left: calc(50% - 60px);
+    top: 20px;
+    transition: height 150ms ease;
+    width: 120px;
+    height: 30px;
+    background-color: #1877F2;
+    color: #FFFFFF;
+    z-index: 2;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 `

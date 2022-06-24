@@ -23,7 +23,7 @@ function UserPage() {
 
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
     const { deletionData, setDeletionData, reloadPage } = useContext(deletionDataContext);
-    const { userData } = useContext(UserContext);
+    const { userData, switchedUserPage, setSwitchedUserPage } = useContext(UserContext);
     
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -41,8 +41,10 @@ function UserPage() {
     }, [reloadPage]);
 
     function fetchPublications() {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}?start=${start}`, { withCredentials: true })
+        const value = switchedUserPage ? 0 : start;
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}?start=${value}`, { withCredentials: true })
         promise.then(({ data }) => {
+            console.log(data);
             if (data.length > 0) {
                 setStart(start + 10);
             }
@@ -51,6 +53,12 @@ function UserPage() {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
                 setNoMorePosts(true);
+                return;
+            }
+
+            if (switchedUserPage) {
+                setSwitchedUserPage(false);
+                setPublications(data);
                 return;
             }
 
@@ -157,7 +165,7 @@ function UserPage() {
                     >
                         {publications.map((publication, index) => {
                             let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
-                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
+                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} fetchPublications={fetchPublications} ></Post>
                             )
                         })}
                     </InfiniteScroll>
