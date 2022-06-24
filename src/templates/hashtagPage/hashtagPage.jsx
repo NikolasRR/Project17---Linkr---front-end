@@ -51,7 +51,6 @@ function Hashtag() {
         } catch (error) {
             console.log(error.response);
         }
-
     }
 
     function fetchLikes() {

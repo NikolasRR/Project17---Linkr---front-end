@@ -18,7 +18,7 @@ export const Posts = styled.div`
     flex-direction: column;
     min-width: 50%;
     max-width:50%;
-    /* position:relative; */
+
     @media(max-width: 611px) {
         max-width:611px;
     }
@@ -46,8 +46,6 @@ export const Title = styled.p`
         font-size: 33px;
         line-height: 49px;
     }
-
-
 `
 
 export const PostInput = styled.div`
@@ -70,13 +68,13 @@ export const PostInput = styled.div`
         min-height: 164px;
         margin-bottom: 19px;
     }
-
 `
 export const ProfileImage = styled.img`
     width: 53px;
     height: 53px;
     border-radius: 26.5px;
     object-fit: cover; 
+
     @media(max-width: 611px) {
         display:none;
     }
@@ -92,7 +90,6 @@ export const Input = styled.div`
     @media(max-width: 611px) {
         margin-left: 0px;
     }
-
     div{
         width:100%;
         display: flex;
@@ -112,7 +109,6 @@ export const Input = styled.div`
         color: #FFFFFF;
         cursor: pointer;
     }
-  
 `
 
 export const Question = styled.p`

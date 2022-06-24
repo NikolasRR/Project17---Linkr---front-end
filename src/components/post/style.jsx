@@ -12,12 +12,13 @@ export const Content = styled.div`
     justify-content: space-between;
     padding:22px;
     position: relative;
+    z-index: 1;
+    
     @media(max-width: 611px) {
         min-height: 232px;
         border-radius:0;
         margin-bottom: 19px;
     }
-
 `
 
 export const Left = styled.div`
@@ -27,7 +28,7 @@ export const Left = styled.div`
         justify-content: center;
         align-items: center;
         color: #FFF;
-        font-size: 90;
+        font-size: 22px;
         font-weight: 900;
         margin-top: 20px;
     }
@@ -54,13 +55,11 @@ export const ProfileImage = styled.img`
     align-items:center;  
     object-fit: cover;
     cursor: pointer;    
-
     @media(max-width: 611px) {
         width: 40px;
         height: 40px;
         
     }
-
 `
 
 export const Publication = styled.div`
@@ -119,7 +118,6 @@ export const Text = styled.p`
     color: #B7B7B7;
     margin-bottom:10px;
     @media(max-width: 611px) {
-
         font-size: 15px;
         line-height: 18px;
         color: #B7B7B7;
@@ -160,7 +158,6 @@ export const Url = styled.a`
     height: 155px;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
-
 `
 export const Data = styled.div`
     display:flex;
@@ -227,7 +224,6 @@ export const Description = styled.p`
 `
 
 export const ContainerCountLikes = styled.div`
-
     .ReactTooltip{
         font-family: 'Lato';
         font-style: normal;
@@ -239,8 +235,78 @@ export const ContainerCountLikes = styled.div`
         background-color: white;
         cursor: pointer;
     }
-`;
+`
+export const Main = styled.div`
+    width: 100%;
+    position: relative;
+`
+export const PostBox = styled.div`
+    display: flex;
+    min-width: 100%;
+    margin-top: -50px;
+    margin-bottom: 29px;
+    border-radius: 0px 0px 16px 16px;
+    z-index: 0;
+    background-color: #1E1E1E;
 
+    input {
+    width: 85%;
+    height: 39px;
+    margin-top: 35px;
+    margin-left: 14px;
+    padding-left: 15px;
+    border: none;
+    border-radius: 5px;
+    color: #ACACAC;
+    background-color: #252525;
+    cursor: pointer;
+
+    input:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
+
+    ::placeholder{
+        font-family: Lato;
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 17px;
+        letter-spacing: 0.05em;
+        color: #ACACAC
+    }
+    }
+
+    svg{
+        position: absolute;
+        font-size: 16px;
+        color: #F3F3F3;
+        right: 0;
+        margin-right: 45px;
+        bottom: 0;
+        margin-bottom: 55px;
+        z-index: 5;
+        cursor: pointer;
+    }
+`
+export const CommentImage = styled.img`
+    width: 39px;
+    height: 39px;
+    margin-top: 35px;
+    border-radius: 26.5px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;  
+    object-fit: cover;
+    margin-left: 25px;
+    margin-bottom: 16px;
+
+    @media(max-width: 611px) {
+        width: 40px;
+        height: 40px;
+    }
+`
 export const Repost = styled.div`
     
     position: relative;
