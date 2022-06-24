@@ -17,14 +17,14 @@ import deletionDataContext from "../../contexts/deletionDataContext";
 function Hashtag() {
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext)
     const { userData } = useContext(UserContext);
-    const { reloadPage } = useContext(deletionDataContext);
+    const { deletionData, setDeletionData, reloadPage } = useContext(deletionDataContext);
 
     const [errorMessage, setErrorMessage] = useState("");
     const [likesInfo, setLikesInfo] = useState([]);
     const [publications, setPublications] = useState([]);
-    const [lastId, setLastId] = useState(0);
     const [noMorePosts, setNoMorePosts] = useState(false);
-
+    const [start, setStart] = useState(0);
+    console.log(publications);
     const { hashtag } = useParams();
 
     useEffect(() => {
@@ -34,19 +34,32 @@ function Hashtag() {
 
     const getData = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/hashtag/${hashtag}?lastId=${lastId}`, { withCredentials: true });
-            setPublications([...publications, ...data]);
-            
-            if (data.length > 0) {
-                const i = data.length - 1;
-                setLastId(data[i].publicationId);
-                return;
-            }
-            if (data.length === 0 && publications.length === 0) {
-                setErrorMessage("There are no posts with this hashtag");
-                setIsModalOpen(true);
-            }
-            setNoMorePosts(true);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/hashtag/${hashtag}?start=${start}`, { withCredentials: true });
+            console.log(data);
+                if (data.length > 0) {
+                    setStart(start + 10);
+                }
+
+                if (data.length === 0 && publications.length === 0) {
+                    setErrorMessage("There are no posts yet");
+                    setIsModalOpen(true);
+                    setNoMorePosts(true);
+                    return;
+                }
+
+                if (deletionData?.publicationId) {
+                    setPublications(data);
+                    setDeletionData({});
+                    setNoMorePosts(false);
+                    setStart(0);
+                    return;
+                }
+
+                setPublications([...publications, ...data]);
+
+                if (data.length === 0) {
+                    setNoMorePosts(true);
+                }
 
         } catch (error) {
             console.log(error.response);
@@ -68,23 +81,16 @@ function Hashtag() {
 
     return (
         <>
-            {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage}/> : null}
+            {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
             <Header></Header>
             <Content>
                 <Posts>
                     <Title>#{hashtag}</Title>
-                    {/* {post.map((publication, index) => {
-                        let info;
-                        if (likesInfo) {
-                            info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
-                        } return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
-                        )
-                    })} */}
                     <InfiniteScroll
                         loadMore={getData}
                         hasMore={!noMorePosts}
                         loader={<Loading key={0}></Loading>}
-                        useWindow={true}
+                        initialLoad={false}
                     >
                         {publications.map((publication, index) => {
                             let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
