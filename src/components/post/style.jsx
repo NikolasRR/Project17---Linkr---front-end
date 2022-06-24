@@ -125,6 +125,9 @@ export const Text = styled.p`
         color: #B7B7B7;
         margin-bottom: 13px;
     }
+    span{
+        cursor:pointer;
+    }
 `
 
 export const EditInput = styled.input`
