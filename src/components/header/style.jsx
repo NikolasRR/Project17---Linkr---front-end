@@ -189,5 +189,10 @@ export const ResultStyle = styled.div`
     width: 100%;
     background-color: #E7E7E7;
     border-radius: 8px;
-    
+    @media(max-width: 611px) {
+        width: 90vw;
+        left: -45%;
+
+        /* z-index:3; */
+    }
 `;
