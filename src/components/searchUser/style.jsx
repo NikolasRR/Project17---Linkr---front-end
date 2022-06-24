@@ -6,6 +6,7 @@ export const Main = styled.div`
     margin: 16px;
     align-items: center;
     width: 100%;
+    background: #E7E7E7;
     img{
         width: 39px;
         height: 39px;
@@ -17,5 +18,14 @@ export const Main = styled.div`
         font-size: 19px;
         color: #515151;
         
+    }
+    p2{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        margin-left: 1ch;
+        color: #B5B5B5
     }
 `;
