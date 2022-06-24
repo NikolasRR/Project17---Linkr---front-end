@@ -242,20 +242,6 @@ function Post({ index, userId, id, publicationId, userName, url, profile, conten
         })
     }, [refreshComment]);
 
-    function getFollowers() {
-        const id = userData.id
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/comment/follow/${id}`, { withCredentials: true })
-
-        promise.then(({ data }) => {
-            setFollowers(data)
-            console.log("infoFollowers", data)
-        })
-
-        promise.catch((e) => {
-            console.error(e.data)
-        })
-    }
-
     return (
         <Main>
             {/* <Alert alert = "Deseja relamente compartilhar esse post?" bottomCancel="Não, cancelar" bottomConfirm="Sim, compartilhe!"/> */}
@@ -285,7 +271,6 @@ function Post({ index, userId, id, publicationId, userName, url, profile, conten
                     
                     <div onClick={() => {
                         fetchComments()
-                        getFollowers()
                         openCommentBox === false ? setOpenCommentBox(true) : setOpenCommentBox(false)
                     }}>
 

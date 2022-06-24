@@ -1,8 +1,7 @@
 import { BoxComment, ProfileImage, Infos } from "./style"
 
-export default function Comment({ userName, image, content, idUser, commentUserId, infoId }) {
+export default function Comment({ userName, image, content, idUser, commentUserId, follower }) {
 
-    console.log("aquiii vai", infoId.followerId);
 
     return (
         <BoxComment>
@@ -11,7 +10,7 @@ export default function Comment({ userName, image, content, idUser, commentUserI
                 <div>
                     
                     <h1>{userName}</h1>
-                    <span>{commentUserId === idUser ? "• post’s author" : commentUserId == infoId.followerId ? "• following" : null}</span>
+                    <span>{commentUserId === idUser ? "• post’s author" : follower ? "• following" : null}</span>
                 
                 </div>
 

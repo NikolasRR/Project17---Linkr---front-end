@@ -285,7 +285,7 @@ export const PostBox = styled.div`
         right: 0;
         margin-right: 45px;
         bottom: 0;
-        margin-bottom: 55px;
+        margin-bottom: 27px;
         z-index: 5;
         cursor: pointer;
     }
