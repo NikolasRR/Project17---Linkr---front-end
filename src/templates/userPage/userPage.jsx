@@ -41,7 +41,7 @@ function UserPage() {
     }, [reloadPage]);
 
     function fetchPublications() {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/reposts/${id}`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`, { withCredentials: true })
         promise.then(({ data }) => {
             setPublications(data.data)
             if (data.data.length === 0) {
@@ -87,7 +87,7 @@ function UserPage() {
                 })
                 promise.catch((error)=>{
                     console.error(error)
-                    setErrorMessage("Houve um erro ao seguir esse usuário")
+                    setErrorMessage("An error occured while trying to follow this user")
                     setIsModalOpen(true)
                     setIsLoading(false) 
                 })
@@ -99,7 +99,7 @@ function UserPage() {
                 })
                 promise.catch((error)=>{
                     console.error(error)
-                    setErrorMessage("Houve um erro ao deixar de seguir esse usuário")
+                    setErrorMessage("An error occured while trying to follow this user")
                     setIsModalOpen(true)
                     setIsLoading(false) 
                 })

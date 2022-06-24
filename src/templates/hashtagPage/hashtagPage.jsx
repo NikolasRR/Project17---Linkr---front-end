@@ -34,11 +34,11 @@ function Hashtag() {
     const getData = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/hashtag/${hashtag}`, { withCredentials: true });
-            setPost(data);
+            setPost(data.data);           
+            
         } catch (error) {
             console.log(error.response);
         }
-
     }
 
     function fetchLikes() {
