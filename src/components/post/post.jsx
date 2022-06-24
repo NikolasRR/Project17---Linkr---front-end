@@ -1,5 +1,7 @@
 import { TiHeartFullOutline } from "react-icons/ti";
-import axios from "axios"
+import { AiOutlineComment } from "react-icons/ai";
+import { FiSend } from "react-icons/fi";
+import axios from "axios";
 import ReactTooltip from "react-tooltip";
 import ReactHashtag from "react-hashtag";
 import { useState, useContext, useEffect, useRef } from "react";
@@ -7,12 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { MdRepeat } from "react-icons/md"
 import { CgTrash } from "react-icons/cg";
 import { TiPencil } from "react-icons/ti";
-import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput, Repost, ContainerRepost } from "./style"
+import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput, Repost, ContainerRepost, Main, PostBox, CommentImage } from "./style"
 
 import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
-import  RepostContext from "../../contexts/repostContext";
+import RepostContext from "../../contexts/repostContext";
+
+import Comment from "../comment/comment";
 
 function Post({ index, userId, id, publicationId, userName, url, profile, content, title, description, image, selected, repostedBy, repostId, resposts }) {
     const { userData } = useContext(UserContext);
@@ -29,6 +33,14 @@ function Post({ index, userId, id, publicationId, userName, url, profile, conten
     const [currentContent, setCurrentContent] = useState(content);
     const [disabledEdit, setDisabledEdit] = useState(false);
     const [newContent, setNewContent] = useState();
+
+    const [openCommentBox, setOpenCommentBox] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [commentContent, setCommentContent] = useState("");
+    const [totalComments, setTotalComments] = useState([]);
+    const [refreshComment, setRefreshComment] = useState(false)
+    const [followers, setFollowers] = useState("")
+    const userImage = userData.image;
 
     const navigate = useNavigate();
 
@@ -174,81 +186,189 @@ function Post({ index, userId, id, publicationId, userName, url, profile, conten
 
     }
 
+    // Requisição para buscar comentários
 
+    function fetchComments() {
+        const id = publicationId
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/comment/${id}`, { withCredentials: true });
+
+        promise.then(response => {
+            refreshComment === true ? setRefreshComment(false) : setRefreshComment(true)
+            setComments(response.data)
+            console.log("comentários", response.data)
+        })
+
+        promise.catch((e) => {
+            console.error(e.data)
+        })
+    }
+
+    // Requisição para postar um comentário
+
+    function handleComment(e) {
+        e.preventDefault()
+
+        const obj = {
+            userId: userData.id,
+            publicationId: publicationId,
+            content: commentContent
+        }
+
+        console.log("objPost", obj)
+
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/comment`, obj, { withCredentials: true })
+        promise.then(() => {
+            console.log("entrou na requisição do post");
+            setCommentContent("")
+            fetchComments()
+        })
+
+        promise.catch((error) => {
+            console.error(error.data)
+        })
+    }
+
+    //Requisição para contar número de comentários
+    useEffect(() => {
+        const id = publicationId
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/comment/count/${id}`, { withCredentials: true })
+
+        promise.then(({ data }) => {
+            setTotalComments(data)
+        })
+
+        promise.catch((e) => {
+            console.error(e.data)
+        })
+    }, [refreshComment]);
+
+    function getFollowers() {
+        const id = userData.id
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/comment/follow/${id}`, { withCredentials: true })
+
+        promise.then(({ data }) => {
+            setFollowers(data)
+            console.log("infoFollowers", data)
+        })
+
+        promise.catch((e) => {
+            console.error(e.data)
+        })
+    }
 
     return (
-        <>
-        {/* <Alert alert = "Deseja relamente compartilhar esse post?" bottomCancel="Não, cancelar" bottomConfirm="Sim, compartilhe!"/> */}
-        <Repost model = {repostedBy!== undefined? "false":"true"}>
-            <MdRepeat className="icon"/>
-            <p2>Repostado por <span>{repostId===userData.id? 'você' :repostedBy}</span></p2>
-        </Repost>
-        <Content>
-            <Left>
-                <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
-                <div onClick={() => {
-                    if (selecionado === false) {
-                        like()
-                    } else if (selecionado === true) {
-                        deslike()
-                    }
-                }}>
-
-                    <TiHeartFullOutline style={{ color: selecionado ? "#AC0000" : "#ffffff", cursor: "pointer" }}></TiHeartFullOutline>
+        <Main>
+            {/* <Alert alert = "Deseja relamente compartilhar esse post?" bottomCancel="Não, cancelar" bottomConfirm="Sim, compartilhe!"/> */}
+            <Repost model={repostedBy !== undefined ? "false" : "true"}>
+                <MdRepeat className="icon" />
+                <p2>Repostado por <span>{repostId === userData.id ? 'você' : repostedBy}</span></p2>
+            </Repost>
+            <Content>
+                <Left>
+                    <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
                     
-                    <ContainerCountLikes data-tip data-for="total">
-                        <a data-tip={`${result}`}><p>{total ? `${total} likes ` : null}</p></a>
-                        <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
-                    </ContainerCountLikes>
-                </div>
-                <ContainerRepost onClick={() => setRepost([userData.id, publicationId])}>
-                    <MdRepeat style={{ cursor: "pointer" }}/>
-                    <p>{resposts} Repost</p>
-                    </ContainerRepost>
-            </Left>
-            <Publication>
-                <Name>
-                    <p onClick={() => goToUserPage()}>{userName}</p>
-                    <div>
-                        {
-                            userName === userData?.userName &&
-                            <>
-                                <TiPencil style={{ cursor: "pointer" }} onClick={() => setIsEditing(!isEditing)}></TiPencil>
-                                <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId, index }); setIsModalOpen(true) }}></CgTrash>
-                            </>
+                    <div onClick={() => {
+                        if (selecionado === false) {
+                            like()
+                        } else if (selecionado === true) {
+                            deslike()
                         }
+                    }}>
+
+                        <TiHeartFullOutline style={{ color: selecionado ? "#AC0000" : "#ffffff", cursor: "pointer" }}></TiHeartFullOutline>
+
+                        <ContainerCountLikes data-tip data-for="total">
+                            <a data-tip={`${result}`}><p>{total ? `${total} Likes ` : null}</p></a>
+                            <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
+                        </ContainerCountLikes>
+                    </div>
+                    
+                    <div onClick={() => {
+                        fetchComments()
+                        getFollowers()
+                        openCommentBox === false ? setOpenCommentBox(true) : setOpenCommentBox(false)
+                    }}>
+
+                        <AiOutlineComment style={{ cursor: "pointer" }} > </AiOutlineComment>
+
+                        <ContainerCountLikes>
+                            <p>{totalComments ? `${totalComments} Comments ` : null}</p>
+                        </ContainerCountLikes>
 
                     </div>
-                </Name>
+                    
+                    <ContainerRepost onClick={() => setRepost([userData.id, publicationId])}>
+                        <MdRepeat style={{ cursor: "pointer" }} />
+                        <p>{resposts}</p>
+                    </ContainerRepost>
+                </Left>
+                <Publication>
+                    <Name>
+                        <p onClick={() => goToUserPage()}>{userName}</p>
+                        <div>
+                            {
+                                userName === userData?.userName &&
+                                <>
+                                    <TiPencil style={{ cursor: "pointer" }} onClick={() => setIsEditing(!isEditing)}></TiPencil>
+                                    <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId, index }); setIsModalOpen(true) }}></CgTrash>
+                                </>
+                            }
+
+                        </div>
+                    </Name>
+                    {
+                        isEditing &&
+                        <EditInput disabled={disabledEdit} ref={inputRef} value={currentContent} onKeyDown={ev => {
+                            if (ev.code === 'Escape') {
+                                setIsEditing(!isEditing);
+                            } else if (ev.code === 'Enter') {
+                                sendEditedPost();
+                            }
+                        }} onChange={ev => setCurrentContent(ev.target.value)}></EditInput>
+                    }
+                    {
+                        !isEditing &&
+                        <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent ? newContent : content}</ReactHashtag></Text>
+                    }
+                    <Url target={"_blank"} href={url}>
+                        <Data>
+                            <Title>{title}</Title>
+                            <Description>{description}</Description>
+                            <Ancor target={"_blank"} href={url}>{url}</Ancor>
+                        </Data>
+                        <Image><ImageData alt={image} src={image}></ImageData></Image>
+                    </Url>
+                </Publication>
+            </Content>
+            <div>
+                <div>
+                    {
+                        openCommentBox && comments ?
+                            comments.map(comment => <Comment {...comment} infoId={followers} ></Comment>)
+                            :
+                            <></>
+                    }
+                </div>
                 {
-                    isEditing &&
-                    <EditInput disabled={disabledEdit} ref={inputRef} value={currentContent} onKeyDown={ev => {
-                        if (ev.code === 'Escape') {
-                            setIsEditing(!isEditing);
-                        } else if (ev.code === 'Enter') {
-                            sendEditedPost();
-                        }
-                    }} onChange={ev => setCurrentContent(ev.target.value)}></EditInput>
+                    openCommentBox ?
+                        <PostBox>
+
+                            <CommentImage alt={userImage} src={userImage}></CommentImage>
+
+
+                            <input type="text" placeholder="write a comment..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
+                            <FiSend onClick={e => {
+                                handleComment(e)
+                            }}></FiSend>
+
+
+                        </PostBox>
+                        :
+                        <></>
                 }
-                {
-                    !isEditing &&
-                    <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent ? newContent : content}</ReactHashtag></Text>
-                }
-                <Url target={"_blank"} href={url}>
-                    <Data>
-                        <Title>{title}</Title>
-                        <Description>{description}</Description>
-                        <Ancor target={"_blank"} href={url}>{url}</Ancor>
-                    </Data>
-                    <Image><ImageData alt={image} src={image}></ImageData></Image>
-                </Url>
-            </Publication>
-        </Content>
-        </>
+            </div>
+        </Main>
     )
 }
 
 export default Post;
-
-
-
