@@ -46,7 +46,6 @@ function Timeline() {
     useInterval(async () => {
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/newposts?timestamp=${newestPostTS}`, { withCredentials: true });
-            console.log('oi');
             if (res.status === 200) {
                 setNewPostsAmount(res.data.length);
             }
@@ -62,10 +61,10 @@ function Timeline() {
         promise.then(({ data }) => {
             setDelay(15000);
             if (data.length > 0) {
-                setStart(start + 10);
                 if (start === 0) {
                     setNewestPostTS(data[0].timestamp);
                 }
+                setStart(start + 10);
             }
 
             if (data.length === 0 && publications.length === 0) {
