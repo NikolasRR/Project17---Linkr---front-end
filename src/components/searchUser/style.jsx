@@ -7,6 +7,9 @@ export const Main = styled.div`
     align-items: center;
     width: 100%;
     background: #E7E7E7;
+    &:hover {
+        cursor: pointer;
+    }
     img{
         width: 39px;
         height: 39px;
