@@ -3,20 +3,20 @@ import Post from "../../components/post/post";
 import Trending from "../../components/sidebar/sidebar";
 import Modal from "../../components/modal/modal";
 import Loading from "../../components/loading/loading";
-import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NoMorePosts, NewPostsWarning } from "./style";
+import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NoMorePosts, NewPostsWarning, MiniNotice } from "./style";
 import InfiniteScroll from "react-infinite-scroller";
 import AlertRepost from "../../components/repost/repost";
 import { AiOutlineReload } from "react-icons/ai";
 
 import axios from "axios"
-import { useState, useContext, useEffect } from "react"
+import { useState, useContext, useEffect, useRef } from "react"
 import useInterval from "use-interval";
 
 import isLoadingContext from "../../contexts/isLoadingContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import UserContext from "../../contexts/UserContext"
-import  RepostContext from "../../contexts/repostContext";
+import RepostContext from "../../contexts/repostContext";
 
 function Timeline() {
     const { isLoading, setIsLoading } = useContext(isLoadingContext);
@@ -36,8 +36,23 @@ function Timeline() {
     const [newestPostTS, setNewestPostTS] = useState();
     const [refreshed, setRefreshed] = useState(false);
     const [delay, setDelay] = useState(15000);
+    const [isMiniNoticeActive, setIsMiniNoticeActive] = useState(false);
 
-    console.log(publications);
+    const newPostsNotice = useRef(null);
+
+    useEffect(() => {
+        if (newPostsAmount === null) {
+            return;
+        }
+        const observer = new IntersectionObserver((entries, observer) => {
+            const entry = entries[0];
+            setIsMiniNoticeActive(!entry.isIntersecting);
+        });
+        observer.observe(newPostsNotice.current);
+
+    }, [newPostsAmount])
+
+
     useEffect(() => {
         fetchPublications();
         fetchLikes();
@@ -52,7 +67,7 @@ function Timeline() {
         } catch (error) {
             console.log(error);
         }
-        
+
     }, delay);
 
     function fetchPublications() {
@@ -83,9 +98,9 @@ function Timeline() {
                 setStart(0);
                 return;
             }
-            
+
             setPublications([...publications, ...data]);
-            
+
             if (data.length === 0) {
                 setNoMorePosts(true);
             }
@@ -146,7 +161,7 @@ function Timeline() {
     return (
         <>
             {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} errorMessage={errorMessage} /> : null}
-            {repost.length>0? <AlertRepost/>:null}
+            {repost.length > 0 ? <AlertRepost /> : null}
             <Header></Header>
             <Content>
                 <Posts>
@@ -164,7 +179,11 @@ function Timeline() {
                     </PostInput>
                     {
                         newPostsAmount &&
-                        <NewPostsWarning onClick={() => { setStart(0); setRefreshed(true); setReloadPage(!reloadPage);}}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
+                        <NewPostsWarning ref={newPostsNotice} onClick={() => { window.scrollTo(0, 0); setStart(0); setRefreshed(true); setReloadPage(!reloadPage); }}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
+                    }
+                    {
+                        isMiniNoticeActive && newPostsAmount &&
+                        <MiniNotice onClick={() => { window.scrollTo(0, 0); setStart(0); setRefreshed(true); setReloadPage(!reloadPage); }}>New Posts</MiniNotice>
                     }
                     <InfiniteScroll
                         loadMore={fetchPublications}

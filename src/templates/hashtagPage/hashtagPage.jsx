@@ -24,7 +24,7 @@ function Hashtag() {
     const [publications, setPublications] = useState([]);
     const [noMorePosts, setNoMorePosts] = useState(false);
     const [start, setStart] = useState(0);
-    console.log(publications);
+    
     const { hashtag } = useParams();
 
     useEffect(() => {
@@ -35,7 +35,7 @@ function Hashtag() {
     const getData = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/hashtag/${hashtag}?start=${start}`, { withCredentials: true });
-            console.log(data);
+            
                 if (data.length > 0) {
                     setStart(start + 10);
                 }

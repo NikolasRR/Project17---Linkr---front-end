@@ -19,8 +19,8 @@ import RepostContext from "../../contexts/repostContext";
 import Comment from "../comment/comment";
 
 function Post({ index, userId, id, publicationId, userName, url, profile, content, title, description, image, selected, repostedBy, repostId, resposts }) {
-    const { userData } = useContext(UserContext);
-    const { setDeletionData } = useContext(deletionDataContext)
+    const { userData, setSwitchedUserPage } = useContext(UserContext);
+    const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
     const { setRepost } = useContext(RepostContext)
     const inputRef = useRef(null);
@@ -167,7 +167,9 @@ function Post({ index, userId, id, publicationId, userName, url, profile, conten
     }
 
     function goToUserPage() {
-        navigate(`/user/${userId}`, { state: { userName, profile } })
+        navigate(`/user/${userId}`, { state: { userName, profile } });
+        setSwitchedUserPage(true);
+        setReloadPage(!reloadPage);
     }
 
     async function sendEditedPost() {

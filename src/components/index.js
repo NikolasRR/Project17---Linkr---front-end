@@ -16,19 +16,21 @@ import RepostContext from "../contexts/repostContext";
 
 function App() {
     const [likesInfo, setLikesInfo] = useState({});
-    const [isLoading, setIsLoading] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [deletionData, setDeletionData] = useState({});
     const [reloadPage, setReloadPage] = useState(false);
-    const [userData, setUserData] = useState({})
+    const [userData, setUserData] = useState({});
     const [repost, setRepost] = useState([]);
+    const [switchedUserPage, setSwitchedUserPage] = useState(false);
+
     return (
         <>
             <BrowserRouter>
                 <deletionDataContext.Provider value={{ deletionData, setDeletionData, reloadPage, setReloadPage }}>
                     <isLoadingContext.Provider value={{ isLoading, setIsLoading }}>
                         <isModalOpenContext.Provider value={{ isModalOpen, setIsModalOpen }}>
-                            <UserContext.Provider value={{ userData, setUserData }}>
+                            <UserContext.Provider value={{ userData, setUserData, switchedUserPage, setSwitchedUserPage }}>
                                 <RepostContext.Provider value={{repost, setRepost}}>
                                     <PersistLogin />
                                     <Routes>
