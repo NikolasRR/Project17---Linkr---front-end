@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { TiHeartFullOutline } from "react-icons/ti";
 import axios from "axios"
 import ReactTooltip from "react-tooltip";
@@ -14,15 +13,13 @@ import UserContext from "../../contexts/UserContext";
 import deletionDataContext from "../../contexts/deletionDataContext";
 import isModalOpenContext from "../../contexts/isModalOpenContext";
 import  RepostContext from "../../contexts/repostContext";
-// import Alert from "./../alert/alert"
 
-function Post({ userId, id, publicationId, userName, url, profile, content, title, description, image, selected, repostedBy, repostId, resposts}) {
+function Post({ index, userId, id, publicationId, userName, url, profile, content, title, description, image, selected, repostedBy, repostId, resposts }) {
     const { userData } = useContext(UserContext);
-    const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
+    const { setDeletionData } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
     const { setRepost } = useContext(RepostContext)
     const inputRef = useRef(null);
-    console.log(content);
 
     const [selecionado, setSelecionado] = useState(false)
     const [total, setTotal] = useState([]);
@@ -31,6 +28,7 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
     const [isEditing, setIsEditing] = useState(false);
     const [currentContent, setCurrentContent] = useState(content);
     const [disabledEdit, setDisabledEdit] = useState(false);
+    const [newContent, setNewContent] = useState();
 
     const navigate = useNavigate();
 
@@ -167,7 +165,7 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
             await axios.put(`${process.env.REACT_APP_API_URL}/post?postId=${publicationId}`, { text: currentContent }, { withCredentials: true });
             setDisabledEdit(false);
             setIsEditing(false);
-            setReloadPage(!reloadPage);
+            setNewContent(currentContent);
         } catch (error) {
             console.log(error);
             alert('Couldn`t save changes');
@@ -184,7 +182,6 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
         <Repost model = {repostedBy!== undefined? "false":"true"}>
             <MdRepeat className="icon"/>
             <p2>Repostado por <span>{repostId===userData.id? 'você' :repostedBy}</span></p2>
-            {console.log(userData.id)}
         </Repost>
         <Content>
             <Left>
@@ -217,7 +214,7 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
                             userName === userData?.userName &&
                             <>
                                 <TiPencil style={{ cursor: "pointer" }} onClick={() => setIsEditing(!isEditing)}></TiPencil>
-                                <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId }); setIsModalOpen(true) }}></CgTrash>
+                                <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId, index }); setIsModalOpen(true) }}></CgTrash>
                             </>
                         }
 
@@ -235,7 +232,7 @@ function Post({ userId, id, publicationId, userName, url, profile, content, titl
                 }
                 {
                     !isEditing &&
-                    <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{content}</ReactHashtag></Text>
+                    <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent ? newContent : content}</ReactHashtag></Text>
                 }
                 <Url target={"_blank"} href={url}>
                     <Data>

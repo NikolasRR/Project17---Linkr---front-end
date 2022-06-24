@@ -3,8 +3,9 @@ import Post from "../../components/post/post";
 import Trending from "../../components/sidebar/sidebar";
 import Modal from "../../components/modal/modal";
 import Loading from "../../components/loading/loading";
+import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NoMorePosts, NewPostsWarning } from "./style";
+import InfiniteScroll from "react-infinite-scroller";
 import AlertRepost from "../../components/repost/repost";
-import { Content, Posts, Sidebar, Title, PostInput, ProfileImage, Input, Question, UrlInput, TextInput, NewPostsWarning } from "./style";
 import { AiOutlineReload } from "react-icons/ai";
 
 import axios from "axios"
@@ -20,7 +21,7 @@ import  RepostContext from "../../contexts/repostContext";
 function Timeline() {
     const { isLoading, setIsLoading } = useContext(isLoadingContext);
     const { isModalOpen, setIsModalOpen } = useContext(isModalOpenContext);
-    const { reloadPage, setReloadPage } = useContext(deletionDataContext);
+    const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
     const { userData } = useContext(UserContext);
     const { repost } = useContext(RepostContext)
 
@@ -28,13 +29,15 @@ function Timeline() {
     const [text, setText] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
-    const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [likesInfo, setLikesInfo] = useState([]);
+    const [start, setStart] = useState(0);
+    const [noMorePosts, setNoMorePosts] = useState(false);
     const [newPostsAmount, setNewPostsAmount] = useState(null);
-    const [newestPostId, setNewestPostId] = useState();
-    const [delay, setDelay] = useState(null);
+    const [newestPostTS, setNewestPostTS] = useState();
+    const [refreshed, setRefreshed] = useState(false);
+    const [delay, setDelay] = useState(15000);
 
-
+    console.log(publications);
     useEffect(() => {
         fetchPublications();
         fetchLikes();
@@ -42,9 +45,10 @@ function Timeline() {
 
     useInterval(async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/newposts?lastPostId=${newestPostId}`, { withCredentials: true });
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/newposts?timestamp=${newestPostTS}`, { withCredentials: true });
+            console.log('oi');
             if (res.status === 200) {
-                setNewPostsAmount(res.data.amount);
+                setNewPostsAmount(res.data.length);
             }
         } catch (error) {
             console.log(error);
@@ -54,20 +58,38 @@ function Timeline() {
 
     function fetchPublications() {
         setDelay(null);
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline`, { withCredentials: true })
-        promise.then(({data}) => {
-            setPublications(data.data);
-            setNewPostsAmount(null);
-            setNewestPostId(data.data[0].publicationId);
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline?start=${start}`, { withCredentials: true });
+        promise.then(({ data }) => {
             setDelay(15000);
+            if (data.length > 0) {
+                setStart(start + 10);
+                if (start === 0) {
+                    setNewestPostTS(data[0].timestamp);
+                }
+            }
 
-            if (data.data.length === 0) {
+            if (data.length === 0 && publications.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
-                setPublications(data.data);
+                setNoMorePosts(true);
+                return;
             }
-            // setPublications(response.data.data);
-            setIsLoadingPosts(false);
+
+            if (deletionData?.publicationId || refreshed) {
+                setPublications(data);
+                setDeletionData({});
+                setRefreshed(false);
+                setNewPostsAmount(null);
+                setNoMorePosts(false);
+                setStart(0);
+                return;
+            }
+            
+            setPublications([...publications, ...data]);
+            
+            if (data.length === 0) {
+                setNoMorePosts(true);
+            }
         })
         promise.catch((error) => {
             console.error(error);
@@ -109,8 +131,10 @@ function Timeline() {
         promise.then(() => {
             setUrl("");
             setText("");
+            setStart(0);
             setIsLoading(false);
-            window.location.reload();
+            setRefreshed(true);
+            setReloadPage(!reloadPage);
         })
         promise.catch((error) => {
             setIsLoading(false);
@@ -141,15 +165,24 @@ function Timeline() {
                     </PostInput>
                     {
                         newPostsAmount &&
-                        <NewPostsWarning onClick={() => setReloadPage(!reloadPage)}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
+                        <NewPostsWarning onClick={() => { setStart(0); setRefreshed(true); setReloadPage(!reloadPage);}}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
                     }
-                    {isLoadingPosts ? <Loading></Loading> : null}
-                    {publications.map((publication, index) => {
-                        let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
-                        return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} selected={info ? true : false} ></Post>
-                        )
-                    })}
-
+                    <InfiniteScroll
+                        loadMore={fetchPublications}
+                        hasMore={!noMorePosts}
+                        initialLoad={false}
+                        loader={<Loading key={0}></Loading>}
+                    >
+                        {publications?.map((publication, index) => {
+                            let info = likesInfo.find((like) => like.publicationId === publication.publicationId && like.userId === userData.id)
+                            return (<Post key={index} {...publication} setIsModalOpen={setIsModalOpen} index={index} selected={info ? true : false} ></Post>
+                            )
+                        })}
+                    </InfiniteScroll>
+                    {
+                        noMorePosts &&
+                        <NoMorePosts><p>{errorMessage !== '' ? "There are no posts yet" : 'There are no more posts!'}</p></NoMorePosts>
+                    }
                 </Posts>
                 <Sidebar><Trending></Trending></Sidebar>
             </Content>

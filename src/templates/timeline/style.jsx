@@ -183,6 +183,20 @@ export const TextInput = styled.input`
     }
 `
 
+export const NoMorePosts = styled.div`
+    width: 100%;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    p {
+        color: #6D6D6D;
+        font-family: 'Lato';
+        font-size: 22px;
+        line-height: 26px;
+        letter-spacing: 0.05em;
+    }
+`
+
 export const NewPostsWarning = styled.div`
     cursor: pointer;
     width: 100%;
