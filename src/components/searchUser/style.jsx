@@ -31,4 +31,5 @@ export const Main = styled.div`
         margin-left: 1ch;
         color: #B5B5B5
     }
+
 `;
