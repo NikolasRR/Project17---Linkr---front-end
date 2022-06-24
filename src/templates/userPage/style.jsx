@@ -70,8 +70,20 @@ export const Title = styled.p`
         font-size: 33px;
         line-height: 49px;
     }
+`
 
-
+export const NoMorePosts = styled.div`
+    width: 100%;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    p {
+        color: #6D6D6D;
+        font-family: 'Lato';
+        font-size: 22px;
+        line-height: 26px;
+        letter-spacing: 0.05em;
+    }
 `
 
 export const Follow = styled.button`
