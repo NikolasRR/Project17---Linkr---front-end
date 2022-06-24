@@ -30,8 +30,6 @@ function SignUp() {
         image: userData.image
     }
 
-    console.log(objRegister)
-
     const URL = `${process.env.REACT_APP_API_URL}/sign-up`;
     
     const handleRegister = async function (e) {
@@ -44,10 +42,17 @@ function SignUp() {
             return;
         }
 
+        if (userData.image.length > 150) {
+            alert("URL da imagem muito grande!");
+            setIsLoading(false);
+            return;
+        }
+
         try {
             await axios.post(URL, objRegister)
                 .then(res => {
-                    setIsLoading(false)
+                    setIsLoading(false);
+                    setUserData({});
                     navigate("/");
                 });
 
