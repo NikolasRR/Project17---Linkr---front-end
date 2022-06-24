@@ -1,11 +1,14 @@
 import  RepostContext from "../../contexts/repostContext";
+import deletionDataContext from "../../contexts/deletionDataContext";
+
 import { useContext } from "react";
 import axios from "axios";
 
 import { ModalBackground, ModalContainer, Body, Footer, Cancel, DeleteIt } from "../modal/style"
 
 export default function AlertRepost(){
-	const { repost, setRepost } = useContext(RepostContext)
+	const { repost, setRepost } = useContext(RepostContext);
+	const { reloadPage, setReloadPage } = useContext(deletionDataContext);
 
 	const sendData = async()=>{
 		const body ={
@@ -15,6 +18,7 @@ export default function AlertRepost(){
 		try {
 			await axios.post(`${process.env.REACT_APP_API_URL}/reposts`,body, { withCredentials: true });
 			setRepost([]);
+			setReloadPage(!reloadPage);
 		} catch (error) {
 			setRepost([]);
 			alert(error);

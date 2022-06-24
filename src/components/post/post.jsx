@@ -16,7 +16,7 @@ import  RepostContext from "../../contexts/repostContext";
 
 function Post({ index, userId, id, publicationId, userName, url, profile, content, title, description, image, selected, repostedBy, repostId, resposts }) {
     const { userData } = useContext(UserContext);
-    const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
+    const { setDeletionData } = useContext(deletionDataContext)
     const { setIsModalOpen } = useContext(isModalOpenContext)
     const { setRepost } = useContext(RepostContext)
     const inputRef = useRef(null);
@@ -182,7 +182,6 @@ function Post({ index, userId, id, publicationId, userName, url, profile, conten
         <Repost model = {repostedBy!== undefined? "false":"true"}>
             <MdRepeat className="icon"/>
             <p2>Repostado por <span>{repostId===userData.id? 'você' :repostedBy}</span></p2>
-            {console.log(userData.id)}
         </Repost>
         <Content>
             <Left>

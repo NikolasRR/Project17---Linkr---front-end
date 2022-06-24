@@ -30,11 +30,12 @@ function Timeline() {
     const [errorMessage, setErrorMessage] = useState("");
     const [publications, setPublications] = useState([]);
     const [likesInfo, setLikesInfo] = useState([]);
-    const [lastId, setLastId] = useState(0);
+    const [start, setStart] = useState(0);
     const [noMorePosts, setNoMorePosts] = useState(false);
     const [newPostsAmount, setNewPostsAmount] = useState(null);
-    const [newestPostId, setNewestPostId] = useState(0);
+    const [newestPostTS, setNewestPostTS] = useState();
     const [refreshed, setRefreshed] = useState(false);
+    const [delay, setDelay] = useState(15000);
 
     console.log(publications);
     useEffect(() => {
@@ -44,54 +45,47 @@ function Timeline() {
 
     useInterval(async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/newposts?lastPostId=${newestPostId}`, { withCredentials: true });
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/newposts?timestamp=${newestPostTS}`, { withCredentials: true });
+            console.log('oi');
             if (res.status === 200) {
-                setNewPostsAmount(res.data.amount);
-                setLastId(0);
+                setNewPostsAmount(res.data.length);
             }
         } catch (error) {
             console.log(error);
         }
         
-    }, 15000);
+    }, delay);
 
     function fetchPublications() {
-        const value = deletionData.publicationId || refreshed ? 0 : lastId;
-        console.log('lastId: ', lastId);
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline?lastId=${value}`, { withCredentials: true });
-        
+        setDelay(null);
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timeline?start=${start}`, { withCredentials: true });
         promise.then(({ data }) => {
-            console.log(data);
+            setDelay(15000);
             if (data.length > 0) {
-                const i = data.length - 1;
-                setLastId(data[i].publicationId);
-                if (data[0].publicationId > newestPostId) {
-                    setNewestPostId(data[0].publicationId);
+                setStart(start + 10);
+                if (start === 0) {
+                    setNewestPostTS(data[0].timestamp);
                 }
             }
 
             if (data.length === 0 && publications.length === 0) {
                 setErrorMessage("There are no posts yet");
                 setIsModalOpen(true);
+                setNoMorePosts(true);
                 return;
             }
 
             if (deletionData?.publicationId || refreshed) {
-                console.log('deletou ou refreshou');
-                console.log(data);
                 setPublications(data);
                 setDeletionData({});
                 setRefreshed(false);
                 setNewPostsAmount(null);
                 setNoMorePosts(false);
+                setStart(0);
                 return;
             }
             
-            console.log('puxou mais posts ou iniciou');
             setPublications([...publications, ...data]);
-            
-            console.log(data);
-
             
             if (data.length === 0) {
                 setNoMorePosts(true);
@@ -137,8 +131,10 @@ function Timeline() {
         promise.then(() => {
             setUrl("");
             setText("");
+            setStart(0);
             setIsLoading(false);
-            window.location.reload();
+            setRefreshed(true);
+            setReloadPage(!reloadPage);
         })
         promise.catch((error) => {
             setIsLoading(false);
@@ -169,7 +165,7 @@ function Timeline() {
                     </PostInput>
                     {
                         newPostsAmount &&
-                        <NewPostsWarning onClick={() => { setRefreshed(true); setReloadPage(!reloadPage);}}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
+                        <NewPostsWarning onClick={() => { setStart(0); setRefreshed(true); setReloadPage(!reloadPage);}}><p>{newPostsAmount} new posts, load more!</p><AiOutlineReload></AiOutlineReload></NewPostsWarning>
                     }
                     <InfiniteScroll
                         loadMore={fetchPublications}
@@ -185,7 +181,7 @@ function Timeline() {
                     </InfiniteScroll>
                     {
                         noMorePosts &&
-                        <NoMorePosts><p>There are no more posts!</p></NoMorePosts>
+                        <NoMorePosts><p>{errorMessage !== '' ? "There are no posts yet" : 'There are no more posts!'}</p></NoMorePosts>
                     }
                 </Posts>
                 <Sidebar><Trending></Trending></Sidebar>
