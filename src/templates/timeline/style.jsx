@@ -40,7 +40,7 @@ export const Title = styled.p`
     line-height: 64px;
     color: #FFFFFF;
     @media(max-width: 611px) {
-        margin-top: 19px;
+        margin-top: 90px;
         margin-bottom: 19px;
         margin-left: 19px;
         font-size: 33px;

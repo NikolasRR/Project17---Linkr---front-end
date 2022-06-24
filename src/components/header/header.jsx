@@ -9,7 +9,7 @@ import  { DebounceInput }  from  'react-debounce-input' ;
 import UserContext from "../../contexts/UserContext";
 
 
-import { Main, Logo, Middle, Input, Rigth, ProfileImage, UserOptions, LogoutOption, ResultStyle, Content } from "./../header/style"
+import { Main, Logo, Middle, Input, Rigth, ProfileImage, UserOptions, Option, ResultStyle, Content } from "./../header/style"
 
 function Header() {
     const navigate = useNavigate();
@@ -44,7 +44,11 @@ function Header() {
             alert('Something went wrong');
         }
     }
-
+    function goToUserPage() {
+        const profile = userData.image;
+        const userName = userData.userName
+        navigate(`/user/${userData.id}`, { state: { userName, profile } })
+    }
 
 
     return (
@@ -67,7 +71,11 @@ function Header() {
             <Rigth onClick={() => setMenuOpen(!menuOpen)}>
                 <div>{menuOpen ? <IoIosArrowUp></IoIosArrowUp> : <IoIosArrowDown></IoIosArrowDown>}</div>
                 <ProfileImage src={userData.image}></ProfileImage>
-                <UserOptions opened={menuOpen}><LogoutOption opened={menuOpen} onClick={() => logout()}>Logout</LogoutOption></UserOptions>
+                <UserOptions opened={menuOpen}>
+                    <Option opened={menuOpen} onClick={() => goToUserPage()}>Mypage</Option>
+                    <Option opened={menuOpen} onClick={() => logout()}>Logout</Option>
+                    
+                </UserOptions>
             </Rigth>
         </Main>
     )

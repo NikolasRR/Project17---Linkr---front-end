@@ -78,7 +78,11 @@ export const Middle = styled.div`
     }  
     
     @media(max-width: 611px) {
-        display:none;
+
+        margin-top: 150px;
+        width: 90vw;
+        right: 21vw;
+        /* display:none; */
     }
 
 `
@@ -138,27 +142,31 @@ export const Rigth = styled.div`
 `
 
 export const UserOptions = styled.div`
-    position: fixed;
+    position: absolute;
     right: 0;
     top: 72px;
     background-color: #171717;
     border-radius: 0px 0px 0 20px;
     display: ${({opened}) => opened ? "initial" : "none"};
     width: ${({opened}) => opened ? "130px" : "0px"};
-    height: ${({opened}) => opened ? "47px" : "0px"};
-    transition: height 300ms ease;
+    height: ${({opened}) => opened ? "55px" : "0px"};
+    transition: height 150ms ease;
     letter-spacing: 0.05em;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    padding-bottom: 5px;
 `
 
-export const LogoutOption = styled.p`
+export const Option = styled.p`
     display: ${({opened}) => opened ? "initial" : "none"};
     font-weight: 700;
     font-family: 'Lato';
     font-size: 17px;
     line-height: 20px;
+    margin-bottom: 5px;
+    
     &:hover {
         cursor: pointer;
     }
