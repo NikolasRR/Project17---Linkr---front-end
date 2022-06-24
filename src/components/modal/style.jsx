@@ -55,6 +55,9 @@ export const OkButton = styled.div`
     font-size: 18px;
     line-height: 22px;
     color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 `
 

@@ -12,6 +12,7 @@ function Modal(props) {
 
 	const { deletionData, setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext);
 	const { publicationId, id } = deletionData;
+	
 
 	console.log(deletionData);
 
@@ -26,6 +27,7 @@ function Modal(props) {
 		} catch (error) {
 			console.log(error);
 			alert('It was not possible to delete the post');
+			setIsModalOpen(false);
 		}
 	}
 

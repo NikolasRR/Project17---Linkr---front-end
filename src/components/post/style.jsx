@@ -11,6 +11,8 @@ export const Content = styled.div`
     align-items: flex-start;
     justify-content: space-between;
     padding:22px;
+    position: relative;
+    z-index: 1;
     
     @media(max-width: 611px) {
         min-height: 232px;
@@ -20,17 +22,17 @@ export const Content = styled.div`
 `
 
 export const Left = styled.div`
-    div{   display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #FFF;
-            font-size: 25px;
-            font-weight: 900;
-            margin-top: 20px;
-            border: white;
-        }
-        p{
+    div{   
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #FFF;
+        font-size: 22px;
+        font-weight: 900;
+        margin-top: 20px;
+    }
+    p{
             font-family: 'Lato';
             font-style: normal;
             font-weight: 400;
@@ -40,9 +42,6 @@ export const Left = styled.div`
             color: #FFFFFF;
             margin-top: -17px;
         } 
-        .Heart{
-                border: white;
-            }
 `
 export const ProfileImage = styled.img`
     width: 53px;
@@ -53,7 +52,6 @@ export const ProfileImage = styled.img`
     align-items:center;  
     object-fit: cover;
     cursor: pointer;    
-
     @media(max-width: 611px) {
         width: 40px;
         height: 40px;
@@ -106,8 +104,9 @@ export const Name = styled.div`
 `
 
 export const Text = styled.p`
-    width: 100%;
-    height: 52px;
+    max-width: 100%;
+    word-wrap: break-word;
+    min-height: 52px;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -123,6 +122,27 @@ export const Text = styled.p`
     }
 `
 
+export const EditInput = styled.input`
+    width: 100%;
+    height: 52px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #B7B7B7;
+    margin-bottom:10px;
+    border-radius: 7px;
+    border: none;
+    color: #4C4C4C;
+    @media(max-width: 611px) {
+        font-size: 12px;
+        line-height: 15px;
+        color: #B7B7B7;
+        margin-bottom: 13px;
+    }
+`
+
 export const Url = styled.a`
     width: 100%;
     display:flex;
@@ -132,7 +152,6 @@ export const Url = styled.a`
     height: 155px;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
-
 `
 export const Data = styled.div`
     display:flex;
@@ -149,7 +168,9 @@ export const Image = styled.div`
     justify-content: center;
     width: 30%;  
     border-left : 1px solid #4D4D4D;
+    
 `
+
 export const ImageData = styled.img`
     /* object-fit: contain; */
     border-top-right-radius: 9px;
@@ -183,6 +204,7 @@ export const Ancor = styled.a`
     overflow: hidden;
     width: 100%;
 `
+
 export const Description = styled.p`
     font-family: 'Lato';
     font-style: normal;
@@ -193,4 +215,89 @@ export const Description = styled.p`
     height: 40%;
     overflow: hidden;
     width: 100%;
+`
+
+export const ContainerCountLikes = styled.div`
+    .ReactTooltip{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
+        color: #505050;
+        background-color: white;
+        cursor: pointer;
+    }
+`
+export const Main = styled.div`
+    width: 100%;
+    position: relative;
+`
+export const PostBox = styled.div`
+    display: flex;
+    min-width: 100%;
+    margin-top: -50px;
+    margin-bottom: 29px;
+    border-radius: 0px 0px 16px 16px;
+    z-index: 0;
+    background-color: #1E1E1E;
+
+    input {
+    width: 85%;
+    height: 39px;
+    margin-top: 35px;
+    margin-left: 14px;
+    padding-left: 15px;
+    border: none;
+    border-radius: 5px;
+    color: #ACACAC;
+    background-color: #252525;
+    cursor: pointer;
+
+    input:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
+
+    ::placeholder{
+        font-family: Lato;
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 17px;
+        letter-spacing: 0.05em;
+        color: #ACACAC
+    }
+    }
+
+    svg{
+        position: absolute;
+        font-size: 16px;
+        color: #F3F3F3;
+        right: 0;
+        margin-right: 45px;
+        bottom: 0;
+        margin-bottom: 55px;
+        z-index: 5;
+        cursor: pointer;
+    }
+`
+export const CommentImage = styled.img`
+    width: 39px;
+    height: 39px;
+    margin-top: 35px;
+    border-radius: 26.5px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;  
+    object-fit: cover;
+    margin-left: 25px;
+    margin-bottom: 16px;
+
+    @media(max-width: 611px) {
+        width: 40px;
+        height: 40px;
+    }
 `

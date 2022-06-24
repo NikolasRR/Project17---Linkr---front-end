@@ -1,21 +1,55 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { TiHeartFullOutline } from "react-icons/ti";
-import { useState } from "react";
-import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image } from "./style"
-import { useEffect, useContext } from "react";
-
-import axios from "axios"
+import { AiOutlineComment } from "react-icons/ai";
+import { FiSend } from "react-icons/fi";
+import axios from "axios";
 import ReactTooltip from "react-tooltip";
-import styled from "styled-components";
+import ReactHashtag from "react-hashtag";
+import { useState, useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components"
+
+import { CgTrash } from "react-icons/cg";
+import { TiPencil } from "react-icons/ti";
+import { Content, ProfileImage, Publication, Name, Text, Url, Left, Data, Title, Description, Ancor, Image, ImageData, ContainerCountLikes, EditInput, Main, PostBox, CommentImage } from "./style"
+
 import UserContext from "../../contexts/UserContext";
+import deletionDataContext from "../../contexts/deletionDataContext";
+import isModalOpenContext from "../../contexts/isModalOpenContext";
 
-function Post({ userName, publicationId, url, profile, content, title, description, image, selected }) {
+import Comment from "../comment/comment";
 
+function Post({ userId, id, publicationId, userName, url, profile, content, title, description, image, selected }) {
     const { userData } = useContext(UserContext);
+    const { setDeletionData, reloadPage, setReloadPage } = useContext(deletionDataContext)
+    const { setIsModalOpen } = useContext(isModalOpenContext)
+
+    const inputRef = useRef(null);
 
     const [selecionado, setSelecionado] = useState(false)
     const [total, setTotal] = useState([]);
-    const [result, setResult] = useState("")
-    const [refresh, setRefresh] = useState([])
+    const [result, setResult] = useState("");
+    const [refresh, setRefresh] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentContent, setCurrentContent] = useState(content);
+    const [newContent, setNewContent] = useState(content);
+    const [disabledEdit, setDisabledEdit] = useState(false);
+
+    const [openCommentBox, setOpenCommentBox] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [commentContent, setCommentContent] = useState("");
+    const [totalComments, setTotalComments] = useState([]);
+    const [refreshComment, setRefreshComment] = useState(false)
+    const [followers, setFollowers] = useState("")
+    const userImage = userData.image;
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isEditing) {
+            inputRef.current.focus();
+        }
+    }, [isEditing, disabledEdit]);
 
     useEffect(() => {
 
@@ -25,11 +59,11 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
             setSelecionado(false)
         }
 
-    }, [selected])
+    }, [selected]);
 
     useEffect(() => {
         const id = publicationId
-        const promise = axios.get(`http://localhost:5000/like/count/${id}`, { withCredentials: true })
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/like/count/${id}`, { withCredentials: true })
 
         promise.then(({ data }) => {
             setTotal(data)
@@ -38,22 +72,21 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
         promise.catch((e) => {
             console.error(e.data)
         })
-    }, [selecionado])
+    }, [selecionado]);
 
     useEffect(() => {
         const id = publicationId
 
-        const promise = axios.get(`http://localhost:5000/like/get/${id}`, { withCredentials: true });
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/like/get/${id}`, { withCredentials: true });
 
         promise.then((response) => {
-            console.log("NOVO", response)
             setRefresh(response.data)
         })
         promise.catch((e) => {
             console.error(e)
         })
 
-    }, [total])
+    }, [total]);
 
     useEffect(() => {
 
@@ -61,30 +94,30 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
 
         for (let i = 0; i < refresh.length; i++) {
 
-            if (refresh[i].userName != userData.userName) {
+            if (refresh[i].userName !== userData.userName) {
                 newLikesNames.push(refresh[i].userName);
             }
         }
 
         let res = '';
 
-        if (refresh.length == 0) {
+        if (refresh.length === 0) {
             res = null;
             setResult(res)
 
-        } else if (refresh.length == 1 && selecionado) {
+        } else if (refresh.length === 1 && selecionado) {
             res = "Você curtiu";
             setResult(res)
 
-        } else if (newLikesNames.length == 1 && !selecionado) {
-            res = `Curtido por ${newLikesNames[0]}`
+        } else if (newLikesNames.length === 1 && !selecionado) {
+            res = ` Curtido por ${newLikesNames[0]}`
             setResult(res)
 
-        } else if (refresh.length == 2 && selecionado) {
+        } else if (refresh.length === 2 && selecionado) {
             res = `Voce e ${newLikesNames[0]} curtiram`
             setResult(res)
 
-        } else if (newLikesNames.length == 2 && !selecionado) {
+        } else if (newLikesNames.length === 2 && !selecionado) {
             res = `${newLikesNames[0]} e ${newLikesNames[1]} curtiram`
             setResult(res)
 
@@ -105,7 +138,7 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
             publicationId: publicationId
         }
 
-        const promise = axios.post("http://localhost:5000/like", body, { withCredentials: true })
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/like`, body, { withCredentials: true })
         promise.then(() => {
             //console.log("entrou aqui")
             setSelecionado(true)
@@ -117,8 +150,8 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
     }
 
     function deslike() {
-        const id = publicationId
-        const promise = axios.delete(`http://localhost:5000/like/${id}`, { withCredentials: true })
+        const id = publicationId;
+        const promise = axios.delete(`${process.env.REACT_APP_API_URL}/like/${id}`, { withCredentials: true });
 
         promise.then(() => {
             setSelecionado(false)
@@ -129,57 +162,204 @@ function Post({ userName, publicationId, url, profile, content, title, descripti
         })
     }
 
+    function hashtagClick(hashtag) {
+        const aux = hashtag.replace("#", "")
+        navigate(`/hashtag/${aux}`)
+    }
+
+    function goToUserPage() {
+        navigate(`/user/${userId}`, { state: { userName, profile } })
+    }
+
+    async function sendEditedPost() {
+        setDisabledEdit(true);
+
+        try {
+            await axios.put(`${process.env.REACT_APP_API_URL}/post?postId=${publicationId}`, { text: currentContent }, { withCredentials: true });
+            setNewContent(currentContent);
+            setDisabledEdit(false);
+            setIsEditing(false);
+            setReloadPage(!reloadPage);
+        } catch (error) {
+            console.log(error);
+            alert('Couldn`t save changes');
+            setDisabledEdit(false);
+        }
+
+    }
+
+    // Requisição para buscar comentários
+
+    function fetchComments() {
+        const id = publicationId
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/comment/${id}`, { withCredentials: true });
+
+        promise.then(response => {
+            refreshComment === true ? setRefreshComment(false) : setRefreshComment(true)
+            setComments(response.data)
+            console.log("comentários", response.data)
+        })
+
+        promise.catch((e) => {
+            console.error(e.data)
+        })
+    }
+
+    // Requisição para postar um comentário
+
+    function handleComment(e) {
+        e.preventDefault()
+
+        const obj = {
+            userId: userData.id,
+            publicationId: publicationId,
+            content: commentContent
+        }
+
+        console.log("objPost", obj)
+
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/comment`, obj, { withCredentials: true })
+        promise.then(() => {
+            console.log("entrou na requisição do post");
+            setCommentContent("")
+            fetchComments()
+        })
+
+        promise.catch((error) => {
+            console.error(error.data)
+        })
+    }
+
+    //Requisição para contar número de comentários
+    useEffect(() => {
+        const id = publicationId
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/comment/count/${id}`, { withCredentials: true })
+
+        promise.then(({ data }) => {
+            setTotalComments(data)
+        })
+
+        promise.catch((e) => {
+            console.error(e.data)
+        })
+    }, [refreshComment]);
+
+    function getFollowers() {
+        const id = userData.id
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/comment/follow/${id}`, { withCredentials: true })
+
+        promise.then(({ data }) => {
+            setFollowers(data)
+            console.log("infoFollowers", data)
+        })
+
+        promise.catch((e) => {
+            console.error(e.data)
+        })
+    }
+
     return (
-        <Content>
-            <Left>
-                <ProfileImage alt={url} src={profile}></ProfileImage>
+        <Main>
+            <Content>
+                <Left>
+                    <ProfileImage onClick={() => goToUserPage()} alt={url} src={profile}></ProfileImage>
+                    <div onClick={() => {
+                        if (selecionado === false) {
+                            like()
+                        } else if (selecionado === true) {
+                            deslike()
+                        }
+                    }}>
 
-                <div onClick={() => {
-                    if (selecionado === false) {
-                        like()
-                    } else if (selecionado === true) {
-                        deslike()
+                        <TiHeartFullOutline style={{ color: selecionado ? "#AC0000" : "#ffffff", cursor: "pointer" }}></TiHeartFullOutline>
+
+                        <ContainerCountLikes data-tip data-for="total">
+                            <a data-tip={`${result}`}><p>{total ? `${total} likes ` : null}</p></a>
+                            <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
+                        </ContainerCountLikes>
+
+                    </div>
+                    <div onClick={() => {
+                        fetchComments()
+                        getFollowers()
+                        openCommentBox === false ? setOpenCommentBox(true) : setOpenCommentBox(false)
+                    }}>
+
+                        <AiOutlineComment style={{ cursor: "pointer" }} > </AiOutlineComment>
+
+                        <ContainerCountLikes>
+                            <p>{totalComments ? `${totalComments} comments ` : null}</p>
+                        </ContainerCountLikes>
+
+                    </div>
+                </Left>
+                <Publication>
+                    <Name>
+                        <p onClick={() => goToUserPage()}>{userName}</p>
+                        <div>
+                            {
+                                userName === userData?.userName &&
+                                <>
+                                    <TiPencil style={{ cursor: "pointer" }} onClick={() => { setIsEditing(!isEditing); inputRef.current.focus(); }}></TiPencil>
+                                    <CgTrash style={{ cursor: "pointer" }} onClick={() => { setDeletionData({ id, publicationId }); setIsModalOpen(true) }}></CgTrash>
+                                </>
+                            }
+
+                        </div>
+                    </Name>
+                    {
+                        isEditing &&
+                        <EditInput disabled={disabledEdit} ref={inputRef} value={currentContent} onKeyDown={ev => {
+                            if (ev.code === 'Escape') {
+                                setIsEditing(!isEditing);
+                            } else if (ev.code === 'Enter') {
+                                sendEditedPost();
+                            }
+                        }} onChange={ev => setCurrentContent(ev.target.value)}></EditInput>
                     }
-                }}>
-
-                    <TiHeartFullOutline style={{ color: selecionado ? "#AC0000" : "#ffffff", cursor: "pointer" }}></TiHeartFullOutline>
-
-                    <ContainerCountLikes data-tip data-for="total">
-                        <a data-tip={`${result}`}><p>{total ? `${total} likes` : null}</p></a>
-                        <ReactTooltip className="ReactTooltip" place="bottom" effect="solid" />
-                    </ContainerCountLikes>
+                    {
+                        !isEditing &&
+                        <Text><ReactHashtag onHashtagClick={val => hashtagClick(val)}>{newContent}</ReactHashtag></Text>
+                    }
+                    <Url target={"_blank"} href={url}>
+                        <Data>
+                            <Title>{title}</Title>
+                            <Description>{description}</Description>
+                            <Ancor target={"_blank"} href={url}>{url}</Ancor>
+                        </Data>
+                        <Image><ImageData alt={image} src={image}></ImageData></Image>
+                    </Url>
+                </Publication>
+            </Content>
+            <div>
+                <div>
+                    {
+                        openCommentBox && comments ?
+                            comments.map(comment => <Comment {...comment} infoId={followers} ></Comment>)
+                            :
+                            <></>
+                    }
                 </div>
+                {
+                    openCommentBox ?
+                        <PostBox>
 
-            </Left>
-            <Publication>
-                <Name>{userName}</Name>
-                <Text> {content}</Text>
-                <Url>
-                    <Data>
-                        <Title>{title}</Title>
-                        <Description>{description}</Description>
-                        <Ancor href={url}>{url}</Ancor>
-                    </Data>
-                    <Image><img alt={image} src={image}></img></Image>
-                </Url>
-            </Publication>
-        </Content >
+                            <CommentImage alt={userImage} src={userImage}></CommentImage>
+
+                            
+                            <input type="text" placeholder="write a comment..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
+                            <FiSend onClick={e => {
+                                handleComment(e)
+                            }}></FiSend>
+                            
+
+                        </PostBox>
+                        :
+                        <></>
+                }
+            </div>
+        </Main>
     )
 }
 
 export default Post;
-
-const ContainerCountLikes = styled.div`
-
-    .ReactTooltip{
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 11px;
-        line-height: 13px;
-        text-align: center;
-        color: #505050;
-        background-color: white;
-        cursor: pointer;
-    }
-`;
